@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <h3 class="fw-bold">Chef you may like</h3>
+    <div class="row text-center p-3">
+        <app-chef-card *ngFor="let chef of chefs" class="col-2" [imageUrl]="chef.imageUrl"
+            [altText]="chef.altText"></app-chef-card>
+    </div>
+</div>
