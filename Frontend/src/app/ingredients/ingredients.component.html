@@ -1,1 +1,123 @@
-<p>ingredients works!</p>
+<!-- <div class="container-fluid">
+  <h2 class="fw-bold px-3 pt-5">Blueberry Pancake</h2>
+  <div class="d-flex align-items-center px-3 mt-3">
+    
+    <img
+      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      alt="Profile"
+      class="rounded-circle"
+      width="40"
+      height="40"
+      draggable="false"
+    />
+   
+    <p class="ms-3 mb-0">Chef John</p>
+   
+    <div class="ms-auto ps-3">
+      <div class="card" style="width: 18rem;">
+        <img
+          src="https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg"
+          class="card-img-top"
+          alt="Blueberry Pancake"
+        />
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="container-fluid p-5">
+  <div class="row p-2">
+    <!-- Left Column -->
+    <div class="col-6">
+      <h2
+        class="fw-bold px-3 pt-2 pb-3"
+        style="
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial,
+            sans-serif;
+        "
+      >
+        {{recipeName}}
+      </h2>
+      <!-- Chef Image and Name -->
+      <div class="d-flex align-items-center mt-3 px-3">
+        <img
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          alt="Profile"
+          class="rounded-circle"
+          width="40"
+          height="40"
+          draggable="false"
+        />
+        <p class="ms-3 fs-5 fw-bold mb-0">{{chefName}}</p>
+      </div>
+      <p class="m-3 fs-5">
+        {{recipedoc}}
+      </p>
+      <button class="btn border border-1 m-3 px-3 py-2 rounded-5">
+        <i class="fa-solid fa-book pe-1"></i> Let's Cook
+      </button>
+
+      <h3
+        class="fw-bold px-3 pt-5 pb-3"
+        style="
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial,
+            sans-serif;
+        "
+      >
+        Ingredients
+      </h3>
+      <ul class="list-group list-group-flush px-3">
+        <li
+          class="list-group-item"
+          *ngFor="let ingredient of recipeIngredients"
+        >
+          <div class="row">
+            <div class="col">
+              <p>{{ingredient.ingredient}}</p>
+            </div>
+            <div class="col d-flex justify-content-end">
+              <p class="pe-3">{{ingredient.quantity}}</p>
+              <input
+                type="checkbox"
+                class="form-check-input"
+                style="transform: scale(1.5);"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-6 d-flex justify-content-center position-relative">
+      <div class="text-center">
+        <!-- Recipe Image -->
+        <img
+          [src]="recipeImage"
+          draggable="false"
+          style="height: 350px;"
+          class="w-100 rounded-5"
+          alt="Blueberry Pancake"
+        />
+
+        <!-- Row for Cook Time, Level, and Calories -->
+        <div class="row mt-3 text-center">
+          <!-- Cook Time -->
+          <div class="col d-flex align-items-center justify-content-center">
+            <i class="fa fa-clock-o me-2" aria-hidden="true"></i>
+            <p class="mb-0">Cook Time</p>
+          </div>
+          <!-- Level -->
+          <div class="col d-flex align-items-center justify-content-center">
+            <i class="fa fa-signal me-2" aria-hidden="true"></i>
+            <p class="mb-0">Level</p>
+          </div>
+          <!-- Calories -->
+          <div class="col d-flex align-items-center justify-content-center">
+            <i class="fa fa-fire me-2" aria-hidden="true"></i>
+            <p class="mb-0">Calories</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

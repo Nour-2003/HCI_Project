@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { NgFor } from "@angular/common";
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-recipes',
+  selector: "app-recipes",
   standalone: true,
   imports: [],
-  templateUrl: './recipes.component.html',
-  styleUrl: './recipes.component.css'
+  templateUrl: "./recipes.component.html",
+  styleUrl: "./recipes.component.css",
 })
-export class RecipesComponent {
-
-}
+export class RecipesComponent {}
