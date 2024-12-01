@@ -1,0 +1,74 @@
+.list-group-item {
+  position: relative;
+}
+
+.list-group-item::before {
+  content: "•"; /* Unicode for a dot */
+  color: #134631; /* Desired color */
+  position: absolute;
+  left: 0; /* Positions the dot on the left */
+  top: 50%; /* Centers the dot vertically */
+  transform: translateY(-50%);
+  font-size: 2.5em;
+}
+
+.icon-style {
+  width: 1.7em; /* Match Font Awesome icon size */
+  height: 1.7em; /* Keep the aspect ratio consistent */
+  fill: currentColor; /* Allow the icon to adapt to text color */
+  display: inline-block;
+  vertical-align: middle; /* Align the icon with the text */
+  margin-right: 0.5rem; /* Space between the icon and text */
+}
+.timer-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-circle {
+  position: relative;
+}
+
+#pause-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#pause-btn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.timer-text {
+  position: absolute;
+  font-size: 1.2em;
+  color: black;
+  z-index: 5;
+}
+
+.background-circle {
+  fill: none;
+}
+
+.progress-circle-path {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}

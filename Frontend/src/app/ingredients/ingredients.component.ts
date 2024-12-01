@@ -1,14 +1,19 @@
-import { NgFor } from "@angular/common";
+import { CommonModule, NgFor } from "@angular/common";
 import { Component } from "@angular/core";
 
 @Component({
   selector: "app-ingredients",
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, CommonModule],
   templateUrl: "./ingredients.component.html",
   styleUrl: "./ingredients.component.css",
 })
 export class IngredientsComponent {
+  cookTime: string = "30 Min";
+  mealLevel: string = "Easy";
+  mealCalories: string = "150";
+  mealServings: string = "4";
+  mealSpecialTags: string[] = ["Dinner", "Lunch", "Italian"];
   recipeName: string = "Spaghetti Bolognese";
   chefName: string = "Chef John";
   recipedoc: string = " Hello friends i wanted to share this with you ;)";
@@ -24,4 +29,71 @@ export class IngredientsComponent {
     { ingredient: "Salt", quantity: "to taste" },
     { ingredient: "Pepper", quantity: "to taste" },
   ];
+  recipeInstructions: string[] = [
+    "Heat olive oil in a pan over medium heat.",
+    "Add chopped onions and minced garlic to the pan.",
+    "Add minced meat to the pan and cook until browned.",
+    "Add tomato sauce to the pan and stir well.",
+    "Season with salt and pepper to taste.",
+    "Cook spaghetti according to package instructions.",
+    "Serve spaghetti with bolognese sauce on top.",
+  ];
+  currentStep: number = 0;
+
+  nextStep(): void {
+    if (this.currentStep < this.recipeInstructions.length - 1) {
+      this.currentStep++;
+    }
+  }
+  time: string = "00:00"; // Timer in minutes:seconds
+  isPaused: boolean = false; // Pause state
+  timerInterval: any; // Timer interval reference
+  timeInSeconds: number = 0; // Timer in seconds
+  circumference: number = 2 * Math.PI * 54; // Circumference of the circle (radius = 54)
+  dashOffset: number = this.circumference; // Start with full circle
+  maxTimeInSeconds: number = 100; // Maximum time in seconds for the timer
+
+  ngOnInit(): void {
+    this.startTimer();
+  }
+
+  startTimer(): void {
+    this.timeInSeconds = 0;
+    this.updateTime();
+    this.timerInterval = setInterval(() => {
+      if (!this.isPaused && this.timeInSeconds < this.maxTimeInSeconds) {
+        this.timeInSeconds++;
+        this.updateTime();
+        this.updateProgress();
+      } else if (this.timeInSeconds >= this.maxTimeInSeconds) {
+        clearInterval(this.timerInterval);
+      }
+    }, 1000);
+  }
+
+  togglePause(): void {
+    this.isPaused = !this.isPaused;
+  }
+
+  updateTime(): void {
+    const minutes: number = Math.floor(this.timeInSeconds / 60);
+    const seconds: number = this.timeInSeconds % 60;
+    this.time = `${this.padZero(minutes)}:${this.padZero(seconds)}`;
+  }
+
+  updateProgress(): void {
+    this.dashOffset =
+      this.circumference -
+      (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
+  }
+
+  padZero(num: number): string {
+    return num < 10 ? "0" + num : num.toString();
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
 }
