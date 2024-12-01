@@ -1,30 +1,37 @@
 <div class="container-fluid p-5">
   <div class="row p-2">
+
     <!-- Left Column -->
     <div class="col-5">
+
+      <!-- Recipe Title -->
       <h2 class="fw-bold px-3 pt-2 pb-3" style="
-          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial,
-            sans-serif;
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         ">
         {{recipeName}}
       </h2>
+
       <!-- Chef Image and Name -->
       <div class="d-flex align-items-center mt-3 px-3">
         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile"
           class="rounded-circle" width="40" height="40" draggable="false" />
         <p class="ms-3 fs-5 fw-bold mb-0">{{chefName}}</p>
       </div>
+
+      <!-- Recipe Description -->
       <p class="m-3 fs-5">
         {{recipedoc}}
       </p>
+
+      <!-- Start Cooking Button -->
       <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
         (click)="startCook()">
         <i class="fa-solid fa-book pe-1"></i> Let's Cook
       </button>
 
+      <!-- Ingredients Section -->
       <h3 class="fw-bold px-3 pt-5 pb-3" style="
-          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial,
-            sans-serif;
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         ">
         Ingredients
       </h3>
@@ -46,12 +53,14 @@
     <!-- Right Column -->
     <div class="col-7 d-flex justify-content-center position-relative">
       <div class="text-center">
+
         <!-- Recipe Image -->
         <img [src]="recipeImage" draggable="false" style="height: 350px;" class="w-75 rounded-5"
           alt="Blueberry Pancake" />
 
         <!-- Information Grid -->
         <div class="row mt-4 text-center">
+
           <!-- Cook Time -->
           <div class="col-5">
             <div class="d-flex align-items-center justify-content-center">
@@ -61,7 +70,7 @@
             <p class="mb-0">{{cookTime}}</p>
           </div>
 
-          <!-- Level -->
+          <!-- Difficulty Level -->
           <div class="col-3">
             <div class="d-flex align-items-center justify-content-center">
               <img src="assets/imgs/819.png" class="icon-style me-2" alt="Cooking Bot Icon" />
@@ -79,7 +88,7 @@
             <p class="mb-0">{{mealCalories}} Cal</p>
           </div>
 
-          <!-- Serve -->
+          <!-- Serve and Special Tags -->
           <div class="row">
             <div class="col-6 mt-4">
               <div class="d-flex align-items-center justify-content-center">
@@ -104,16 +113,19 @@
       </div>
     </div>
   </div>
+
+  <!-- Directions Section -->
   <div class="row m-2 mt-5">
-    <h3 class="mb-5" style="
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      ">
+    <h3 class="mb-5" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
       Directions
     </h3>
+
+    <!-- Image Section for Directions -->
     <div class="col-4">
       <img [src]="recipeImage" draggable="false" style="height: 300px;" class="w-75 rounded-5"
         alt="Blueberry Pancake" />
 
+      <!-- Comment Section -->
       <div class="d-flex align-items-center mt-4">
         <div class="me-3">
           <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile"
@@ -123,12 +135,14 @@
           <input [(ngModel)]="newComment" class="form-control rounded-5 pe-5" placeholder="Type your comment"
             (keyup.enter)="addComment()" />
 
-            <span class="position-absolute top-50 end-0 translate-middle-y pe-3">
+          <!-- Emoji Icon in Comment Box -->
+          <span class="position-absolute top-50 end-0 translate-middle-y pe-3">
             <i class="fa fa-smile text-muted"></i>
           </span>
         </div>
       </div>
 
+      <!-- Display Comments -->
       <div class="comments mt-3">
         <h5 class="fw-bold">Comments</h5>
         <div *ngFor="let comment of comments" class="mb-3 p-3 rounded">
@@ -142,6 +156,8 @@
               <p class="text-muted mb-0">{{ comment.text }}</p>
             </div>
           </div>
+
+          <!-- Comment Actions: Time, Reply, and Like -->
           <div class="d-flex justify-content-between align-items-center mt-2">
             <div class="d-flex align-items-center gap-3">
               <span class="text-muted">{{ comment.time }}</span>
@@ -155,16 +171,15 @@
           </div>
         </div>
       </div>
+    </div>
 
-    </div>
+    <!-- Step Instructions -->
     <div class="col-4">
-      <h4>
-        Step {{ currentStep + 1 }}
-      </h4>
-      <p>
-        {{ recipeInstructions[currentStep] }}
-      </p>
+      <h4>Step {{ currentStep + 1 }}</h4>
+      <p>{{ recipeInstructions[currentStep] }}</p>
     </div>
+
+    <!-- Timer Section -->
     <div class="col-3 d-flex justify-content-end me-2">
       <div class="timer-container text-center">
         <!-- Circular Timer -->
@@ -178,50 +193,26 @@
             [attr.stroke-dasharray]="circumference" [attr.stroke-dashoffset]="dashOffset"></circle>
         </svg>
 
-        <!-- Pause/Resume Button in the center -->
+        <!-- Pause/Resume Button -->
         <button id="pause-btn" (click)="togglePause()">
           <i class="fa-solid" [ngClass]="isPaused ? 'fa-play' : 'fa-pause'" style="font-size: 24px;"></i>
         </button>
-        <div class="col-4 d-flex justify-content-end">
-          <div class="timer-container text-center">
-            <!-- Circular Timer -->
-            <svg class="progress-circle" width="120" height="120">
-              <!-- Background Circle -->
-              <circle class="background-circle" cx="60" cy="60" r="54" stroke="lightgray" stroke-width="5" fill="none">
-              </circle>
 
-              <!-- Progress Circle -->
-              <circle class="progress-circle-path" cx="60" cy="60" r="54" stroke="black" stroke-width="5" fill="none"
-                [attr.stroke-dasharray]="circumference" [attr.stroke-dashoffset]="dashOffset"></circle>
-            </svg>
+        <!-- Timer Text and Navigation Buttons -->
+        <div class="timer-text mt-5 top-50">
+          <p class="p-2"> {{ time }}</p>
 
-            <!-- Pause/Resume Button in the center -->
-            <button id="pause-btn" (click)="togglePause()">
-              <i class="fa-solid" [ngClass]="isPaused ? 'fa-play' : 'fa-pause'"></i>
+          <div class="d-flex justify-content-between gap-2">
+            <button class="btn rounded-5 px-3" [ngClass]="{'btn-outline-secondary': currentStep === 0, 'btn': true}"
+              [disabled]="currentStep === 0" (click)="prevStep()" style="background-color: #00b96d; color: white;">
+              Previous
             </button>
-
-            <!-- Timer Text below the circle -->
-            <div class="timer-text mt-5 top-50">
-              <p class="p-2"> {{ time }}</p>
-
-              <!-- Next and Previous Step Buttons -->
-              <div class="d-flex justify-content-between gap-2">
-                <button class="btn rounded-5 px-3" [ngClass]="{'btn-outline-secondary': currentStep === 0, 'btn': true}"
-                  [disabled]="currentStep === 0" (click)="prevStep()" style="background-color: #00b96d; color: white;">
-                  Previous
-                </button>
-                <button class="btn rounded-5"
-                  [ngClass]="{'btn-outline-secondary': currentStep === recipeInstructions.length - 1, 'btn': true}"
-                  [disabled]="currentStep === recipeInstructions.length - 1" (click)="nextStep()"
-                  style="background-color: #00b96d; color: white;">
-                  Next
-                </button>
-              </div>
-            </div>
-
-
-
-
+            <button class="btn rounded-5"
+              [ngClass]="{'btn-outline-secondary': currentStep === recipeInstructions.length - 1, 'btn': true}"
+              [disabled]="currentStep === recipeInstructions.length - 1" (click)="nextStep()"
+              style="background-color: #00b96d; color: white;">
+              Next
+            </button>
           </div>
         </div>
       </div>
