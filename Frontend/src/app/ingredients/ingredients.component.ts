@@ -40,11 +40,23 @@ export class IngredientsComponent {
   ];
   currentStep: number = 0;
 
+  startCook(): void {
+    this.startTimer();
+  }
+
   nextStep(): void {
     if (this.currentStep < this.recipeInstructions.length - 1) {
       this.currentStep++;
     }
   }
+
+  prevStep(): void {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+    }
+  }
+
+  
   time: string = "00:00"; // Timer in minutes:seconds
   isPaused: boolean = false; // Pause state
   timerInterval: any; // Timer interval reference
@@ -54,7 +66,6 @@ export class IngredientsComponent {
   maxTimeInSeconds: number = 100; // Maximum time in seconds for the timer
 
   ngOnInit(): void {
-    this.startTimer();
   }
 
   startTimer(): void {
