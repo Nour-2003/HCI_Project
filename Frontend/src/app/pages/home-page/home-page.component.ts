@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from "../header/header.component";
-import { MealsComponent } from "../meals/meals.component";
-import { ChefListComponent } from "../chef-list/chef-list.component";
-import { RecipeCardComponent } from "../recipe-card/recipe-card.component";
+import { MealsComponent } from "../../components/meals/meals/meals.component";
+import { ChefListComponent } from "../../components/chefs/chef-list/chef-list.component";
+import { RecipeCardComponent } from "../../components/recipe-card/recipe-card.component";
 import { CommonModule } from '@angular/common';
+import {HeaderComponent } from "../../components/header/header.component";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [HeaderComponent, MealsComponent, ChefListComponent, RecipeCardComponent, CommonModule],
+  imports: [HeaderComponent, MealsComponent, ChefListComponent, RecipeCardComponent, CommonModule, HeaderComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
