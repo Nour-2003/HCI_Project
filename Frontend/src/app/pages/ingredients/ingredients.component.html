@@ -39,7 +39,12 @@
         <li class="list-group-item" *ngFor="let ingredient of recipeIngredients">
           <div class="row ms-1">
             <div class="col">
-              <p>{{ingredient.ingredient}}</p>
+              <p>
+                <i class="fa-solid fa-circle fa-xs me-2" style="color: black;"></i>
+                {{ingredient.ingredient}}
+              </p>
+
+
             </div>
             <div class="col d-flex justify-content-end">
               <p class="pe-3">{{ingredient.quantity}}</p>

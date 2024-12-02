@@ -1,16 +1,3 @@
-.list-group-item {
-  position: relative;
-}
-
-.list-group-item::before {
-  content: "•"; /* Unicode for a dot */
-  color: #134631; /* Desired color */
-  position: absolute;
-  left: 0; /* Positions the dot on the left */
-  top: 50%; /* Centers the dot vertically */
-  transform: translateY(-50%);
-  font-size: 2.5em;
-}
 
 .icon-style {
   width: 1.7em; /* Match Font Awesome icon size */
