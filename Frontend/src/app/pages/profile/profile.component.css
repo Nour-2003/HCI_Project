@@ -2,3 +2,18 @@
     background-color: #00b96d;
   }
   
+
+  
+.tabunderline {
+  position: relative;
+}
+
+.tabunderline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 60px;
+  height: 7px;
+  background-color: #00b96d;
+}
