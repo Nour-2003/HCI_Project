@@ -1,0 +1,65 @@
+.form-title {
+    font-size: 32px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .form-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 4px;
+    background-color: #00b96d;
+    
+  }
+  
+  .form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .recipe-title {
+    font-size: 24px;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .form-subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 2rem;
+  }
+  
+  .ingredient-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+ 
+  
+  .photo-placeholder {
+    width: 200px;
+    height: 200px;
+    background-color: #e9ecef;
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
