@@ -4,3 +4,30 @@ color: #00b96d;
 .btn{
     background-color: #00b96d;
   }
+
+
+
+  .bg-main{
+    background-image:linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),url('../../../assets/imgs/mainbg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+
+
+  
+  .register-prompt {
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .register-prompt::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 60px;
+    height: 4px;
+    background-color: #00b96d;
+  }
+  
