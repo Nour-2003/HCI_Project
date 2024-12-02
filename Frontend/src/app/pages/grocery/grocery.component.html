@@ -1,0 +1,47 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-7">
+            <div *ngFor="let meal of meals" class="mb-4">
+                <h5 class="text-success mb-3">{{ meal.type }}</h5>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img [src]="meal.imageUrl" [alt]="meal.name" class="img-fluid rounded-start"
+                                style="height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ meal.name }}</h6>
+                                <p class="card-text">
+                                    <small class="text-muted">{{ meal.ingredients }} ingredient</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card rounded-5 p-4">
+                <div class="card-body">
+                    <h6 class="card-title mb-4">December 2024</h6>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="text-center">
+                                <th *ngFor="let day of weekDays">{{ day }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let week of calendarDays" class="text-center">
+                                <td *ngFor="let day of week" [class.text-success]="day === 10"
+                                    [class.fw-bold]="day === 10">
+                                    {{ day }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

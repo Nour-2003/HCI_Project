@@ -1,0 +1,49 @@
+<div class="container p-4">
+    <div class="row align-items-center">
+        <div class="col-auto p-5">
+            <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
+                <i class="fas fa-user text-secondary" style="font-size: 4rem;"></i>
+            </div>
+        </div>
+        <div class="col">
+            <h2 class="mb-0">{{ username }}</h2>
+            <div class="d-flex gap-4 mt-2">
+                <span>{{ recipesCount }} Recipes</span>
+                <span>{{ following }} Following</span>
+                <span>{{ followers }} Followers</span>
+            </div>
+        </div>
+        <div class="col-auto">
+            <button class="btn rounded-5 px-5 py-2 text-light">Follow</button>
+        </div>
+    </div>
+</div>
+
+<div class="container border-bottom border-black">
+    <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+            <a class="nav-link text-black" routerLink="recipes" routerLinkActive="active">
+                <i class="fas fa-book"></i> Recipes
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-black" routerLink="favorite" routerLinkActive="active">
+                <i class="fas fa-heart"></i> Favorite
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-black" routerLink="draft" routerLinkActive="active">
+                <i class="fas fa-file-alt"></i> Draft
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-black" routerLink="grocery" routerLinkActive="active">
+                <i class="fas fa-shopping-cart"></i> Grocery
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="container py-3">
+    <router-outlet></router-outlet>
+</div>

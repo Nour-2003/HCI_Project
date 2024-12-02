@@ -1,11 +1,12 @@
-import { NgFor } from "@angular/common";
-import { Component } from "@angular/core";
+import { NgFor } from '@angular/common';
+import { Component } from '@angular/core';
+import { RecipeGridComponent } from '../../components/recipe-grid/recipe-grid.component';
 
 @Component({
-  selector: "app-recipes",
+  selector: 'app-recipes',
   standalone: true,
-  imports: [],
-  templateUrl: "./recipes.component.html",
-  styleUrl: "./recipes.component.css",
+  imports: [RecipeGridComponent],
+  templateUrl: './recipes.component.html',
+  styleUrl: './recipes.component.css',
 })
 export class RecipesComponent {}
