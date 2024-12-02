@@ -1,0 +1,38 @@
+.login-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .login-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 4px;
+    background-color: #00b96d;
+  }
+
+  .btn{
+    background-color: #00b96d;
+  }
+  
+  .register-prompt {
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .register-prompt::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 60px;
+    height: 4px;
+    background-color: #00b96d;
+  }
+  
+    
