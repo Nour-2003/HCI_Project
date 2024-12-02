@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Meal {
@@ -13,10 +13,14 @@ interface Meal {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './grocery.component.html',
-  styleUrl: './grocery.component.css',
+  styleUrls: ['./grocery.component.css'],
 })
-export class GroceryComponent {
-  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export class GroceryComponent implements OnInit {
+  weekDays: string[] = [];
+  currentMonth: string = '';
+  currentYear: number = 0;
+  currentDay: number = 0;
+  calendarDays: (number | null)[][] = []; // Updated to allow null for empty days
 
   meals: Meal[] = [
     {
@@ -35,11 +39,54 @@ export class GroceryComponent {
     },
   ];
 
-  calendarDays = [
-    [1, 2, 3, 4, 5, 6, 7],
-    [8, 9, 10, 11, 12, 13, 14],
-    [15, 16, 17, 18, 19, 20, 21],
-    [22, 23, 24, 25, 26, 27, 28],
-    [29, 30, 31, 0, 0, 0, 0],
-  ];
+  ngOnInit() {
+    this.setCurrentDate();
+    this.generateCalendar();
+  }
+
+  setCurrentDate() {
+    const today = new Date();
+    this.currentYear = today.getFullYear();
+    this.currentMonth = today.toLocaleString('default', { month: 'long' }); // Gets current month name
+    this.currentDay = today.getDate();
+
+    // Define the days of the week dynamically based on locale
+    this.weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  }
+
+  generateCalendar() {
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    // Get the first day of the month
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Create a 2D array (calendarDays) to represent the month
+    this.calendarDays = [];
+    let week: (number | null)[] = [];
+
+    // Fill in the first empty days (before the 1st day of the month)
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      week.push(null); // Empty slot represented by null
+    }
+
+    // Fill in the actual days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      week.push(day);
+      if (week.length === 7) {
+        this.calendarDays.push(week);
+        week = [];
+      }
+    }
+
+    // Push the last incomplete week, if any
+    if (week.length > 0) {
+      while (week.length < 7) {
+        week.push(null); // Fill remaining empty slots with null
+      }
+      this.calendarDays.push(week);
+    }
+  }
 }

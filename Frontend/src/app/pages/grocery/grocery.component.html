@@ -32,7 +32,7 @@
         <div class="col-md-5">
             <div class="card rounded-5 p-4">
                 <div class="card-body">
-                    <h6 class="card-title mb-4">December 2024</h6>
+                    <h6 class="card-title mb-4">{{ currentMonth }} {{ currentYear }}</h6>
                     <table class="table table-borderless">
                         <thead>
                             <tr class="text-center">
@@ -41,9 +41,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let week of calendarDays" class="text-center">
-                                <td *ngFor="let day of week" [class.text-success]="day === 10"
-                                    [class.fw-bold]="day === 10">
-                                    {{ day }}
+                                <td *ngFor="let day of week" [class.text-success]="day === currentDay"
+                                    [class.fw-bold]="day === currentDay">
+                                    {{ day || '' }}
                                 </td>
                             </tr>
                         </tbody>
