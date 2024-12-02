@@ -1,0 +1,11 @@
+<div class="container-fluid p-3">
+    <div class="row mb-3" *ngFor="let meal of meals">
+        <div class="col">
+            <p class="text-muted mb-0">{{ meal.mealType }}</p>
+            <h5 class="mb-1">{{ meal.mealName }}</h5>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <input type="checkbox" class="form-check-input" style="transform: scale(1.5);" />
+        </div>
+    </div>
+</div>

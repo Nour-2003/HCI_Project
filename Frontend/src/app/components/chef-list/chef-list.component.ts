@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { ChefCardComponent } from "../chef-card/chef-card.component";
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-chef-list',
   standalone: true,
-  imports: [ChefCardComponent,CommonModule],
+  imports: [CommonModule],
   templateUrl: './chef-list.component.html',
   styleUrl: './chef-list.component.css'
 })

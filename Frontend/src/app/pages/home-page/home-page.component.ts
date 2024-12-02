@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MealsComponent } from "../../components/meals/meals/meals.component";
-import { ChefListComponent } from "../../components/chefs/chef-list/chef-list.component";
+import { MealsComponent } from "../../components/meals/meals.component";
+import { ChefListComponent } from "../../components/chef-list/chef-list.component";
 import { RecipeCardComponent } from "../../components/recipe-card/recipe-card.component";
 import { CommonModule } from '@angular/common';
 import {HeaderComponent } from "../../components/header/header.component";

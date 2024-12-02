@@ -1,0 +1,11 @@
+<div class="container-fluid">
+  <h3 class="fw-bold">Chef you may like</h3>
+  <div class="row text-center p-3">
+    <div *ngFor="let chef of chefs" class="col-2">
+      <div class="rounded-circle overflow-hidden">
+        <img [src]="chef.imageUrl" class="w-100 h-100" [alt]="chef.altText" draggable="false" />
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.grocery-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .grocery-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 50px;
+    height: 4px;
+    background-color: #00b96d;
+  }

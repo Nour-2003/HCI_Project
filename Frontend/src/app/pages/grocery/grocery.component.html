@@ -2,25 +2,33 @@
     <div class="row">
         <div class="col-md-7">
             <div *ngFor="let meal of meals" class="mb-4">
-                <h5 class="text-success mb-3">{{ meal.type }}</h5>
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img [src]="meal.imageUrl" [alt]="meal.name" class="img-fluid rounded-start"
-                                style="height: 100%; object-fit: cover;">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ meal.name }}</h6>
-                                <p class="card-text">
-                                    <small class="text-muted">{{ meal.ingredients }} ingredient</small>
-                                </p>
+                <div class="text-start mb-4">
+                    <h5 class="text-black grocery-title">{{ meal.type }}</h5>
+                </div>
+                <div class="card rounded-5 position-relative">
+
+                    <!-- Image Section -->
+                    <img [src]="meal.imageUrl" [alt]="meal.name" class="card-img-top rounded-5"
+                        style="height: 250px; object-fit: cover;">
+
+                    <!-- Meal Name Overlay -->
+                    <div class="position-absolute bottom-0 start-0 mb-5 py-2 w-100">
+                        <h5 class="card-title text-start text-white p-2">{{ meal.name }}</h5>
+                    </div>
+
+                    <!-- Meal Info (Ingredients) -->
+                    <div class="card-body position-absolute bottom-0 start-0 end-0 bg-white rounded-5 py-2">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex align-items-center text-black">
+                                <span class="ms-2">{{ meal.ingredients }} ingredient</span>
+                                <i class="fa fa-check fs-5 ms-2"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-md-5">
             <div class="card rounded-5 p-4">
                 <div class="card-body">
