@@ -1,0 +1,15 @@
+
+.navunderline {
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .navunderline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 30px;
+    height: 6px;
+    background-color: #00b96d;
+  }
