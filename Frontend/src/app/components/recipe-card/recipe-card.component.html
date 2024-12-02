@@ -1,6 +1,6 @@
 <div class="card rounded-5 position-relative">
     <div class="position-absolute top-0 start-0 w-100 d-flex justify-content-between align-items-center p-3">
-        <div class="rounded-circle bg-light" style="width: 30px; height: 30px;"></div>
+        <div class="rounded-circle" style="width: 30px; height: 30px;"></div>
         <div class="text-center">
             <i class="fas fa-heart text-white fs-4"></i>
             <div class="position-absolute top-75 end-0 px-2">
@@ -9,13 +9,12 @@
         </div>
     </div>
     <img [src]="imageUrl" class="card-img-top recipe-img rounded-5 " alt="{{ title }}">
-    <div class="position-absolute bottom-0 start-0 mb-5 py-2">
-        <h5 class="card-title text-center text-white p-2">
+
+    <div class="card-body position-absolute bottom-0 start-0 end-0 bg-white rounded-5 ">
+        <h5 class="card-title text-center text-black">
             {{ title }}
         </h5>
 
-    </div>
-    <div class="card-body position-absolute bottom-0 start-0 end-0 bg-light rounded-5 ">
         <div class="d-flex justify-content-center align-items-center">
 
             <div class="d-flex align-items-center text-black me-3">
