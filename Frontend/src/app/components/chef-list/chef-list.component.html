@@ -2,7 +2,9 @@
   <div class="row text-center p-3">
     <div *ngFor="let chef of chefs" class="col-6 col-sm-4 col-md-3 col-lg-2">
       <div class="d-flex flex-column align-items-center">
-        <img [src]="chef.imageUrl" class="img-fluid rounded-circle mb-2" [alt]="chef.altText" draggable="false" />
+        <div class="image-container mb-2">
+          <img [src]="chef.imageUrl" class="img-fluid rounded-circle" [alt]="chef.altText" draggable="false" />
+        </div>
         <p>{{ chef.altText }}</p>
       </div>
     </div>
