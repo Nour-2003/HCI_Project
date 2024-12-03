@@ -2,37 +2,67 @@
     <div class="row p-5 fw-bold text-light">
         <div class="col-lg-6 col-md-8">
             <h1 class="register-title mb-4 position-relative">Signup</h1>
-            <form (ngSubmit)="onSubmit()" class="mt-5">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-5">
+                <!-- Email Field -->
                 <div class="position-relative mb-3">
                     <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
                             class="fas fa-envelope"></i></span>
-                    <input type="email" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="Email" [(ngModel)]="email" name="email" required>
+                    <input type="email" formControlName="email"
+                        class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3" placeholder="Email">
+                    <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+                        class="text-danger">
+                        <small>{{ getErrorMessage('email') }}</small>
+                    </div>
                 </div>
+
+                <!-- Username Field -->
                 <div class="position-relative mb-3">
                     <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
                             class="fas fa-user"></i></span>
-                    <input type="text" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="username" [(ngModel)]="username" name="username" required>
+                    <input type="text" formControlName="username"
+                        class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
+                        placeholder="Username">
+                    <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid"
+                        class="text-danger">
+                        <small>{{ getErrorMessage('username') }}</small>
+                    </div>
                 </div>
+
+                <!-- Password Field -->
                 <div class="position-relative mb-3">
                     <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
                             class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="Password" [(ngModel)]="password" name="password" required>
+                    <input type="password" formControlName="password"
+                        class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
+                        placeholder="Password">
+                    <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+                        class="text-danger">
+                        <small>{{ getErrorMessage('password') }}</small>
+                    </div>
                 </div>
+
+                <!-- Confirm Password Field -->
                 <div class="position-relative mb-3">
                     <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
                             class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="Confirm Password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+                    <input type="password" formControlName="confirmPassword"
+                        class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
+                        placeholder="Confirm Password">
+                    <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid"
+                        class="text-danger">
+                        <small class="text-danger">Passwords do not match</small>
+                    </div>
                 </div>
+
+                <!-- Submit Button -->
                 <div class="d-flex justify-content-center align-items-center">
-                    <button type="submit" class="btn rounded-5 px-5 py-2 text-light">Signup</button>
+                    <button type="submit" class="btn rounded-5 px-5 py-2 text-light"
+                        [disabled]="registerForm.invalid">Signup</button>
                 </div>
+
+                <!-- Login Prompt -->
                 <div class="login-prompt mt-3 fw-semibold">
-                    <a routerLinkActive="active" routerLink="/login" class="text-light text-decoration-none">have an
-                        account? </a>
+                    <a routerLink="/login" class="text-light text-decoration-none">Already have an account?</a>
                 </div>
             </form>
         </div>

@@ -2,28 +2,39 @@
     <div class="row p-5 fw-bold text-light">
         <div class="col-lg-6 col-md-8">
             <h1 class="login-title mb-4 position-relative">Login</h1>
-            <form (ngSubmit)="onSubmit()" class="mt-5">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-5">
+                <!-- Email Field -->
                 <div class="position-relative mb-3">
-                    <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
-                            class="fas fa-envelope"></i></span>
+                    <span class="position-absolute top-50 start-0 translate-middle-y ps-3">
+                        <i class="fas fa-envelope"></i>
+                    </span>
                     <input type="email" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="Email" [(ngModel)]="email" name="email" required>
+                        placeholder="Email" formControlName="email" required>
                 </div>
+
+                <!-- Password Field -->
                 <div class="position-relative mb-3">
-                    <span class="position-absolute top-50 start-0 translate-middle-y ps-3"><i
-                            class="fas fa-lock"></i></span>
+                    <span class="position-absolute top-50 start-0 translate-middle-y ps-3">
+                        <i class="fas fa-lock"></i>
+                    </span>
                     <input type="password" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-                        placeholder="Password" [(ngModel)]="password" name="password" required>
+                        placeholder="Password" formControlName="password" required>
                 </div>
+
+                <!-- Forgot Password Link -->
                 <div class="d-flex justify-content-end align-items-center">
                     <a href="#" class="text-light text-decoration-none fw-light">Forget password?</a>
                 </div>
+
+                <!-- Submit Button -->
                 <div class="d-flex justify-content-center align-items-center">
                     <button type="submit" class="btn rounded-5 px-5 py-2 text-light">Login</button>
                 </div>
+
+                <!-- Register Prompt -->
                 <div class="register-prompt mt-3 fw-semibold">
-                    <a routerLinkActive="active" routerLink="/register" class="text-light text-decoration-none">Don't
-                        have an account? </a>
+                    <a routerLink="/register" class="text-light text-decoration-none">Don't have an account?
+                    </a>
                 </div>
             </form>
         </div>
