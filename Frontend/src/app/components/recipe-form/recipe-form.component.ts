@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {
@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-recipe-form',
@@ -31,7 +32,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 export class RecipeFormComponent {
   recipeForm: FormGroup;
   selectedPhoto: string | null = null;
-
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
   constructor(private fb: FormBuilder) {
     this.recipeForm = this.fb.group({
       title: ['', Validators.required],
@@ -40,17 +41,39 @@ export class RecipeFormComponent {
       steps: this.fb.array([], Validators.required),
       servings: ['', Validators.required],
       level: ['', Validators.required],
-      tags: [''],
-      calories: [''],
-      prepTime: [''],
-      cookTime: [''],
-      totalTime: [''],
-      photo: [null],
+      tags: ['', Validators.required],
+      calories: ['', Validators.required],
+      prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Only numbers allowed
+      cookTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      totalTime: [{ value: '', disabled: true }], // Read-only field
+      photo: [null, Validators.required],
     });
 
     // Add initial ingredient and step fields
     this.addIngredient();
     this.addStep();
+
+    // Subscribe to changes in prepTime and cookTime
+    this.recipeForm
+      .get('prepTime')
+      ?.valueChanges.subscribe(() => this.updateTotalTime());
+    this.recipeForm
+      .get('cookTime')
+      ?.valueChanges.subscribe(() => this.updateTotalTime());
+  }
+
+  updateTotalTime() {
+    const prepTime = parseInt(
+      this.recipeForm.get('prepTime')?.value || '0',
+      10
+    );
+    const cookTime = parseInt(
+      this.recipeForm.get('cookTime')?.value || '0',
+      10
+    );
+    const totalTime = prepTime + cookTime;
+
+    this.recipeForm.get('totalTime')?.setValue(totalTime.toString());
   }
 
   get ingredients() {
@@ -88,6 +111,45 @@ export class RecipeFormComponent {
         });
       };
       reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto() {
+    this.selectedPhoto = null;
+    this.recipeForm.patchValue({
+      photo: null,
+    });
+    this.fileUpload.clear();
+  }
+
+  getErrorMessage(controlName: string): string | null {
+    const control = this.recipeForm.get(controlName);
+
+    if (control && control.invalid && control.touched) {
+      const errors = control.errors;
+
+      if (errors?.['required']) {
+        return 'This field is required.';
+      }
+      if (errors?.['pattern']) {
+        return 'Invalid format. Please follow the required pattern.';
+      }
+      if (errors?.['minlength']) {
+        return `Minimum length is ${errors['minlength'].requiredLength}.`;
+      }
+      if (errors?.['maxlength']) {
+        return `Maximum length is ${errors['maxlength'].requiredLength}.`;
+      }
+    }
+
+    return null;
+  }
+
+  cancelForm() {
+    this.recipeForm.reset();
+    this.selectedPhoto = null;
+    if (this.fileUpload) {
+      this.fileUpload.clear();
     }
   }
 
