@@ -12,7 +12,8 @@
       </h2>
 
       <!-- Chef Image and Name -->
-      <div class="d-flex align-items-center mt-3 px-3" [routerLink]=" ['/userprofile',chefId]" routerLinkActive="active">
+      <div class="d-flex align-items-center mt-3 px-3" [routerLink]=" ['/userprofile',chefId]"
+        routerLinkActive="active">
         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile"
           class="rounded-circle" width="40" height="40" draggable="false" />
         <p class="ms-3 fs-5 fw-bold mb-0">{{chefName}}</p>
@@ -64,7 +65,7 @@
           alt="Blueberry Pancake" />
 
         <!-- Information Grid -->
-        <div class="row mt-4 text-center">
+        <div class="row mt-4">
 
           <!-- Cook Time -->
           <div class="col-5">
@@ -94,8 +95,8 @@
           </div>
 
           <!-- Serve and Special Tags -->
-          <div class="row">
-            <div class="col-6 mt-4 ">
+          <div class="row  mt-4">
+            <div class="col-5 ">
               <div class="d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-user fs-4 me-2"></i>
                 <p class="mb-0 fw-bold">Serve</p>
@@ -103,7 +104,7 @@
               <p class="mb-0">{{mealServings}}</p>
             </div>
 
-            <div class="col-6 mt-4">
+            <div class="col-5 ">
               <div class="d-flex align-items-center justify-content-start">
                 <i class="fa-solid fa-hashtag fs-4 me-2"></i>
                 <p class="mb-0 fw-bold">Special tags</p>
@@ -151,13 +152,17 @@
       <div class="comments mt-3">
         <h5 class="fw-bold">Comments</h5>
         <div *ngFor="let comment of comments" class="mb-3 p-3 rounded">
+          <!-- Comment Header -->
           <div class="d-flex align-items-center">
             <div class="me-3">
-              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                alt="Profile" class="rounded-circle" width="40" height="40">
+              <img
+                [src]="comment.author.profilePictureURL || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+                alt="Profile" class="rounded-circle" width="40" height="40" />
             </div>
             <div>
-              <p class="fw-bold mb-1">{{ comment.author.username }}</p>
+              <p class="fw-bold mb-1">
+                {{ comment.author.username || 'Anonymous' }}
+              </p>
               <p class="text-muted mb-0">{{ comment.content }}</p>
             </div>
           </div>
@@ -165,17 +170,19 @@
           <!-- Comment Actions: Time, Reply, and Like -->
           <div class="d-flex justify-content-between align-items-center mt-2">
             <div class="d-flex align-items-center gap-3">
-              <span class="text-muted">{{ comment.time || "a month ago" }}</span>
+              <span class="text-muted">{{ comment.time || 'a moment ago' }}</span>
               <button class="btn btn-link text-muted p-0" style="text-decoration: none;">Reply</button>
             </div>
             <div class="d-flex align-items-center">
               <button class="btn btn-link text-muted p-0 ms-2" style="text-decoration: none;">
-                <i class="fa fa-heart"></i> {{ comment.likes || "0" }}
+                <i class="fa fa-heart"></i> {{ comment.likes || '0' }}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+
     </div>
 
     <!-- Step Instructions -->

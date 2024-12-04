@@ -6,6 +6,7 @@ import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -26,8 +27,8 @@ export class IngredientsComponent implements OnInit {
   recipeImage: string = '';
   recipeIngredients: { ingredient: string; quantity: string }[] = [];
   recipeInstructions: string[] = [];
-  comments: { author: any; content: string; time: string; likes: number }[] =
-    [];
+  comments: any[] = [];
+  
   recipeId: string = '';
   newComment: string = '';
   chefId: number = 0;
@@ -40,12 +41,18 @@ export class IngredientsComponent implements OnInit {
   circumference: number = 2 * Math.PI * 54;
   dashOffset: number = this.circumference;
   maxTimeInSeconds: number = 100;
-
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  user: any = null;
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.recipeId = this.route.snapshot.paramMap.get('id')!;
-
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
     // Fetch recipe data from the backend
     this.http
       .get<any>(`http://localhost:8080/recipe/${this.recipeId}`)
@@ -59,7 +66,7 @@ export class IngredientsComponent implements OnInit {
             this.recipeImage = data.imageURL;
             this.cookTime = `${data.cooktime} min`;
             this.mealLevel = data.level;
-            this.mealCalories = `${data.calories} kcal`;
+            this.mealCalories = `${data.calories} `;
             this.mealServings = `${data.serves} servings`;
             this.mealSpecialTags = data.specialTag.split(',');
             this.chefName = data.chef.username;
@@ -74,6 +81,7 @@ export class IngredientsComponent implements OnInit {
             this.recipeInstructions = data.steps;
             this.comments = data.comments;
           }
+          console.log('Recipe data:', response);
         },
         (error) => {
           console.error('Error fetching recipe data', error);
@@ -129,16 +137,42 @@ export class IngredientsComponent implements OnInit {
 
   // Add comment functionality
   addComment(): void {
-    if (this.newComment.trim()) {
-      this.comments.push({
-        author: 'Anonymous',
+    if (this.newComment.trim() && this.user) {
+      const commentData = {
         content: this.newComment,
-        time: 'Just now',
-        likes: 0,
-      });
-      this.newComment = ''; // Clear the input field
+        author: this.user.id, // Send the user ID to the backend
+      };
+  
+      this.http
+        .post<any>(`http://localhost:8080/comment/${this.recipeId}`, commentData)
+        .subscribe(
+          (response) => {
+            if (response.message === 'Comment added successfully.') {
+              const newComment = response.comment;
+  
+              // Add the new comment with the correct structure
+              this.comments.push({
+                author: {
+                  username: newComment.author.username,
+                  profilePictureURL: newComment.author.profilePictureURL || '', // Fallback if not provided
+                },
+                content: newComment.content,
+                time: 'Just now', // You can update this with a proper time from the backend if available
+                likes: 0, // Initial likes count
+              });
+  
+              this.newComment = ''; // Clear the input field
+            }
+          },
+          (error) => {
+            console.error('Error adding comment:', error);
+          }
+        );
+    } else {
+      console.warn('Comment content or user data is missing.');
     }
   }
+  
 
   // Handling the cooking steps
   currentStep: number = 0;
