@@ -45,10 +45,11 @@
                 <div class="col">
                   <p>
                     <i class="fa-solid fa-circle fa-xs me-2" style="color: #134631"></i>
-                    {{ ingredient.name }}
+                    <span [class.text-decoration-line-through]="checkedIngredients[i][j]">{{ ingredient.name }}</span>
                   </p>
                 </div>
-                <div class="col d-flex justify-content-end">
+                <div class="col d-flex justify-content-end"
+                  [class.text-decoration-line-through]="checkedIngredients[i][j]">
                   <p class="pe-1">{{ ingredient.amount }}</p>
                   <p class="pe-3">{{ ingredient.unit }}</p>
                   <input type="checkbox" class="form-check-input" style="transform: scale(1.5)"
