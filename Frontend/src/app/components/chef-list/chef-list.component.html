@@ -4,7 +4,7 @@
       <div class="d-flex flex-column align-items-center">
         <div class="image-container mb-2">
           <img [src]="chef.imageUrl" class="img-fluid rounded-circle" [alt]="chef.altText" draggable="false"
-            [routerLink]=" ['/userprofile', chef.chefId]" routerLinkActive="active" />
+            [routerLink]=" ['/userprofile', chef.chefId]" routerLinkActive="active" style="height: 190px" />
         </div>
         <p class="fs-4 fw-semibold">{{ chef.altText }}</p>
       </div>

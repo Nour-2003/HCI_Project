@@ -2,17 +2,14 @@
     <div class="row align-items-center">
         <div class="col-2 p-5">
             <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
-                <i class="fas fa-user text-secondary" style="font-size: 4rem;"></i>
+                <img [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle" style="height: 150px">
             </div>
         </div>
         <div class="col-10">
             <div class="row">
                 <div class="col-10">
                     <h2 class="mb-0">{{ username }}</h2>
-                    <p class="mt-2"> I cover all things related to recipes — reading every single one that we publish on
-                        The
-                        Kitchen, word by
-                        word — making sure they are approachable and work for the home cook.</p>
+                    <p class="mt-2"> {{bio}}</p>
                 </div>
                 <div class="col-2">
                     <button class="btn rounded-5 px-5 py-2 text-light">Follow</button>
