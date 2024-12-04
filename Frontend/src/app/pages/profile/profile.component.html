@@ -24,7 +24,8 @@
 <div class="container p-2 border-bottom border-black">
     <ul class="nav d-flex justify-content-between ">
         <li class="nav-item">
-            <a class="nav-link text-black" routerLink="recipes" routerLinkActive="active tabunderline fw-semibold">
+            <a class="nav-link text-black" [routerLink]="['recipes',user.id]"
+                routerLinkActive="active tabunderline fw-semibold">
                 <i class="fas fa-book"></i> Recipes
             </a>
         </li>

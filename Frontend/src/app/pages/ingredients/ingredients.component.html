@@ -12,7 +12,7 @@
       </h2>
 
       <!-- Chef Image and Name -->
-      <div class="d-flex align-items-center mt-3 px-3">
+      <div class="d-flex align-items-center mt-3 px-3" [routerLink]=" ['/userprofile',chefId]" routerLinkActive="active">
         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile"
           class="rounded-circle" width="40" height="40" draggable="false" />
         <p class="ms-3 fs-5 fw-bold mb-0">{{chefName}}</p>

@@ -5,10 +5,12 @@ import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-ingredients',
   standalone: true,
-  imports: [CommonModule, NgFor, FormsModule, HttpClientModule],
+  imports: [CommonModule, NgFor, FormsModule, HttpClientModule, RouterModule],
   templateUrl: './ingredients.component.html',
   styleUrls: ['./ingredients.component.css'],
 })
@@ -24,9 +26,11 @@ export class IngredientsComponent implements OnInit {
   recipeImage: string = '';
   recipeIngredients: { ingredient: string; quantity: string }[] = [];
   recipeInstructions: string[] = [];
-  comments: { author: any; content: string; time: string; likes: number }[] = [];
+  comments: { author: any; content: string; time: string; likes: number }[] =
+    [];
   recipeId: string = '';
   newComment: string = '';
+  chefId: number = 0;
 
   // Timer-related properties
   time: string = '00:00';
@@ -41,35 +45,40 @@ export class IngredientsComponent implements OnInit {
 
   ngOnInit(): void {
     this.recipeId = this.route.snapshot.paramMap.get('id')!;
-    
-    // Fetch recipe data from the backend
-    this.http.get<any>(`http://localhost:8080/recipe/${this.recipeId}`).subscribe(
-      (response) => {
-        if (response.status === 'SUCCESS') {
-          const data = response.data;
 
-          // Populate component properties with recipe data
-          this.recipeName = data.title;
-          this.recipeImage = data.imageURL;
-          this.cookTime = `${data.cooktime} min`;
-          this.mealLevel = data.level;
-          this.mealCalories = `${data.calories} kcal`;
-          this.mealServings = `${data.serves} servings`;
-          this.mealSpecialTags = data.specialTag.split(',');
-          this.chefName = data.chef.username;
-          this.recipedoc = 'Recipe document here...'; // Placeholder
-          this.recipeIngredients = data.ingredients.map((ingredient: any) => ({
-            ingredient: ingredient.name,
-            quantity: `${ingredient.quantity} ${ingredient.unit}`,
-          }));
-          this.recipeInstructions = data.steps;
-          this.comments = data.comments;
+    // Fetch recipe data from the backend
+    this.http
+      .get<any>(`http://localhost:8080/recipe/${this.recipeId}`)
+      .subscribe(
+        (response) => {
+          if (response.status === 'SUCCESS') {
+            const data = response.data;
+
+            // Populate component properties with recipe data
+            this.recipeName = data.title;
+            this.recipeImage = data.imageURL;
+            this.cookTime = `${data.cooktime} min`;
+            this.mealLevel = data.level;
+            this.mealCalories = `${data.calories} kcal`;
+            this.mealServings = `${data.serves} servings`;
+            this.mealSpecialTags = data.specialTag.split(',');
+            this.chefName = data.chef.username;
+            this.chefId = data.chef._id;
+            this.recipedoc = 'Recipe document here...'; // Placeholder
+            this.recipeIngredients = data.ingredients.map(
+              (ingredient: any) => ({
+                ingredient: ingredient.name,
+                quantity: `${ingredient.quantity} ${ingredient.unit}`,
+              })
+            );
+            this.recipeInstructions = data.steps;
+            this.comments = data.comments;
+          }
+        },
+        (error) => {
+          console.error('Error fetching recipe data', error);
         }
-      },
-      (error) => {
-        console.error('Error fetching recipe data', error);
-      }
-    );
+      );
   }
 
   // Start the timer for cooking
@@ -104,7 +113,8 @@ export class IngredientsComponent implements OnInit {
 
   updateProgress(): void {
     this.dashOffset =
-      this.circumference - (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
+      this.circumference -
+      (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
   }
 
   padZero(num: number): string {

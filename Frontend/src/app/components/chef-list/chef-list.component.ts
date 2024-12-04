@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-chef-list',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule,RouterModule],
   templateUrl: './chef-list.component.html',
   styleUrls: ['./chef-list.component.css'],
 })
 export class ChefListComponent implements OnInit {
-  chefs: { imageUrl: string; altText: string }[] = [];
-  defaultImage = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  chefs: { imageUrl: string; altText: string; chefId: number }[] = [];
+  defaultImage =
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +27,7 @@ export class ChefListComponent implements OnInit {
         this.chefs = response.map((chef) => ({
           imageUrl: chef.profilePictureURL || this.defaultImage,
           altText: chef.username,
+          chefId: chef._id,
         }));
       },
       error: (err) => {

@@ -1,126 +1,93 @@
 <div class="container py-4">
-    <div class="row">
-      <div class="col-md-7">
-        <div *ngFor="let meal of meals; let i = index" class="mb-4">
-          <div class="text-start mb-4">
-            <h5 class="text-black grocery-title">{{ meal.type }}</h5>
+  <div class="row">
+    <div class="col-md-7">
+      <div *ngFor="let meal of meals; let i = index" class="mb-4">
+        <div class="text-start mb-4">
+          <h5 class="text-black grocery-title">{{ meal.type }}</h5>
+        </div>
+        <div class="card rounded-5 position-relative">
+          <!-- Image Section -->
+          <img [src]="meal.imageUrl" [alt]="meal.name" class="card-img-top rounded-5"
+            style="height: 250px; object-fit: cover" />
+
+          <!-- Meal Name Overlay -->
+          <div class="position-absolute bottom-0 start-0 mb-5 py-2 w-100">
+            <h5 class="card-title text-start text-white p-2">
+              {{ meal.name }}
+            </h5>
           </div>
-          <div class="card rounded-5 position-relative">
-            <!-- Image Section -->
-            <img
-              [src]="meal.imageUrl"
-              [alt]="meal.name"
-              class="card-img-top rounded-5"
-              style="height: 250px; object-fit: cover"
-            />
-  
-            <!-- Meal Name Overlay -->
-            <div class="position-absolute bottom-0 start-0 mb-5 py-2 w-100">
-              <h5 class="card-title text-start text-white p-2">
-                {{ meal.name }}
-              </h5>
-            </div>
-  
-            <!-- Meal Info (Ingredients) -->
-            <div
-              class="card-body position-absolute bottom-0 start-0 end-0 bg-white rounded-5 py-2"
-              style="cursor: pointer"
-              (click)="toggleIngredients(i)"
-            >
-              <div class="d-flex justify-content-between align-items-center px-3">
-                <div class="d-flex align-items-center text-black">
-                  <span>
-                    {{ getCheckedCount(i) }}/{{ meal.ingredients.length }}
-                    ingredients
-                  </span>
-                  <i class="fa fa-check ms-2" *ngIf="isAllChecked(i)"></i>
-                </div>
-                <i
-                  class="fa"
-                  [class.fa-chevron-up]="expandedMealIndex === i"
-                  [class.fa-chevron-down]="expandedMealIndex !== i"
-                ></i>
+
+          <!-- Meal Info (Ingredients) -->
+          <div class="card-body position-absolute bottom-0 start-0 end-0 bg-white rounded-5 py-2"
+            style="cursor: pointer" (click)="toggleIngredients(i)">
+            <div class="d-flex justify-content-between align-items-center px-3">
+              <div class="d-flex align-items-center text-black">
+                <span>
+                  {{ getCheckedCount(i) }}/{{ meal.ingredients.length }}
+                  ingredients
+                </span>
+                <i class="fa fa-check ms-2" *ngIf="isAllChecked(i)"></i>
               </div>
+              <i class="fa" [class.fa-chevron-up]="expandedMealIndex === i"
+                [class.fa-chevron-down]="expandedMealIndex !== i"></i>
             </div>
-          </div>
-  
-          <!-- Ingredients Panel -->
-          <div
-            *ngIf="expandedMealIndex === i"
-            class="ingredients-panel rounded-4 shadow-sm p-4 mt-3 animated"
-            [ngClass]="{
-              fadeInDown: expandedMealIndex === i,
-              fadeOutUp: expandedMealIndex !== i
-            }"
-          >
-            <ul>
-              <li
-                *ngFor="let ingredient of meal.ingredients; let j = index"
-                class="list-group-item"
-              >
-                <div class="row">
-                  <div class="col">
-                    <p>
-                      <i
-                        class="fa-solid fa-circle fa-xs me-2"
-                        style="color: #134631"
-                      ></i>
-                      {{ ingredient.name }}
-                    </p>
-                  </div>
-                  <div class="col d-flex justify-content-end">
-                    <p class="pe-1">{{ ingredient.amount }}</p>
-                    <p class="pe-3">{{ ingredient.unit }}</p>
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      style="transform: scale(1.5)"
-                      [(ngModel)]="checkedIngredients[i][j]"
-                      (change)="updateIngredientStatus()"
-                    />
-                  </div>
-                </div>
-                <hr
-                  *ngIf="j !== meal.ingredients.length - 1"
-                  class="ingredient-separator"
-                />
-              </li>
-            </ul>
           </div>
         </div>
+
+        <!-- Ingredients Panel -->
+        <div class="ingredients-panel rounded-4 shadow-sm p-4 mt-3 animated" [ngClass]="{
+            fadeInDown: expandedMealIndex === i,
+            fadeOutUp: expandedMealIndex !== i
+          }">
+          <ul *ngIf="expandedMealIndex === i">
+            <li *ngFor="let ingredient of meal.ingredients; let j = index" class="list-group-item">
+              <div class="row">
+                <div class="col">
+                  <p>
+                    <i class="fa-solid fa-circle fa-xs me-2" style="color: #134631"></i>
+                    {{ ingredient.name }}
+                  </p>
+                </div>
+                <div class="col d-flex justify-content-end">
+                  <p class="pe-1">{{ ingredient.amount }}</p>
+                  <p class="pe-3">{{ ingredient.unit }}</p>
+                  <input type="checkbox" class="form-check-input" style="transform: scale(1.5)"
+                    [(ngModel)]="checkedIngredients[i][j]" (change)="updateIngredientStatus()" />
+                </div>
+              </div>
+              <hr *ngIf="j !== meal.ingredients.length - 1" class="ingredient-separator" />
+            </li>
+          </ul>
+        </div>
       </div>
-  
-      <!-- Calendar Section -->
-      <div class="col-md-5 ps-5">
-        <div class="card rounded-5 p-4">
-          <div class="card-body">
-            <h6 class="card-title mb-4">
-              {{ currentMonth }} {{ currentYear }}
-            </h6>
-            <table class="table table-borderless">
-              <thead>
-                <tr class="text-center">
-                  <th *ngFor="let day of weekDays">{{ day }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let week of calendarDays" class="text-center">
-                  <td
-                    *ngFor="let day of week"
-                    [ngClass]="{
-                      'bg-success text-white rounded-circle': day === currentDay,
-                      'text-muted': day === null
-                    }"
-                    class="p-2 text-center align-middle"
-                  >
-                    {{ day || '' }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="col-md-5 ps-5">
+      <div class="card rounded-5 p-4">
+        <div class="card-body">
+          <h6 class="card-title mb-4">
+            {{ currentMonth }} {{ currentYear }}
+          </h6>
+          <table class="table table-borderless">
+            <thead>
+              <tr class="text-center">
+                <th *ngFor="let day of weekDays">{{ day }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let week of calendarDays" class="text-center">
+                <td *ngFor="let day of week" [ngClass]="{
+                    'bg-success text-white rounded-circle': day === currentDay,
+                    'text-muted': day === null
+                  }" class="p-2 text-center align-middle">
+                  {{ day || '' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

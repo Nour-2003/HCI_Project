@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 interface Ingredient {
   name: string;
@@ -24,21 +30,25 @@ interface Meal {
   styleUrls: ['./grocery.component.css'],
   animations: [
     trigger('slideInOut', [
-      state('true', style({
-        height: '*',
-        opacity: 1,
-        visibility: 'visible',
-      })),
-      state('false', style({
-        height: '0',
-        opacity: 0,
-        visibility: 'hidden',
-      })),
-      transition('false <=> true', [
-        animate('300ms ease-in-out')
-      ])
-    ])
-  ]
+      state(
+        'true',
+        style({
+          height: '*',
+          opacity: 1,
+          visibility: 'visible',
+        })
+      ),
+      state(
+        'false',
+        style({
+          height: '0',
+          opacity: 0,
+          visibility: 'hidden',
+        })
+      ),
+      transition('false <=> true', [animate('300ms ease-in-out')]),
+    ]),
+  ],
 })
 export class GroceryComponent implements OnInit {
   weekDays: string[] = [];
@@ -128,7 +138,8 @@ export class GroceryComponent implements OnInit {
   }
 
   getCheckedCount(mealIndex: number): number {
-    return this.checkedIngredients[mealIndex].filter((checked) => checked).length;
+    return this.checkedIngredients[mealIndex].filter((checked) => checked)
+      .length;
   }
 
   isAllChecked(mealIndex: number): boolean {

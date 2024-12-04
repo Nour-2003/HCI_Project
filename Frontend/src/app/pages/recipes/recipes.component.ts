@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { RecipeGridComponent } from '../../components/recipe-grid/recipe-grid.component';
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 interface Recipe {
   title: string;
@@ -22,6 +24,7 @@ interface Recipe {
     CommonModule,
     NgFor,
     HttpClientModule,
+    RouterModule,
   ],
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css'],
@@ -35,25 +38,62 @@ export class RecipesComponent implements OnInit {
     likes: string;
     RecipeId: number;
   }[] = [];
+  user: any = null;
+  userId: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.http
-      .get<{ status: string; data: Recipe[] }>('http://localhost:8080/recipe/')
-      .subscribe((response) => {
-        if (response.status === 'SUCCESS') {
-          this.recipes = response.data.map((recipe: Recipe) => ({
-            title: recipe.title,
-            imageUrl:
-              recipe.imageURL ||
-              'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
-            prepTime: `${recipe.cooktime} min`,
-            difficulty: recipe.level,
-            likes: '0',
-            RecipeId: recipe._id,
-          }));
-        }
+    this.userId = this.route.snapshot.paramMap.get('userId')!;
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
+    if (this.userId) {
+      // Fetch user-specific recipes
+      const userRecipesUrl = `http://localhost:8080/user/${this.userId}`;
+      this.http.get<any>(userRecipesUrl).subscribe({
+        next: (response) => {
+          if (response.Recipes) {
+            this.recipes = response.Recipes.map((recipe: Recipe) => ({
+              title: recipe.title,
+              imageUrl:
+                recipe.imageURL ||
+                'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
+              prepTime: `${recipe.cooktime} min`,
+              difficulty: recipe.level,
+              likes: '0',
+              RecipeId: recipe._id,
+            }));
+          }
+        },
+        error: (err) => console.error('Error fetching user recipes:', err),
       });
+    } else {
+      // Fetch all recipes
+      const allRecipesUrl = 'http://localhost:8080/recipe/';
+      this.http
+        .get<{ status: string; data: Recipe[] }>(allRecipesUrl)
+        .subscribe({
+          next: (response) => {
+            if (response.status === 'SUCCESS') {
+              this.recipes = response.data.map((recipe: Recipe) => ({
+                title: recipe.title,
+                imageUrl:
+                  recipe.imageURL ||
+                  'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
+                prepTime: `${recipe.cooktime} min`,
+                difficulty: recipe.level,
+                likes: '0',
+                RecipeId: recipe._id,
+              }));
+            }
+          },
+          error: (err) => console.error('Error fetching all recipes:', err),
+        });
+    }
   }
 }
