@@ -42,7 +42,7 @@ export class RecipeFormComponent {
       servings: ['', Validators.required],
       level: ['', Validators.required],
       tags: ['', Validators.required],
-      calories: ['', Validators.required],
+      calories: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Only numbers allowed
       cookTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       totalTime: [{ value: '', disabled: true }], // Read-only field
@@ -132,7 +132,7 @@ export class RecipeFormComponent {
         return 'This field is required.';
       }
       if (errors?.['pattern']) {
-        return 'Invalid format. Please follow the required pattern.';
+        return 'Invalid format';
       }
       if (errors?.['minlength']) {
         return `Minimum length is ${errors['minlength'].requiredLength}.`;

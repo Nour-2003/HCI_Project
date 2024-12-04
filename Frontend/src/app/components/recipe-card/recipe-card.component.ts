@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterModule],
   templateUrl: './recipe-card.component.html',
   styleUrl: './recipe-card.component.css'
 })
@@ -13,4 +15,5 @@ export class RecipeCardComponent {
   @Input() prepTime: string = '';
   @Input() difficulty: string = '';
   @Input() likes: string = '';
+  @Input() RecipeId: number = 0;
 }

@@ -60,6 +60,11 @@
                         [disabled]="registerForm.invalid">Signup</button>
                 </div>
 
+               <div *ngIf="errorMessage !== ''">
+                        <small class="text-danger">{{errorMessage}}</small>
+                </div>
+                
+
                 <!-- Login Prompt -->
                 <div class="login-prompt mt-3 fw-semibold">
                     <a routerLink="/login" class="text-light text-decoration-none">Already have an account?</a>

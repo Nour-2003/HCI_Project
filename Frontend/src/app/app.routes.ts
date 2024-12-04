@@ -8,11 +8,12 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { GroceryComponent } from './pages/grocery/grocery.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { RecipeFormComponent } from './components/recipe-form/recipe-form.component';
+import { AboutmeComponent } from './pages/aboutme/aboutme.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
-  { path: 'ingredients', component: IngredientsComponent },
+  { path: 'ingredients/:id', component: IngredientsComponent },
   { path: 'recipes', component: RecipesComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -26,7 +27,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'recipes', pathMatch: 'full' },
       { path: 'recipes', component: RecipesComponent },
-      { path: 'grocery', component: GroceryComponent },
+      { path: 'aboutme', component: AboutmeComponent },
     ],
   },
 

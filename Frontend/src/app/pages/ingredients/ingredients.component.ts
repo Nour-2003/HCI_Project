@@ -1,98 +1,83 @@
-import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-ingredients',
   standalone: true,
-  imports: [NgFor, CommonModule, FormsModule],
+  imports: [CommonModule, NgFor, FormsModule, HttpClientModule],
   templateUrl: './ingredients.component.html',
-  styleUrl: './ingredients.component.css',
+  styleUrls: ['./ingredients.component.css'],
 })
-export class IngredientsComponent {
-  cookTime: string = '30 Min';
-  mealLevel: string = 'Easy';
-  mealCalories: string = '150';
-  mealServings: string = '4';
-  mealSpecialTags: string[] = ['Dinner', 'Lunch', 'Italian'];
-  recipeName: string = 'Spaghetti Bolognese';
-  chefName: string = 'Chef John';
-  recipedoc: string = ' Hello friends i wanted to share this with you ;)';
-  recipeImage: string =
-    'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg';
-  recipeIngredients: { ingredient: string; quantity: string }[] = [
-    { ingredient: 'Spaghetti', quantity: '200g' },
-    { ingredient: 'Minced meat', quantity: '500g' },
-    { ingredient: 'Onion', quantity: '1, chopped' },
-    { ingredient: 'Garlic', quantity: '2 cloves, minced' },
-    { ingredient: 'Tomato sauce', quantity: '400ml' },
-    { ingredient: 'Olive oil', quantity: '2 tbsp' },
-    { ingredient: 'Salt', quantity: 'to taste' },
-    { ingredient: 'Pepper', quantity: 'to taste' },
-  ];
-  recipeInstructions: string[] = [
-    'Heat olive oil in a pan over medium heat.',
-    'Add chopped onions and minced garlic to the pan.',
-    'Add minced meat to the pan and cook until browned.',
-    'Add tomato sauce to the pan and stir well.',
-    'Season with salt and pepper to taste.',
-    'Cook spaghetti according to package instructions.',
-    'Serve spaghetti with bolognese sauce on top.',
-  ];
-  currentStep: number = 0;
-  comments: { name: string; text: string; time: string; likes: number }[] = [
-    {
-      name: 'Max William',
-      text: 'It’s really the best recipe I’ve ever met!',
-      time: '2h',
-      likes: 22,
-    },
-    {
-      name: 'Jane Doe',
-      text: 'Delicious, will definitely try this!',
-      time: '3h',
-      likes: 15,
-    },
-  ];
+export class IngredientsComponent implements OnInit {
+  cookTime: string = '';
+  mealLevel: string = '';
+  mealCalories: string = '';
+  mealServings: string = '';
+  mealSpecialTags: string[] = [];
+  recipeName: string = '';
+  chefName: string = '';
+  recipedoc: string = '';
+  recipeImage: string = '';
+  recipeIngredients: { ingredient: string; quantity: string }[] = [];
+  recipeInstructions: string[] = [];
+  comments: { author: any; content: string; time: string; likes: number }[] = [];
+  recipeId: string = '';
   newComment: string = '';
 
-  addComment(): void {
-    if (this.newComment.trim()) {
-      this.comments.push({
-        name: 'Anonymous',
-        text: this.newComment,
-        time: 'Just now',
-        likes: 0,
-      });
-      this.newComment = ''; // Clear the input field
-    }
+  // Timer-related properties
+  time: string = '00:00';
+  isPaused: boolean = false;
+  timerInterval: any;
+  timeInSeconds: number = 0;
+  circumference: number = 2 * Math.PI * 54;
+  dashOffset: number = this.circumference;
+  maxTimeInSeconds: number = 100;
+
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.recipeId = this.route.snapshot.paramMap.get('id')!;
+    
+    // Fetch recipe data from the backend
+    this.http.get<any>(`http://localhost:8080/recipe/${this.recipeId}`).subscribe(
+      (response) => {
+        if (response.status === 'SUCCESS') {
+          const data = response.data;
+
+          // Populate component properties with recipe data
+          this.recipeName = data.title;
+          this.recipeImage = data.imageURL;
+          this.cookTime = `${data.cooktime} min`;
+          this.mealLevel = data.level;
+          this.mealCalories = `${data.calories} kcal`;
+          this.mealServings = `${data.serves} servings`;
+          this.mealSpecialTags = data.specialTag.split(',');
+          this.chefName = data.chef.username;
+          this.recipedoc = 'Recipe document here...'; // Placeholder
+          this.recipeIngredients = data.ingredients.map((ingredient: any) => ({
+            ingredient: ingredient.name,
+            quantity: `${ingredient.quantity} ${ingredient.unit}`,
+          }));
+          this.recipeInstructions = data.steps;
+          this.comments = data.comments;
+        }
+      },
+      (error) => {
+        console.error('Error fetching recipe data', error);
+      }
+    );
   }
+
+  // Start the timer for cooking
   startCook(): void {
     this.startTimer();
   }
 
-  nextStep(): void {
-    if (this.currentStep < this.recipeInstructions.length - 1) {
-      this.currentStep++;
-    }
-  }
-
-  prevStep(): void {
-    if (this.currentStep > 0) {
-      this.currentStep--;
-    }
-  }
-
-  time: string = '00:00'; // Timer in minutes:seconds
-  isPaused: boolean = false; // Pause state
-  timerInterval: any; // Timer interval reference
-  timeInSeconds: number = 0; // Timer in seconds
-  circumference: number = 2 * Math.PI * 54; // Circumference of the circle (radius = 54)
-  dashOffset: number = this.circumference; // Start with full circle
-  maxTimeInSeconds: number = 100; // Maximum time in seconds for the timer
-
-  ngOnInit(): void {}
-
+  // Timer functionality
   startTimer(): void {
     this.timeInSeconds = 0;
     this.updateTime();
@@ -119,8 +104,7 @@ export class IngredientsComponent {
 
   updateProgress(): void {
     this.dashOffset =
-      this.circumference -
-      (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
+      this.circumference - (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
   }
 
   padZero(num: number): string {
@@ -130,6 +114,33 @@ export class IngredientsComponent {
   ngOnDestroy(): void {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
+    }
+  }
+
+  // Add comment functionality
+  addComment(): void {
+    if (this.newComment.trim()) {
+      this.comments.push({
+        author: 'Anonymous',
+        content: this.newComment,
+        time: 'Just now',
+        likes: 0,
+      });
+      this.newComment = ''; // Clear the input field
+    }
+  }
+
+  // Handling the cooking steps
+  currentStep: number = 0;
+  nextStep(): void {
+    if (this.currentStep < this.recipeInstructions.length - 1) {
+      this.currentStep++;
+    }
+  }
+
+  prevStep(): void {
+    if (this.currentStep > 0) {
+      this.currentStep--;
     }
   }
 }

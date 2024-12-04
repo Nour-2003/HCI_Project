@@ -1,210 +1,314 @@
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="form-container container p-5">
-        <h2 class="recipe-title form-title">Add a Recipe</h2>
-        <p class="form-subtitle mt-2">
-            Uploading personal recipes is easy! Add yours to your favorites, share
-            with friends, family, or the AllRecipes community.
-        </p>
-        <hr style="height:2px;border:none;background-color:black;">
+  <div class="form-container container p-5">
+    <h2 class="recipe-title form-title">Add a Recipe</h2>
+    <p class="form-subtitle mt-2">
+      Uploading personal recipes is easy! Add yours to your favorites, share
+      with friends, family, or the AllRecipes community.
+    </p>
+    <hr style="height: 2px; border: none; background-color: black" />
 
-        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-                <!---title-->
-                <div class="col-md-8">
-                    <div class="mb-3">
-                        <label for="title" class="form-label fw-semibold">Recipe title*</label>
-                        <input pInputText id="title" formControlName="title" placeholder="Type your Recipe name"
-                            class="form-control" />
-                        <small *ngIf="getErrorMessage('title')" class="text-danger">
-                            {{ getErrorMessage('title') }}
-                        </small>
-                    </div>
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <!---title-->
+        <div class="col-md-8">
+          <div class="mb-3">
+            <label for="title" class="form-label fw-semibold"
+              >Recipe title*</label
+            >
+            <input
+              pInputText
+              id="title"
+              formControlName="title"
+              placeholder="Type your Recipe name"
+              class="form-control"
+            />
+            <small *ngIf="getErrorMessage('title')" class="text-danger">
+              {{ getErrorMessage("title") }}
+            </small>
+          </div>
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label fw-semibold">Description*</label>
-                        <textarea pInputTextarea id="description" formControlName="description"
-                            placeholder="Share your story! What makes this recipe special?" rows="4"
-                            class="form-control" style="min-height:200px;"></textarea>
+          <div class="mb-3">
+            <label for="description" class="form-label fw-semibold"
+              >Description*</label
+            >
+            <textarea
+              pInputTextarea
+              id="description"
+              formControlName="description"
+              placeholder="Share your story! What makes this recipe special?"
+              rows="4"
+              class="form-control"
+              style="min-height: 200px"
+            ></textarea>
 
-                        <small *ngIf="getErrorMessage('description')" class="text-danger">
-                            {{ getErrorMessage('description') }}
-                        </small>
-                    </div>
+            <small *ngIf="getErrorMessage('description')" class="text-danger">
+              {{ getErrorMessage("description") }}
+            </small>
+          </div>
+        </div>
 
-                </div>
-
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label class="form-label">Photo</label>
-                        <div class="photo-placeholder" *ngIf="!selectedPhoto">
-                            <span>No photo selected</span>
-                        </div>
-                        <div *ngIf="selectedPhoto" class="position-relative d-inline-block">
-                            <img [src]="selectedPhoto" class="img-fluid mb-2"
-                                style="max-width: 200px; border-radius: 8px;" />
-                            <i class="pi pi-times position-absolute top-0 end-0 text-white p-2"
-                                style="cursor: pointer; font-size: 1.5rem;" (click)="removePhoto()"></i>
-                        </div>
-                        <small *ngIf="getErrorMessage('photo')" class="text-danger">
-                            {{ getErrorMessage('photo') }}
-                        </small>
-                        <p-fileUpload #fileUpload mode="basic" chooseLabel="Add Photo" [auto]="true" accept="image/*"
-                            [maxFileSize]="1000000" (onSelect)="onPhotoSelect($event)"
-                            styleClass="p-button-secondary p-button-sm btn btn-outline-success rounded-4"></p-fileUpload>
-                    </div>
-                </div>
-
-
+        <div class="col-md-4">
+          <div class="mb-3">
+            <label class="form-label">Photo</label>
+            <div class="photo-placeholder" *ngIf="!selectedPhoto">
+              <span>No photo selected</span>
             </div>
-            <hr style="height:2px;border:none;background-color:black;">
+            <div *ngIf="selectedPhoto" class="position-relative d-inline-block">
+              <img
+                [src]="selectedPhoto"
+                class="img-fluid mb-2"
+                style="max-width: 200px; border-radius: 8px"
+              />
+              <i
+                class="pi pi-times position-absolute top-0 end-0 text-white p-2"
+                style="cursor: pointer; font-size: 1.5rem"
+                (click)="removePhoto()"
+              ></i>
+            </div>
+            <small *ngIf="getErrorMessage('photo')" class="text-danger">
+              {{ getErrorMessage("photo") }}
+            </small>
+            <p-fileUpload
+              #fileUpload
+              mode="basic"
+              chooseLabel="Add Photo"
+              [auto]="true"
+              accept="image/*"
+              [maxFileSize]="1000000"
+              (onSelect)="onPhotoSelect($event)"
+              styleClass="p-button-secondary p-button-sm btn btn-outline-success rounded-4"
+            ></p-fileUpload>
+          </div>
+        </div>
+      </div>
+      <hr style="height: 2px; border: none; background-color: black" />
 
-            <div class="row mt-3">
+      <div class="row mt-3">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Ingredients*</label>
+          <p class="form-subtitle">
+            Enter one ingredient per line. Include the quantity (i.e. cups,
+            tablespoons) and any special preparation (i.e. sifted, softened,
+            chopped). Use optional headers to organize the different parts of
+            the recipe (i.e. Cake, Frosting, Dressing).
+          </p>
+          <div formArrayName="ingredients">
+            <div
+              *ngFor="let ingredient of ingredients.controls; let i = index"
+              class="ingredient-item"
+            >
+              <input
+                pInputText
+                [formControlName]="i"
+                placeholder="e.g. 2 Cup flour"
+                class="form-control mb-2 rounded-3 border border-black"
+              />
+              <i class="pi pi-times" (click)="removeIngredient(i)"></i>
+            </div>
+            <small *ngIf="getErrorMessage('ingredients')" class="text-danger">
+              {{ getErrorMessage("ingredients") }}
+            </small>
+          </div>
+          <button
+            pButton
+            type="button"
+            label="Add Ingredient"
+            class="p-button-secondary p-button-sm btn btn-outline-success mt-2 rounded-4"
+            (click)="addIngredient()"
+          ></button>
+          <hr style="height: 2px; border: none; background-color: black" />
+        </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Ingredients*</label>
-                    <p class="form-subtitle">
-                        Enter one ingredient per line. Include the quantity (i.e. cups, tablespoons) and any special
-                        preparation (i.e. sifted, softened, chopped). Use optional headers to organize the different
-                        parts of the recipe (i.e. Cake, Frosting, Dressing). </p>
-                    <div formArrayName="ingredients">
-                        <div *ngFor="let ingredient of ingredients.controls; let i = index" class="ingredient-item">
-                            <input pInputText [formControlName]="i" placeholder="e.g. 2 Cup flour"
-                                class="form-control mb-2 rounded-3 border border-black" />
-                            <i class="pi pi-times" (click)="removeIngredient(i)"></i>
-                        </div>
-                        <small *ngIf="getErrorMessage('ingredients')" class="text-danger">
-                            {{ getErrorMessage('ingredients') }}
-                        </small>
-                    </div>
-                    <button pButton type="button" label="Add Ingredient"
-                        class="p-button-secondary p-button-sm btn btn-outline-success mt-2 rounded-4"
-                        (click)="addIngredient()"></button>
-                    <hr style="height:2px;border:none;background-color:black;">
-                </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Directions*</label>
+          <p class="form-subtitle">
+            Explain how to make your recipe, including oven temperatures, baking
+            or cooking times, and pan sizes, etc. Use optional headers to
+            organize the different parts of the recipe (i.e. Prep, Bake,
+            Decorate).
+          </p>
+          <div formArrayName="steps">
+            <div
+              *ngFor="let step of steps.controls; let i = index"
+              class="step-item"
+            >
+              <textarea
+                pInputTextarea
+                [formControlName]="i"
+                placeholder="e.g. Preheat the oven to 350°F."
+                class="form-control mb-2 rounded-3"
+              ></textarea>
+              <i class="pi pi-times" (click)="removeStep(i)"></i>
+            </div>
+            <small *ngIf="getErrorMessage('steps')" class="text-danger">
+              {{ getErrorMessage("steps") }}
+            </small>
+          </div>
+          <button
+            pButton
+            type="button"
+            label="Add Step"
+            class="p-button-secondary p-button-sm btn btn-outline-success mt-2 rounded-4"
+            (click)="addStep()"
+          ></button>
+          <hr style="height: 2px; border: none; background-color: black" />
+        </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Directions*</label>
-                    <p class="form-subtitle">
-                        Explain how to make your recipe, including oven temperatures, baking or cooking times, and pan
-                        sizes, etc. Use optional headers to organize the different parts of the recipe (i.e. Prep, Bake,
-                        Decorate).
-                    </p>
-                    <div formArrayName="steps">
-                        <div *ngFor="let step of steps.controls; let i = index" class="step-item">
-                            <textarea pInputTextarea [formControlName]="i" placeholder="e.g. Preheat the oven to 350°F."
-                                class="form-control mb-2 rounded-3"></textarea>
-                            <i class="pi pi-times" (click)="removeStep(i)"></i>
-                        </div>
-                        <small *ngIf="getErrorMessage('steps')" class="text-danger">
-                            {{ getErrorMessage('steps') }}
-                        </small>
-
-                    </div>
-                    <button pButton type="button" label="Add Step"
-                        class="p-button-secondary p-button-sm btn btn-outline-success mt-2 rounded-4"
-                        (click)="addStep()"></button>
-                    <hr style="height:2px;border:none;background-color:black;">
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="servings" class="form-label fw-semibold">Servings*</label>
-                            <input pInputText id="servings" formControlName="servings" placeholder="e.g. 2"
-                                class="form-control" />
-                            <small *ngIf="getErrorMessage('servings')" class="text-danger">
-                                {{ getErrorMessage('servings') }}
-                            </small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="level" class="form-label fw-semibold">Level*</label>
-                            <input pInputText id="level" formControlName="level" placeholder="e.g. Easy"
-                                class="form-control" />
-                            <small *ngIf="getErrorMessage('level')" class="text-danger">
-                                {{ getErrorMessage('level') }}
-                            </small>
-                        </div>
-                    </div>
-                </div>
-
-                <hr style="height:2px;border:none;background-color:black;">
-
-
-                <div class="mb-3">
-                    <label for="tags" class="form-label fw-semibold">Special Tags</label>
-                    <input pInputText id="tags" formControlName="tags" placeholder="e.g. #cake"
-                        class="form-control mt-3" />
-                    <small *ngIf="getErrorMessage('tags')" class="text-danger">
-                        {{ getErrorMessage('tags') }}
-                    </small>
-                </div>
-
-                <hr style="height:2px;border:none;background-color:black;">
-
-
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between">
-                        <label for="calories" class="form-label fw-semibold">Estimated Calories</label>
-                        <input pInputText id="calories" formControlName="calories" placeholder="0 Cal"
-                            class="form-control w-25" />
-                    </div>
-                    <small *ngIf="getErrorMessage('calories')" class="text-danger">
-                        {{ getErrorMessage('calories') }}
-                    </small>
-                    <span class="form-subtitle">Or you can use a calories calculator</span>
-                </div>
-                <hr style="height:2px;border:none;background-color:black;">
-
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="servings" class="form-label fw-semibold"
+                >Servings*</label
+              >
+              <input
+                pInputText
+                id="servings"
+                formControlName="servings"
+                placeholder="e.g. 2"
+                class="form-control"
+              />
+              <small *ngIf="getErrorMessage('servings')" class="text-danger">
+                {{ getErrorMessage("servings") }}
+              </small>
             </div>
 
-            <div class="row mt-3">
-
-                <div class="row d-flex justify-content-between mb-3">
-                    <div class="col-md-2">
-                        <label for="prepTime" class="form-label fw-semibold">Prep Time*</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input pInputText id="prepTime" formControlName="prepTime" placeholder="e.g. 15 min"
-                            class="form-control w-25" />
-                        <small *ngIf="getErrorMessage('prepTime')" class="text-danger">
-                            {{ getErrorMessage('prepTime') }}
-                        </small>
-                    </div>
-                </div>
-
-                <div class="row d-flex justify-content-between mb-3">
-                    <div class="col-md-2">
-                        <label for="cookTime" class="form-label fw-semibold">Cook Time*</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input pInputText id="cookTime" formControlName="cookTime" placeholder="e.g. 30 min"
-                            class="form-control w-25" />
-                        <small *ngIf="getErrorMessage('cookTime')" class="text-danger">
-                            {{ getErrorMessage('cookTime') }}
-                        </small>
-                    </div>
-                </div>
-
-                <div class="row d-flex justify-content-between mb-3">
-                    <div class="col-md-2">
-                        <label for="totalTime" class="form-label fw-semibold">Total Time</label>
-                    </div>
-                    <div class="col-md-10">
-                        <input pInputText id="totalTime" formControlName="totalTime"
-                            placeholder="Total time will be calculated" class="form-control w-25" readonly />
-                    </div>
-                </div>
+            <div class="mb-3">
+              <label for="level" class="form-label fw-semibold">Level*</label>
+              <input
+                pInputText
+                id="level"
+                formControlName="level"
+                placeholder="e.g. Easy"
+                class="form-control"
+              />
+              <small *ngIf="getErrorMessage('level')" class="text-danger">
+                {{ getErrorMessage("level") }}
+              </small>
             </div>
-            <hr style="height:2px;border:none;background-color:black;">
+          </div>
+        </div>
 
-            <div class="mt-4 d-flex justify-content-end gap-3">
-                <button pButton type="button" label="Cancel" class="btn btn-lg btn-outline-secondary rounded-4 px-4"
-                    (click)="cancelForm()"></button>
+        <hr style="height: 2px; border: none; background-color: black" />
 
-                <button pButton type="submit" label="Submit" [disabled]="!recipeForm.valid"
-                    class="btn btn-lg btn-success rounded-4 px-4"></button>
+        <div class="mb-3">
+          <label for="tags" class="form-label fw-semibold">Special Tags</label>
+          <input
+            pInputText
+            id="tags"
+            formControlName="tags"
+            placeholder="e.g. #cake"
+            class="form-control mt-3"
+          />
+          <small *ngIf="getErrorMessage('tags')" class="text-danger">
+            {{ getErrorMessage("tags") }}
+          </small>
+        </div>
+
+        <hr style="height: 2px; border: none; background-color: black" />
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <label for="calories" class="form-label fw-semibold"
+              >Estimated Calories</label
+            >
+            <div>
+              <input
+                pInputText
+                id="calories"
+                formControlName="calories"
+                placeholder="0 Cal"
+                class="form-control w-50"
+              />
+              <small *ngIf="getErrorMessage('calories')" class="text-danger">
+                {{ getErrorMessage("calories") }}
+              </small>
             </div>
-        </form>
-    </div>
+          </div>
+          <span class="form-subtitle"
+            >Or you can use a calories calculator</span
+          >
+        </div>
+        <hr style="height: 2px; border: none; background-color: black" />
+      </div>
+
+      <div class="row mt-3">
+        <div class="row d-flex justify-content-between mb-3">
+          <div class="col-md-2">
+            <label for="prepTime" class="form-label fw-semibold"
+              >Prep Time*</label
+            >
+          </div>
+          <div class="col-md-10">
+            <input
+              pInputText
+              id="prepTime"
+              formControlName="prepTime"
+              placeholder="e.g. 15 min"
+              class="form-control w-25"
+            />
+            <small *ngIf="getErrorMessage('prepTime')" class="text-danger">
+              {{ getErrorMessage("prepTime") }}
+            </small>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-between mb-3">
+          <div class="col-md-2">
+            <label for="cookTime" class="form-label fw-semibold"
+              >Cook Time*</label
+            >
+          </div>
+          <div class="col-md-10">
+            <input
+              pInputText
+              id="cookTime"
+              formControlName="cookTime"
+              placeholder="e.g. 30 min"
+              class="form-control w-25"
+            />
+            <small *ngIf="getErrorMessage('cookTime')" class="text-danger">
+              {{ getErrorMessage("cookTime") }}
+            </small>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-between mb-3">
+          <div class="col-md-2">
+            <label for="totalTime" class="form-label fw-semibold"
+              >Total Time</label
+            >
+          </div>
+          <div class="col-md-10">
+            <input
+              pInputText
+              id="totalTime"
+              formControlName="totalTime"
+              placeholder="Total time will be calculated"
+              class="form-control w-25"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+      <hr style="height: 2px; border: none; background-color: black" />
+
+      <div class="mt-4 d-flex justify-content-end gap-3">
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          class="btn btn-lg btn-outline-secondary rounded-4 px-4"
+          (click)="cancelForm()"
+        ></button>
+
+        <button
+          pButton
+          type="submit"
+          label="Submit"
+          [disabled]="!recipeForm.valid"
+          class="btn btn-lg btn-success rounded-4 px-4"
+        ></button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,0 +1,20 @@
+.btn-add {
+    color: #00dc89;
+    border: none;
+    background: none;
+    padding: 0;
+  }
+  
+  .btn-add:hover {
+    color: #00b371;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-section {
+    margin-bottom: 2rem;
+  }
