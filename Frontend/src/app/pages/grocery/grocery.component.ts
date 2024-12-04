@@ -1,56 +1,94 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
+interface Ingredient {
+  name: string;
+  amount: string;
+  unit: string;
+}
 
 interface Meal {
   type: string;
   name: string;
   imageUrl: string;
-  ingredients: number;
+  ingredients: Ingredient[];
 }
 
 @Component({
   selector: 'app-grocery',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './grocery.component.html',
   styleUrls: ['./grocery.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state('true', style({
+        height: '*',
+        opacity: 1,
+        visibility: 'visible',
+      })),
+      state('false', style({
+        height: '0',
+        opacity: 0,
+        visibility: 'hidden',
+      })),
+      transition('false <=> true', [
+        animate('300ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class GroceryComponent implements OnInit {
   weekDays: string[] = [];
   currentMonth: string = '';
   currentYear: number = 0;
   currentDay: number = 0;
-  calendarDays: (number | null)[][] = []; // Updated to allow null for empty days
-
+  calendarDays: (number | null)[][] = [];
   meals: Meal[] = [
     {
       type: 'Breakfast',
       name: 'Oatmeal with fruits',
       imageUrl:
         'https://images.unsplash.com/photo-1517673400267-0251440c45dc?ixlib=rb-4.0.3',
-      ingredients: 13,
+      ingredients: [
+        { name: 'Oats', amount: '1', unit: 'cup' },
+        { name: 'Banana', amount: '1', unit: 'piece' },
+        { name: 'Milk', amount: '1', unit: 'cup' },
+      ],
     },
     {
       type: 'Lunch',
       name: 'Grilled chicken salad',
       imageUrl:
         'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3',
-      ingredients: 13,
+      ingredients: [
+        { name: 'Chicken breast', amount: '200', unit: 'g' },
+        { name: 'Lettuce', amount: '2', unit: 'cups' },
+        { name: 'Olive oil', amount: '2', unit: 'tbsp' },
+      ],
     },
   ];
+  expandedMealIndex: number | null = null; // Tracks which meal is expanded
+  checkedIngredients: boolean[][] = []; // Tracks the checked status for each meal
 
   ngOnInit() {
     this.setCurrentDate();
     this.generateCalendar();
+
+    // Initialize the checkedIngredients array for all meals
+    this.checkedIngredients = this.meals.map((meal) =>
+      new Array(meal.ingredients.length).fill(false)
+    );
   }
 
   setCurrentDate() {
     const today = new Date();
     this.currentYear = today.getFullYear();
-    this.currentMonth = today.toLocaleString('default', { month: 'long' }); // Gets current month name
+    this.currentMonth = today.toLocaleString('default', { month: 'long' });
     this.currentDay = today.getDate();
 
-    // Define the days of the week dynamically based on locale
     this.weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   }
 
@@ -59,20 +97,16 @@ export class GroceryComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
 
-    // Get the first day of the month
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Create a 2D array (calendarDays) to represent the month
     this.calendarDays = [];
     let week: (number | null)[] = [];
 
-    // Fill in the first empty days (before the 1st day of the month)
     for (let i = 0; i < firstDayOfMonth; i++) {
-      week.push(null); // Empty slot represented by null
+      week.push(null);
     }
 
-    // Fill in the actual days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       week.push(day);
       if (week.length === 7) {
@@ -81,12 +115,27 @@ export class GroceryComponent implements OnInit {
       }
     }
 
-    // Push the last incomplete week, if any
     if (week.length > 0) {
       while (week.length < 7) {
-        week.push(null); // Fill remaining empty slots with null
+        week.push(null);
       }
       this.calendarDays.push(week);
     }
+  }
+
+  toggleIngredients(index: number) {
+    this.expandedMealIndex = this.expandedMealIndex === index ? null : index;
+  }
+
+  getCheckedCount(mealIndex: number): number {
+    return this.checkedIngredients[mealIndex].filter((checked) => checked).length;
+  }
+
+  isAllChecked(mealIndex: number): boolean {
+    return this.checkedIngredients[mealIndex].every((checked) => checked);
+  }
+
+  updateIngredientStatus() {
+    console.log('Ingredient status updated');
   }
 }

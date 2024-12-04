@@ -14,4 +14,123 @@
     width: 50px;
     height: 4px;
     background-color: #00b96d;
+    border-radius: 5px;
   }
+
+  .bg-success {
+    background-color: #00b96d !important;
+  }
+  
+  .rounded-circle {
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem; 
+    height: 1.5rem;
+    position: relative;
+    top: 5px; 
+    transform: translateY(10%);
+  }
+  
+  .text-muted {
+    color: #6c757d !important;
+  }
+
+  .meal-container {
+    position: relative;
+  }
+
+  .card {
+    margin-bottom: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    margin-bottom: 0;
+  }
+
+  .ingredients-panel {
+    overflow: hidden;
+  }
+
+  .ingredient-item {
+    transition: background-color 0.2s ease;
+  }
+
+  .ingredient-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .ingredient-checkbox {
+    min-width: 20px;
+  }
+
+  .ingredient-name {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ingredient-amount {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+
+  hr.ingredient-separator {
+    margin: 0; 
+    border: 0;
+    border-top: 1px solid black; 
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  ul {
+    padding-left: 1rem;
+    margin: 0;
+    list-style-position: inside; 
+  }
+
+  li.list-group-item {
+    padding: 0;
+    margin: 0; 
+  }
+
+  @keyframes slideDownFadeIn {
+    from {
+      transform: translateY(-20px); /* Slide down from above */
+      opacity: 0; /* Start fully transparent */
+    }
+    to {
+      transform: translateY(0); /* End at original position */
+      opacity: 1; /* Fully visible */
+    }
+  }
+  
+  @keyframes slideUpFadeOut {
+    from {
+      transform: translateY(0); /* Start at original position */
+      opacity: 1; /* Fully visible */
+    }
+    to {
+      transform: translateY(-20px); /* Slide back up */
+      opacity: 0; /* Fully transparent */
+    }
+  }
+  
+  .animated {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+  }
+  
+  .fadeInDown {
+    animation-name: slideDownFadeIn;
+  }
+  
+  .fadeOutUp {
+    animation-name: slideUpFadeOut;
+  }
+  
