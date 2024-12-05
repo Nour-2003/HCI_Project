@@ -21,20 +21,30 @@ export class ChefListComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
+      this.fetchChefs(); // Fetch chefs after the user is fetched
     });
-    this.fetchChefs();
   }
 
   fetchChefs(): void {
     this.http.get<any[]>('http://localhost:8080/user/').subscribe({
       next: (response) => {
-        this.chefs = response
-          .filter((chef) => chef._id !== this.user.id)
-          .map((chef) => ({
+        if (this.user) {
+          // Filter out the user from the list of chefs if user is not null
+          this.chefs = response
+            .filter((chef) => chef._id !== this.user.id)
+            .map((chef) => ({
+              imageUrl: chef.profilePictureURL || this.defaultImage,
+              altText: chef.username,
+              chefId: chef._id,
+            }));
+        } else {
+          // If user is null, load all chefs
+          this.chefs = response.map((chef) => ({
             imageUrl: chef.profilePictureURL || this.defaultImage,
             altText: chef.username,
             chefId: chef._id,
           }));
+        }
       },
       error: (err) => {
         console.error('Error fetching chefs:', err);

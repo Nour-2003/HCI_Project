@@ -1,29 +1,58 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import { catchError, map } from 'rxjs/operators'; // For handling errors
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UserService {
-  private userSubject = new BehaviorSubject<any>(null);
+  private userSubject = new BehaviorSubject<any>(null); // For user data
+  private userDetailsSubject = new BehaviorSubject<any>(null); // For additional user data (e.g., likeList)
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.loadUser();
   }
 
-
-
-  private loadUser() {
+  loadUser() {
     if (typeof window !== 'undefined' && localStorage) {
       const userData = localStorage.getItem('user');
-      this.userSubject.next(userData ? JSON.parse(userData) : null);
-    } else {
-      this.userSubject.next(null);
+      if (userData) {
+        this.userSubject.next(JSON.parse(userData));
+        // Fetch additional user data (like likeList, preferences) using the user ID
+        this.fetchUserDetails(JSON.parse(userData).id);
+      } else {
+        this.userSubject.next(null);
+      }
     }
   }
+
+  private fetchUserDetails(userId: string) {
+    const apiUrl = `http://localhost:8080/user/${userId}`; // API endpoint for additional user data
+    this.http
+      .get<any>(apiUrl)
+      .pipe(
+        map((response) => {
+          console.log('User details:', response);
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error fetching user details:', error);
+          return [];
+        })
+      )
+      .subscribe((userDetails) => {
+        // Set additional user data (like likeList, recipes, etc.)
+        this.userDetailsSubject.next(userDetails);
+      });
+  }
+
   getUser() {
     return this.userSubject.asObservable();
+  }
+
+  getUserDetails() {
+    return this.userDetailsSubject.asObservable();
   }
 
   setUser(user: any) {
@@ -37,4 +66,22 @@ export class UserService {
     this.userSubject.next(user);
   }
 
+  setUserDetails(userDetails: any) {
+    this.userDetailsSubject.next(userDetails);
+  }
+  isRecipeLiked(recipeId: string): boolean {
+    const currentUserDetails = this.userDetailsSubject.value;
+    if (currentUserDetails && currentUserDetails.likeList) {
+      return currentUserDetails.likeList.some(
+        (recipe: any) => recipe._id === recipeId
+      );
+    }
+    return false;
+  }
+
+  //make function for logout
+  logout() {
+    this.setUser(null);
+    this.setUserDetails(null);
+  }
 }

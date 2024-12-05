@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -56,13 +61,13 @@ export class LoginComponent {
           console.log(response);
 
           // Save the user data using UserService
-          if(response.status === 'SUCCESS'){
+          if (response.status === 'SUCCESS') {
             this.userService.setUser(response.data);
+            this.userService.loadUser();
             this.router.navigate(['/home']);
-          }else{
+          } else {
             this.errorMessage = response.message;
           }
-
         },
         (error) => {
           console.error('Login Failed:', error);

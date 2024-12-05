@@ -4,11 +4,12 @@ import { ChefListComponent } from "../../components/chef-list/chef-list.componen
 import { RecipeCardComponent } from "../../components/recipe-card/recipe-card.component";
 import { CommonModule } from '@angular/common';
 import {HeaderComponent } from "../../components/header/header.component";
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [HeaderComponent, MealsComponent, ChefListComponent, RecipeCardComponent, CommonModule, HeaderComponent],
+  imports: [HeaderComponent, MealsComponent, ChefListComponent, RecipeCardComponent, CommonModule,HttpClientModule],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })

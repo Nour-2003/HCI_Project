@@ -40,6 +40,9 @@ export class ProfileComponent {
   }
 
   fetchUserProfileData(): void {
+    if (!this.user) {
+      return;
+    }
     const url = `http://localhost:8080/user/${this.user.id}`;
     this.http.get<any>(url).subscribe({
       next: (data) => {

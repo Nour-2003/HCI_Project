@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-userprofile',
@@ -21,9 +22,17 @@ export class UserprofileComponent implements OnInit {
   profilePictureURL: string = '';
   recipes: any[] = []; // To hold the recipe data
   bio: string = '';
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  user: any = null;
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
     // Get the user profile ID from the route parameters
     this.userprofileID = this.route.snapshot.paramMap.get('id')!;
     this.fetchUserProfileData();

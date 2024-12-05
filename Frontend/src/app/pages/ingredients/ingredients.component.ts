@@ -23,12 +23,13 @@ export class IngredientsComponent implements OnInit {
   mealSpecialTags: string[] = [];
   recipeName: string = '';
   chefName: string = '';
+  chefimg: string = '';
   recipedoc: string = '';
   recipeImage: string = '';
   recipeIngredients: { ingredient: string; quantity: string }[] = [];
   recipeInstructions: string[] = [];
   comments: any[] = [];
-  
+
   recipeId: string = '';
   newComment: string = '';
   chefId: number = 0;
@@ -70,6 +71,9 @@ export class IngredientsComponent implements OnInit {
             this.mealServings = `${data.serves} servings`;
             this.mealSpecialTags = data.specialTag.split(',');
             this.chefName = data.chef.username;
+            this.chefimg =
+              data.chef.profilePictureURL ||
+              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
             this.chefId = data.chef._id;
             this.recipedoc = data.description || 'Recipe document here...';
             this.recipeIngredients = data.ingredients.map(
@@ -142,14 +146,17 @@ export class IngredientsComponent implements OnInit {
         content: this.newComment,
         author: this.user.id, // Send the user ID to the backend
       };
-  
+
       this.http
-        .post<any>(`http://localhost:8080/comment/${this.recipeId}`, commentData)
+        .post<any>(
+          `http://localhost:8080/comment/${this.recipeId}`,
+          commentData
+        )
         .subscribe(
           (response) => {
             if (response.message === 'Comment added successfully.') {
               const newComment = response.comment;
-  
+
               // Add the new comment with the correct structure
               this.comments.push({
                 author: {
@@ -160,7 +167,7 @@ export class IngredientsComponent implements OnInit {
                 time: 'Just now', // You can update this with a proper time from the backend if available
                 likes: 0, // Initial likes count
               });
-  
+
               this.newComment = ''; // Clear the input field
             }
           },
@@ -172,7 +179,6 @@ export class IngredientsComponent implements OnInit {
       console.warn('Comment content or user data is missing.');
     }
   }
-  
 
   // Handling the cooking steps
   currentStep: number = 0;

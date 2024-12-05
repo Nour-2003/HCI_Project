@@ -12,7 +12,7 @@ interface Recipe {
   imageURL: string | null;
   cooktime: number;
   level: string;
-  _id: number;
+  _id: string;
 }
 
 @Component({
@@ -36,7 +36,7 @@ export class RecipesComponent implements OnInit {
     prepTime: string;
     difficulty: string;
     likes: string;
-    RecipeId: number;
+    RecipeId: string;
   }[] = [];
   user: any = null;
   userId: string = '';
