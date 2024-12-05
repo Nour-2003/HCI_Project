@@ -56,8 +56,19 @@
       <div class="text-center">
 
         <!-- Recipe Image -->
-        <img [src]="recipeImage" draggable="false" style="height: 350px;" class="w-75 rounded-5"
-          alt="Blueberry Pancake" />
+        <div class="position-relative w-75 ms-5">
+
+          <img [src]="recipeImage" draggable="false" style="height: 350px;" class=" w-100 rounded-5"
+            alt="Blueberry Pancake" />
+          <div class="position-absolute top-0 start-0 w-100 d-flex justify-content-between align-items-center p-3">
+            <div class="text-center">
+              <i class="fs-3 fa-heart" [ngClass]="{'fa-solid text-danger': isLiked, 'fa-regular text-white': !isLiked}"
+                (click)="toggleLike()"></i>
+            </div>
+            <i class="text-white fs-3 fa-star" (click)="toggleFavorite()"
+              [ngClass]="{'fa-solid text-warning': isFavorited, 'fa-regular text-white': !isFavorited}"></i>
+          </div>
+        </div>
 
         <!-- Information Grid -->
         <div class="row mt-4">

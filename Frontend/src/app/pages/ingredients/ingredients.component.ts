@@ -16,6 +16,8 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./ingredients.component.css'],
 })
 export class IngredientsComponent implements OnInit {
+  isLiked: boolean = false;
+  isFavorited: boolean = false;
   cookTime: string = '';
   mealLevel: string = '';
   mealCalories: string = '';
@@ -53,6 +55,14 @@ export class IngredientsComponent implements OnInit {
     this.recipeId = this.route.snapshot.paramMap.get('id')!;
     this.userService.getUser().subscribe((user) => {
       this.user = user;
+    });
+
+    this.userService.getUserDetails().subscribe((userDetails) => {
+      // If userDetails is available, check if the recipe is liked
+      if (userDetails) {
+        this.isLiked = this.userService.isRecipeLiked(this.recipeId);
+        this.isFavorited = this.userService.isRecipeFavorited(this.recipeId);
+      }
     });
     // Fetch recipe data from the backend
     this.http
@@ -192,5 +202,99 @@ export class IngredientsComponent implements OnInit {
     if (this.currentStep > 0) {
       this.currentStep--;
     }
+  }
+
+  toggleLike(): void {
+    const currentUser = this.user;
+    if (currentUser) {
+      if (this.isLiked) {
+        this.unlikeRecipe(currentUser.id);
+      } else {
+        this.likeRecipe(currentUser.id);
+      }
+    }
+  }
+
+  likeRecipe(userId: string): void {
+    const body = {
+      recipeId: this.recipeId,
+    };
+
+    this.http
+      .post(`http://localhost:8080/user/${userId}/likelist`, body)
+      .subscribe(
+        (response) => {
+          console.log('Recipe liked:', response);
+          this.isLiked = true;
+        },
+        (error) => {
+          console.error('Error liking recipe:', error);
+        }
+      );
+  }
+
+  unlikeRecipe(userId: string): void {
+    const body = {
+      recipeId: this.recipeId,
+    };
+
+    this.http
+      .delete(`http://localhost:8080/user/${userId}/likelist`, { body })
+      .subscribe(
+        (response) => {
+          console.log('Recipe unliked:', response);
+          this.isLiked = false;
+        },
+        (error) => {
+          console.error('Error unliking recipe:', error);
+        }
+      );
+  }
+
+  toggleFavorite(): void {
+    const currentUser = this.user;
+    if (currentUser) {
+      if (this.isFavorited) {
+        this.unfavoriteRecipe(currentUser.id);
+      } else {
+        this.favoriteRecipe(currentUser.id);
+      }
+    }
+  }
+
+  favoriteRecipe(userId: string): void {
+    const body = {
+      recipeId: this.recipeId,
+    };
+
+    this.http
+      .post(`http://localhost:8080/user/${userId}/favoriteList`, body)
+      .subscribe(
+        (response) => {
+          console.log('Recipe favorited:', response);
+          this.isFavorited = true;
+        },
+        (error) => {
+          console.error('Error favoriting recipe:', error);
+        }
+      );
+  }
+
+  unfavoriteRecipe(userId: string): void {
+    const body = {
+      recipeId: this.recipeId,
+    };
+
+    this.http
+      .delete(`http://localhost:8080/user/${userId}/favoriteList`, { body })
+      .subscribe(
+        (response) => {
+          console.log('Recipe unfavorited:', response);
+          this.isFavorited = false;
+        },
+        (error) => {
+          console.error('Error unfavoriting recipe:', error);
+        }
+      );
   }
 }

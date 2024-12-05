@@ -79,6 +79,15 @@ export class UserService {
     return false;
   }
 
+  isRecipeFavorited(recipeId: string): boolean {
+    const currentUserDetails = this.userDetailsSubject.value;
+    if (currentUserDetails && currentUserDetails.favoriteList) {
+      return currentUserDetails.favoriteList.some(
+        (recipe: any) => recipe._id === recipeId
+      );
+    }
+    return false;
+  }
   //make function for logout
   logout() {
     this.setUser(null);
