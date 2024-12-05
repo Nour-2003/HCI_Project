@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +13,10 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FileUpload } from 'primeng/fileupload';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-recipe-form',
@@ -25,6 +29,7 @@ import { FileUpload } from 'primeng/fileupload';
     ButtonModule,
     FileUploadModule,
     HttpClientModule,
+    RouterModule,
   ],
   templateUrl: './recipe-form.component.html',
   styleUrls: ['./recipe-form.component.css'],
@@ -32,8 +37,11 @@ import { FileUpload } from 'primeng/fileupload';
 export class RecipeFormComponent {
   recipeForm: FormGroup;
   selectedPhoto: string | null = null;
+  user: any = null;
+  isSubmitting = false;
   @ViewChild('fileUpload') fileUpload!: FileUpload;
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private userService: UserService, private router: Router) {
     this.recipeForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -43,36 +51,28 @@ export class RecipeFormComponent {
       level: ['', Validators.required],
       tags: ['', Validators.required],
       calories: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Only numbers allowed
+      prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       cookTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      totalTime: [{ value: '', disabled: true }], // Read-only field
+      totalTime: [{ value: '', disabled: true }],
       photo: [null, Validators.required],
     });
 
+    this.userService.getUser().subscribe(data => {
+      this.user = data;
+    });
     // Add initial ingredient and step fields
     this.addIngredient();
     this.addStep();
 
-    // Subscribe to changes in prepTime and cookTime
-    this.recipeForm
-      .get('prepTime')
-      ?.valueChanges.subscribe(() => this.updateTotalTime());
-    this.recipeForm
-      .get('cookTime')
-      ?.valueChanges.subscribe(() => this.updateTotalTime());
+    // Subscribe to changes in prepTime and cookTime to calculate totalTime
+    this.recipeForm.get('prepTime')?.valueChanges.subscribe(() => this.updateTotalTime());
+    this.recipeForm.get('cookTime')?.valueChanges.subscribe(() => this.updateTotalTime());
   }
 
   updateTotalTime() {
-    const prepTime = parseInt(
-      this.recipeForm.get('prepTime')?.value || '0',
-      10
-    );
-    const cookTime = parseInt(
-      this.recipeForm.get('cookTime')?.value || '0',
-      10
-    );
+    const prepTime = parseInt(this.recipeForm.get('prepTime')?.value || '0', 10);
+    const cookTime = parseInt(this.recipeForm.get('cookTime')?.value || '0', 10);
     const totalTime = prepTime + cookTime;
-
     this.recipeForm.get('totalTime')?.setValue(totalTime.toString());
   }
 
@@ -151,12 +151,54 @@ export class RecipeFormComponent {
     if (this.fileUpload) {
       this.fileUpload.clear();
     }
+    this.isSubmitting = false;
+    this.router.navigate([`/profile/recipes/${this.user.id}`]); 
   }
 
   onSubmit() {
     if (this.recipeForm.valid) {
-      console.log(this.recipeForm.value);
-      // Handle form submission here
+      this.isSubmitting = true; 
+
+      const formData = new FormData();
+      formData.append('title', this.recipeForm.get('title')?.value);
+      formData.append('description', this.recipeForm.get('description')?.value);
+
+      const ingredients = this.ingredients.controls.map((control) => ({
+        name: control.value,
+        quantity: 1, // Replace with actual quantity input if present
+        unit: 'g', // Replace with actual unit input if present
+      }));
+      formData.append('ingredients', JSON.stringify(ingredients));
+
+      formData.append('steps', JSON.stringify(this.steps.controls.map((control) => control.value)));
+      formData.append('cooktime', Number(this.recipeForm.get('totalTime')?.value).toString());
+      formData.append('level', this.recipeForm.get('level')?.value);
+      formData.append('calories', Number(this.recipeForm.get('calories')?.value).toString());
+      formData.append('serves', Number(this.recipeForm.get('servings')?.value).toString());
+      formData.append('specialTag', this.recipeForm.get('tags')?.value);
+
+      const photoFile = this.recipeForm.get('photo')?.value;
+      if (photoFile) {
+        formData.append('imageMessage', photoFile);
+      }
+
+      const endpoint = `http://localhost:8080/user/${this.user.id}/recipes`;
+
+      this.http.post(endpoint, formData).subscribe(
+        (response: any) => {
+          if (response.statusCode === 201) {
+            this.router.navigate([`/profile/recipes/${this.user.id}`]);
+          }
+          this.isSubmitting = false; // Stop loader
+        },
+        (error) => {
+          console.error('Error submitting recipe:', error);
+          this.isSubmitting = false; // Stop loader
+        }
+      );
+    } else {
+      console.error('Form is invalid!');
     }
   }
+  
 }

@@ -299,16 +299,20 @@
           label="Cancel"
           class="btn btn-lg btn-outline-secondary rounded-4 px-4"
           (click)="cancelForm()"
+          [disabled]="isSubmitting"
         ></button>
-
+      
         <button
           pButton
           type="submit"
           label="Submit"
-          [disabled]="!recipeForm.valid"
+          [disabled]="!recipeForm.valid || isSubmitting"
           class="btn btn-lg btn-success rounded-4 px-4"
-        ></button>
+        >
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        </button>
       </div>
+      
     </form>
   </div>
 </div>

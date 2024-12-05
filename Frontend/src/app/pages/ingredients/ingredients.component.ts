@@ -71,7 +71,7 @@ export class IngredientsComponent implements OnInit {
             this.mealSpecialTags = data.specialTag.split(',');
             this.chefName = data.chef.username;
             this.chefId = data.chef._id;
-            this.recipedoc = 'Recipe document here...'; // Placeholder
+            this.recipedoc = data.description || 'Recipe document here...';
             this.recipeIngredients = data.ingredients.map(
               (ingredient: any) => ({
                 ingredient: ingredient.name,
