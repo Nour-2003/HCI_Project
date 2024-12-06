@@ -16,3 +16,14 @@
     background-color: #00b96d;
     border-radius: 5px;
   }
+
+  .bg-home1{
+    background-image:url('../../../assets/imgs/homepage1.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .bg-home2{
+    background-image:url('../../../assets/imgs/homepage2.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
