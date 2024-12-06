@@ -16,6 +16,9 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./ingredients.component.css'],
 })
 export class IngredientsComponent implements OnInit {
+  originalRecipeData: any = {};
+
+  isEditing: boolean = false;
   isLiked: boolean = false;
   isFavorited: boolean = false;
   cookTime: string = '';
@@ -35,6 +38,8 @@ export class IngredientsComponent implements OnInit {
   recipeId: string = '';
   newComment: string = '';
   chefId: number = 0;
+
+  updatedRecipeData: any = {};
 
   // Timer-related properties
   time: string = '00:00';
@@ -72,13 +77,16 @@ export class IngredientsComponent implements OnInit {
           if (response.status === 'SUCCESS') {
             const data = response.data;
 
+            // Store original data before editing
+            this.originalRecipeData = { ...data };
+
             // Populate component properties with recipe data
             this.recipeName = data.title;
             this.recipeImage = data.imageURL;
-            this.cookTime = `${data.cooktime} min`;
+            this.cookTime = data.cooktime;
             this.mealLevel = data.level;
-            this.mealCalories = `${data.calories} `;
-            this.mealServings = `${data.serves} servings`;
+            this.mealCalories = data.calories;
+            this.mealServings = data.serves;
             this.mealSpecialTags = data.specialTag.split(',');
             this.chefName = data.chef.username;
             this.chefimg =
@@ -99,6 +107,70 @@ export class IngredientsComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching recipe data', error);
+        }
+      );
+  }
+
+  // Toggle edit mode
+  toggleEdit() {
+    if (this.isEditing) {
+      // Cancel the edit: Revert the fields to the original data
+      this.resetForm();
+    }
+    this.isEditing = !this.isEditing;
+  }
+
+  // Reset the form fields to their original values
+  resetForm() {
+    this.recipeName = this.originalRecipeData.title;
+    this.recipeImage = this.originalRecipeData.imageURL;
+    this.cookTime = this.originalRecipeData.cooktime;
+    this.mealLevel = this.originalRecipeData.level;
+    this.mealCalories = this.originalRecipeData.calories;
+    this.mealServings = this.originalRecipeData.serves;
+    this.mealSpecialTags = this.originalRecipeData.specialTag.split(',');
+    this.recipedoc =
+      this.originalRecipeData.description || 'Recipe document here...';
+    this.recipeIngredients = this.originalRecipeData.ingredients.map(
+      (ingredient: any) => ({
+        ingredient: ingredient.name,
+        quantity: `${ingredient.quantity} ${ingredient.unit}`,
+      })
+    );
+    this.recipeInstructions = this.originalRecipeData.steps;
+  }
+
+  // Handle saving the updated recipe
+  saveUpdates() {
+    const updatedData = {
+      title: this.recipeName,
+      description: this.recipedoc,
+      ingredients: this.recipeIngredients.map((ingredient) => ({
+        name: ingredient.ingredient,
+        quantity: ingredient.quantity.split(' ')[0], // Extract quantity
+        unit: ingredient.quantity.split(' ')[1] || 'g', // Default unit
+      })),
+      steps: this.recipeInstructions,
+      cooktime: this.cookTime,
+      level: this.mealLevel,
+      calories: this.mealCalories,
+      serve: this.mealServings,
+      specialTags: this.mealSpecialTags,
+    };
+
+    this.http
+      .put<any>(`http://localhost:8080/recipe/${this.recipeId}`, updatedData)
+      .subscribe(
+        (response) => {
+          if (response.status === 'SUCCESS') {
+            console.log('Recipe updated successfully');
+            this.isEditing = false; // Exit edit mode
+            // Optionally, you can refresh the recipe data here
+            console.log('Updated recipe data:', response.data);
+          }
+        },
+        (error) => {
+          console.error('Error updating recipe', error);
         }
       );
   }

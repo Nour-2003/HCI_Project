@@ -3,11 +3,23 @@
 
     <!-- Left Column -->
     <div class="col-5">
+      <div class="d-flex justify-content-between">
+        <!-- Recipe Title -->
+        <h2 class="fw-bold px-3 pt-2 pb-3">
+          <input *ngIf="isEditing" [(ngModel)]="recipeName" class="form-control" />
+          <span *ngIf="!isEditing">{{ recipeName }}</span>
+        </h2>
+        <div>
+          <!-- Edit Button -->
+          <button class="btn btn-info" (click)="toggleEdit()">
+            {{ isEditing ? 'Cancel' : 'Edit' }}
+          </button>
 
-      <!-- Recipe Title -->
-      <h2 class="fw-bold px-3 pt-2 pb-3">
-        {{recipeName}}
-      </h2>
+          <div *ngIf="isEditing">
+            <button class="btn btn-primary mt-2" (click)="saveUpdates()">Save</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Chef Image and Name -->
       <div class="d-flex align-items-center mt-3 px-3" [routerLink]=" ['/userprofile',chefId]"
@@ -18,9 +30,9 @@
 
       <!-- Recipe Description -->
       <p class="m-3 fs-5">
-        {{recipedoc}}
+        <textarea *ngIf="isEditing" [(ngModel)]="recipedoc" class="form-control"></textarea>
+        <span *ngIf="!isEditing">{{ recipedoc }}</span>
       </p>
-
       <!-- Start Cooking Button -->
       <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
         (click)="startCook()">
@@ -28,27 +40,27 @@
       </button>
 
       <!-- Ingredients Section -->
-      <h3 class="fw-bold px-3 pt-5 pb-3">
-        Ingredients
-      </h3>
+      <h3 class="fw-bold px-3 pt-5 pb-3">Ingredients</h3>
       <ul class="ms-3">
-        <li class="list-group-item" *ngFor="let ingredient of recipeIngredients">
+        <li class="list-group-item" *ngFor="let ingredient of recipeIngredients; let i = index">
           <div class="row ms-1">
             <div class="col">
               <p>
                 <i class="fa-solid fa-circle fa-xs me-2" style="color: #134631;"></i>
-                {{ingredient.ingredient}}
+                <input *ngIf="isEditing" [(ngModel)]="ingredient.ingredient" class="form-control" />
+                <span *ngIf="!isEditing">{{ ingredient.ingredient }}</span>
               </p>
-
             </div>
             <div class="col d-flex justify-content-end">
-              <p class="pe-3">{{ingredient.quantity}}</p>
-              <input type="checkbox" class="form-check-input" style="transform: scale(1.5);" />
+              <input *ngIf="isEditing" [(ngModel)]="ingredient.quantity" class="form-control" />
+              <span *ngIf="!isEditing">{{ ingredient.quantity }}</span>
             </div>
           </div>
           <hr>
         </li>
       </ul>
+
+
     </div>
 
     <!-- Right Column -->
@@ -73,51 +85,60 @@
         <!-- Information Grid -->
         <div class="row mt-4">
 
-          <!-- Cook Time -->
+          <!-- Editable Cook Time -->
           <div class="col-5">
             <div class="d-flex align-items-center justify-content-center">
               <i class="fa-solid fa-clock fs-4 me-2"></i>
-              <p class="mb-0 fw-bold ">Cook time</p>
+              <p class="mb-0 fw-bold">Cook Time</p>
             </div>
-            <p class="mb-0">{{cookTime}}</p>
+            <input *ngIf="isEditing" [(ngModel)]="cookTime" class="form-control" placeholder="Enter cook time" />
+            <p *ngIf="!isEditing" class="mb-0">{{ cookTime }} minutes</p>
           </div>
 
-          <!-- Difficulty Level -->
+          <!-- Editable Difficulty Level -->
           <div class="col-3">
             <div class="d-flex align-items-center justify-content-center">
               <img src="assets/imgs/819.png" class="icon-style me-2" alt="Cooking Bot Icon" />
               <p class="mb-0 fw-bold">Level</p>
             </div>
-            <p class="mb-0">{{mealLevel}}</p>
+            <input *ngIf="isEditing" [(ngModel)]="mealLevel" class="form-control"
+              placeholder="Enter difficulty level" />
+            <p *ngIf="!isEditing" class="mb-0">{{ mealLevel }}</p>
           </div>
 
-          <!-- Calories -->
+          <!-- Editable Calories -->
           <div class="col-4">
             <div class="d-flex align-items-center justify-content-center">
               <i class="fa fa-fire fs-4 me-2"></i>
               <p class="mb-0 fw-bold">Calories</p>
             </div>
-            <p class="mb-0">{{mealCalories}} Cal</p>
+            <input *ngIf="isEditing" [(ngModel)]="mealCalories" class="form-control" placeholder="Enter calories" />
+            <p *ngIf="!isEditing" class="mb-0">{{ mealCalories }} Cal</p>
           </div>
 
-          <!-- Serve and Special Tags -->
-          <div class="row  mt-4">
-            <div class="col-5 ">
+          <!-- Editable Serve and Special Tags -->
+          <div class="row mt-4">
+            <div class="col-5">
               <div class="d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-user fs-4 me-2"></i>
                 <p class="mb-0 fw-bold">Serve</p>
               </div>
-              <p class="mb-0">{{mealServings}}</p>
+              <input *ngIf="isEditing" [(ngModel)]="mealServings" class="form-control" placeholder="Enter servings" />
+              <p *ngIf="!isEditing" class="mb-0">{{ mealServings }} Serving</p>
             </div>
 
-            <div class="col-5 ">
+            <div class="col-5">
               <div class="d-flex align-items-center justify-content-start">
                 <i class="fa-solid fa-hashtag fs-4 me-2"></i>
-                <p class="mb-0 fw-bold">Special tags</p>
+                <p class="mb-0 fw-bold">Special Tags</p>
               </div>
-              <div class="d-flex align-items-center justify-content-start flex-wrap">
+              <div *ngIf="isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
+                <input *ngFor="let tag of mealSpecialTags; let i = index" [(ngModel)]="mealSpecialTags[i]"
+                  class="form-control m-1" placeholder="Enter tag" />
+              </div>
+              <div *ngIf="!isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
                 <span class="badge text-light m-1" style="background-color: #00b96d;"
-                  *ngFor="let tag of mealSpecialTags">{{tag}}</span>
+                  *ngFor="let tag of mealSpecialTags">{{ tag }}</span>
               </div>
             </div>
           </div>
@@ -194,8 +215,19 @@
     <!-- Step Instructions -->
     <div class="col-4">
       <h4>Step {{ currentStep + 1 }}</h4>
-      <p>{{ recipeInstructions[currentStep] }}</p>
+
+      <!-- Editable Step Instruction -->
+      <div *ngIf="isEditing">
+        <textarea [(ngModel)]="recipeInstructions[currentStep]" class="form-control" placeholder="Edit this step"
+          rows="4"></textarea>
+      </div>
+
+      <!-- Displaying Step Instruction -->
+      <div *ngIf="!isEditing">
+        <p>{{ recipeInstructions[currentStep] }}</p>
+      </div>
     </div>
+
 
     <!-- Timer Section -->
     <div class="col-3 d-flex justify-content-end me-2">
