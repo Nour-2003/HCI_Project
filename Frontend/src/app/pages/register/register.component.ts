@@ -14,7 +14,6 @@ import { UserService } from '../../services/user.service'; // Import UserService
 import { Router } from '@angular/router'; // Import Router
 import { RouterLink } from '@angular/router';
 
-
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -73,7 +72,10 @@ export class RegisterComponent implements OnInit {
     if (control?.hasError('minlength')) {
       return `${controlName} must be at least ${control.errors?.['minlength'].requiredLength} characters long.`;
     }
-    if (controlName === 'confirmPassword' && this.registerForm.hasError('mismatch')) {
+    if (
+      controlName === 'confirmPassword' &&
+      this.registerForm.hasError('mismatch')
+    ) {
       return 'Passwords do not match.';
     }
     return '';
@@ -93,15 +95,15 @@ export class RegisterComponent implements OnInit {
       };
 
       console.log('Registering user:', payload);
-      
 
       this.http.post('http://localhost:8080/auth/signup', payload).subscribe(
         (response: any) => {
-          console.log( response);
-          if(response.status === "SUCCESS"){
+          console.log(response);
+          if (response.status === 'SUCCESS') {
             this.userService.setUser(response.data);
+            this.userService.loadUser();
             this.router.navigate(['/home']);
-          }else{
+          } else {
             this.errorMessage = response.message;
           }
         },

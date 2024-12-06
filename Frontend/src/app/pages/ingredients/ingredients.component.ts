@@ -214,18 +214,24 @@ export class IngredientsComponent implements OnInit {
       }
     }
   }
-
   likeRecipe(userId: string): void {
-    const body = {
-      recipeId: this.recipeId,
-    };
-
+    const body = { recipeId: this.recipeId };
     this.http
       .post(`http://localhost:8080/user/${userId}/likelist`, body)
       .subscribe(
         (response) => {
           console.log('Recipe liked:', response);
           this.isLiked = true;
+
+          // Update the likeList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.likeList = [
+              ...(userDetails.likeList || []),
+              { _id: this.recipeId },
+            ];
+            this.userService.setUserDetails(userDetails);
+          }
         },
         (error) => {
           console.error('Error liking recipe:', error);
@@ -234,16 +240,22 @@ export class IngredientsComponent implements OnInit {
   }
 
   unlikeRecipe(userId: string): void {
-    const body = {
-      recipeId: this.recipeId,
-    };
-
+    const body = { recipeId: this.recipeId };
     this.http
       .delete(`http://localhost:8080/user/${userId}/likelist`, { body })
       .subscribe(
         (response) => {
           console.log('Recipe unliked:', response);
           this.isLiked = false;
+
+          // Update the likeList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.likeList = userDetails.likeList.filter(
+              (recipe: any) => recipe._id !== this.recipeId
+            );
+            this.userService.setUserDetails(userDetails);
+          }
         },
         (error) => {
           console.error('Error unliking recipe:', error);
@@ -273,6 +285,16 @@ export class IngredientsComponent implements OnInit {
         (response) => {
           console.log('Recipe favorited:', response);
           this.isFavorited = true;
+
+          // Update the favoriteList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.favoriteList = [
+              ...(userDetails.favoriteList || []),
+              { _id: this.recipeId },
+            ];
+            this.userService.setUserDetails(userDetails);
+          }
         },
         (error) => {
           console.error('Error favoriting recipe:', error);
@@ -291,6 +313,15 @@ export class IngredientsComponent implements OnInit {
         (response) => {
           console.log('Recipe unfavorited:', response);
           this.isFavorited = false;
+
+          // Update the favoriteList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.favoriteList = userDetails.favoriteList.filter(
+              (recipe: any) => recipe._id !== this.recipeId
+            );
+            this.userService.setUserDetails(userDetails);
+          }
         },
         (error) => {
           console.error('Error unfavoriting recipe:', error);

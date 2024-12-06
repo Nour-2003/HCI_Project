@@ -8,7 +8,7 @@ import { catchError, map } from 'rxjs/operators'; // For handling errors
 })
 export class UserService {
   private userSubject = new BehaviorSubject<any>(null); // For user data
-  private userDetailsSubject = new BehaviorSubject<any>(null); // For additional user data (e.g., likeList)
+  userDetailsSubject = new BehaviorSubject<any>(null); // For additional user data (e.g., likeList)
 
   constructor(private http: HttpClient) {
     this.loadUser();

@@ -47,40 +47,45 @@ export class RecipeCardComponent implements OnInit {
   }
 
   likeRecipe(userId: string): void {
-    const body = {
-      recipeId: this.RecipeId,
-    };
-
-    this.http
-      .post(`http://localhost:8080/user/${userId}/likelist`, body)
-      .subscribe(
-        (response) => {
-          console.log('Recipe liked:', response);
-          this.isLiked = true;
-          this.likes = (parseInt(this.likes) + 1).toString(); // Increment likes count
-        },
-        (error) => {
-          console.error('Error liking recipe:', error);
+    const body = { recipeId: this.RecipeId };
+    this.http.post(`http://localhost:8080/user/${userId}/likelist`, body).subscribe(
+      (response) => {
+        console.log('Recipe liked:', response);
+        this.isLiked = true;
+        this.likes = (parseInt(this.likes) + 1).toString();
+  
+        // Update the likeList in userDetailsSubject
+        const userDetails = this.userService.userDetailsSubject.value;
+        if (userDetails) {
+          userDetails.likeList = [...(userDetails.likeList || []), { _id: this.RecipeId }];
+          this.userService.setUserDetails(userDetails);
         }
-      );
+      },
+      (error) => {
+        console.error('Error liking recipe:', error);
+      }
+    );
   }
-
+  
   unlikeRecipe(userId: string): void {
-    const body = {
-      recipeId: this.RecipeId,
-    };
-
-    this.http
-      .delete(`http://localhost:8080/user/${userId}/likelist`, { body })
-      .subscribe(
-        (response) => {
-          console.log('Recipe unliked:', response);
-          this.isLiked = false;
-          this.likes = (parseInt(this.likes) - 1).toString(); // Decrement likes count
-        },
-        (error) => {
-          console.error('Error unliking recipe:', error);
+    const body = { recipeId: this.RecipeId };
+    this.http.delete(`http://localhost:8080/user/${userId}/likelist`, { body }).subscribe(
+      (response) => {
+        console.log('Recipe unliked:', response);
+        this.isLiked = false;
+        this.likes = (parseInt(this.likes) - 1).toString();
+  
+        // Update the likeList in userDetailsSubject
+        const userDetails = this.userService.userDetailsSubject.value;
+        if (userDetails) {
+          userDetails.likeList = userDetails.likeList.filter((recipe: any) => recipe._id !== this.RecipeId);
+          this.userService.setUserDetails(userDetails);
         }
-      );
+      },
+      (error) => {
+        console.error('Error unliking recipe:', error);
+      }
+    );
   }
+  
 }
