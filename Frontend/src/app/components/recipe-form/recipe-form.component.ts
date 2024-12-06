@@ -43,13 +43,13 @@ export class RecipeFormComponent {
 
   constructor(private fb: FormBuilder, private http: HttpClient, private userService: UserService, private router: Router) {
     this.recipeForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
+      title: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
+      description: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
       ingredients: this.fb.array([], Validators.required),
       steps: this.fb.array([], Validators.required),
-      servings: ['', Validators.required],
-      level: ['', Validators.required],
-      tags: ['', Validators.required],
+      servings: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      level: ['', [Validators.required, Validators.pattern(/^(Easy|Medium|Hard)$/)]],
+      tags: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
       calories: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       cookTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
