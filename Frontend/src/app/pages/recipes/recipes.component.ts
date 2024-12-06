@@ -14,6 +14,7 @@ interface Recipe {
   level: string;
   _id: string;
   likes: string;
+  chef: string;
 }
 
 @Component({
@@ -38,6 +39,7 @@ export class RecipesComponent implements OnInit {
     difficulty: string;
     likes: string;
     RecipeId: string;
+    chefId: string;
   }[] = [];
   user: any = null;
   userId: string = '';
@@ -68,6 +70,7 @@ export class RecipesComponent implements OnInit {
               difficulty: recipe.level,
               likes: recipe.likes,
               RecipeId: recipe._id,
+              chefId: recipe.chef,
             }));
           }
         },
@@ -90,6 +93,7 @@ export class RecipesComponent implements OnInit {
                 difficulty: recipe.level,
                 likes: recipe.likes,
                 RecipeId: recipe._id,
+                chefId: '',
               }));
             }
           },

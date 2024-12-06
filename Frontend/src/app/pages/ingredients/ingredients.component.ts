@@ -298,6 +298,9 @@ export class IngredientsComponent implements OnInit {
   }
 
   toggleLike(): void {
+    if (!this.user) {
+      return alert('Please login to like the recipe');
+    }
     const currentUser = this.user;
     if (currentUser) {
       if (this.isLiked) {
@@ -357,6 +360,9 @@ export class IngredientsComponent implements OnInit {
   }
 
   toggleFavorite(): void {
+    if (!this.user) {
+      return alert('Please login to favorite the recipe');
+    }
     const currentUser = this.user;
     if (currentUser) {
       if (this.isFavorited) {

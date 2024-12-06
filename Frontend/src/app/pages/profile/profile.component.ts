@@ -29,7 +29,7 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
-      this.username = user.username;
+      this.username = user?.username || '';
       if (user && user.id) {
         this.router.navigate([`/profile/recipes/${user.id}`]);
       } else {

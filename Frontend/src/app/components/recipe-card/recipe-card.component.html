@@ -1,6 +1,7 @@
 <div class="card rounded-5 position-relative">
     <div class="position-absolute top-0 start-0 w-100 d-flex justify-content-between align-items-center p-3">
-        <div class="rounded-circle" style="width: 30px; height: 30px;"></div>
+        <div class="rounded-circle text-white" [ngClass]="{'fs-4 fas fa-edit':user&&user.id==chefId }"
+            [routerLink]="['/ingredients', RecipeId]" routerLinkActive="active"></div>
         <div class="text-center">
             <i class="fs-4 fa-heart" [ngClass]="{'fa-solid text-danger': isLiked, 'fa-regular text-white': !isLiked}"
                 (click)="toggleLike()"></i> <!-- Bind toggleLike method here -->

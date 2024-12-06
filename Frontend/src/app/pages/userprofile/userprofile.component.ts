@@ -38,12 +38,14 @@ export class UserprofileComponent implements OnInit {
 
     this.userService.getUser().subscribe((user) => {
       this.user = user;
-      this.myuserid = user.id;
+      if (user && user.id) {
+        this.myuserid = user.id;
+      } else {
+        console.error('User ID is not available');
+      }
     });
     this.userService.getUserDetails().subscribe(() => {
-      console.log('myuserid:', this.myuserid);
       this.isFollowing = this.userService.isFollowing(this.userprofileID);
-      console.log('isFollowing:', this.isFollowing);
     });
     this.fetchUserProfileData();
   }
@@ -70,6 +72,9 @@ export class UserprofileComponent implements OnInit {
   }
 
   toggleFollow(): void {
+    if (!this.myuserid) {
+      return alert('Please log in to follow users!');
+    }
     if (this.isFollowing) {
       this.unfollowUser();
     } else {
@@ -78,11 +83,6 @@ export class UserprofileComponent implements OnInit {
   }
 
   followUser(): void {
-    if (!this.myuserid) {
-      console.error('User is not logged in!');
-      return;
-    }
-
     const url = `http://localhost:8080/user/${this.myuserid}/follow/${this.userprofileID}`;
     this.http.post(url, {}).subscribe(
       (response) => {
@@ -107,11 +107,6 @@ export class UserprofileComponent implements OnInit {
   }
 
   unfollowUser(): void {
-    if (!this.myuserid) {
-      console.error('User is not logged in!');
-      return;
-    }
-
     const url = `http://localhost:8080/user/${this.myuserid}/unfollow/${this.userprofileID}`;
     this.http.post(url, {}).subscribe(
       (response) => {

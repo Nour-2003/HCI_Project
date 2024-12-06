@@ -33,7 +33,6 @@ export class UserService {
       .get<any>(apiUrl)
       .pipe(
         map((response) => {
-          console.log('User details:', response);
           return response;
         }),
         catchError((error) => {

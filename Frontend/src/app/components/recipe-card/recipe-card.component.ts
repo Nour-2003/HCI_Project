@@ -18,6 +18,7 @@ export class RecipeCardComponent implements OnInit {
   @Input() difficulty: string = '';
   @Input() likes: string = '';
   @Input() RecipeId: string = '';
+  @Input() chefId: string = '';
   isLiked: boolean = false;
   user: any = null;
   constructor(private userService: UserService, private http: HttpClient) {}
@@ -36,6 +37,9 @@ export class RecipeCardComponent implements OnInit {
   }
 
   toggleLike(): void {
+    if (!this.user) {
+      return alert("please login to like the recipe");
+    }
     const currentUser = this.user;
     if (currentUser) {
       if (this.isLiked) {

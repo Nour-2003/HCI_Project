@@ -2,8 +2,7 @@
     <div class="row align-items-center">
         <div class="col-auto p-5">
             <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
-                <img [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle"
-                    style="height: 150px">
+                <img [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle" style="height: 150px">
             </div>
         </div>
         <div class="col">
@@ -24,7 +23,7 @@
 <div class="container p-2 border-bottom border-black">
     <ul class="nav d-flex justify-content-between ">
         <li class="nav-item">
-            <a class="nav-link text-black" [routerLink]="['recipes',user.id]"
+            <a class="nav-link text-black" [routerLink]="['recipes',user?.id]"
                 routerLinkActive="active tabunderline fw-semibold">
                 <i class="fas fa-book"></i> Recipes
             </a>
