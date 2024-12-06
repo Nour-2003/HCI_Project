@@ -44,7 +44,7 @@ export class IngredientsComponent implements OnInit {
 
   // Timer-related properties
   time: string = '00:00';
-  isPaused: boolean = false;
+  isPaused: boolean = true;
   timerInterval: any;
   timeInSeconds: number = 0;
   circumference: number = 2 * Math.PI * 54;
@@ -104,6 +104,11 @@ export class IngredientsComponent implements OnInit {
             );
             this.recipeInstructions = data.steps;
             this.comments = data.comments;
+            // Convert cookTime to seconds
+            this.timeInSeconds = parseInt(this.cookTime) * 60;
+
+            // Update time display initially
+            this.updateTime();
           }
           console.log('Recipe data:', response);
         },
@@ -198,26 +203,31 @@ export class IngredientsComponent implements OnInit {
 
   // Start the timer for cooking
   startCook(): void {
+    this.isPaused = false;
     this.startTimer();
   }
 
-  // Timer functionality
+  //start the timer
   startTimer(): void {
-    this.timeInSeconds = 0;
-    this.updateTime();
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval); // Clear any existing timer
+    }
+
     this.timerInterval = setInterval(() => {
-      if (!this.isPaused && this.timeInSeconds < this.maxTimeInSeconds) {
-        this.timeInSeconds++;
+      if (!this.isPaused && this.timeInSeconds > 0) {
+        this.timeInSeconds--;
         this.updateTime();
         this.updateProgress();
-      } else if (this.timeInSeconds >= this.maxTimeInSeconds) {
+      } else if (this.timeInSeconds <= 0) {
         clearInterval(this.timerInterval);
+        console.log('Timer completed!');
       }
     }, 1000);
   }
 
   togglePause(): void {
     this.isPaused = !this.isPaused;
+    this.startTimer();
   }
 
   updateTime(): void {
@@ -227,9 +237,9 @@ export class IngredientsComponent implements OnInit {
   }
 
   updateProgress(): void {
+    const totalTimeInSeconds = parseInt(this.cookTime) * 60;
     this.dashOffset =
-      this.circumference -
-      (this.timeInSeconds / this.maxTimeInSeconds) * this.circumference;
+      (this.timeInSeconds / totalTimeInSeconds) * this.circumference;
   }
 
   padZero(num: number): string {
