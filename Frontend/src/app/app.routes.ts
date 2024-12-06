@@ -10,6 +10,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { RecipeFormComponent } from './components/recipe-form/recipe-form.component';
 import { AboutmeComponent } from './pages/aboutme/aboutme.component';
 import { UserprofileComponent } from './pages/userprofile/userprofile.component';
+import { FavoriteComponent } from './pages/favorite/favorite.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,6 +29,7 @@ export const routes: Routes = [
     children: [
       { path: 'recipes/:userId', component: RecipesComponent },
       { path: 'aboutme', component: AboutmeComponent },
+      { path: 'favorite', component: FavoriteComponent },
     ],
   },
 ];

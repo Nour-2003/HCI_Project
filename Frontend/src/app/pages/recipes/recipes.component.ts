@@ -66,7 +66,7 @@ export class RecipesComponent implements OnInit {
                 'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
               prepTime: `${recipe.cooktime} min`,
               difficulty: recipe.level,
-              likes:recipe.likes,
+              likes: recipe.likes,
               RecipeId: recipe._id,
             }));
           }
