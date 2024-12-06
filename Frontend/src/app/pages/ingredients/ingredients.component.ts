@@ -205,6 +205,11 @@ export class IngredientsComponent implements OnInit {
   startCook(): void {
     this.isPaused = false;
     this.startTimer();
+    // Scroll to the timer section
+    const timerSection = document.getElementById('timer-section');
+    if (timerSection) {
+      timerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   //start the timer
