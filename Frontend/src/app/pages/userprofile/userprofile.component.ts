@@ -23,6 +23,9 @@ export class UserprofileComponent implements OnInit {
   recipes: any[] = []; // To hold the recipe data
   bio: string = '';
   user: any = null;
+  myuserid: string = '';
+  isFollowing: boolean = false;
+
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
@@ -30,11 +33,18 @@ export class UserprofileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((user) => {
-      this.user = user;
-    });
     // Get the user profile ID from the route parameters
     this.userprofileID = this.route.snapshot.paramMap.get('id')!;
+
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+      this.myuserid = user.id;
+    });
+    this.userService.getUserDetails().subscribe(() => {
+      console.log('myuserid:', this.myuserid);
+      this.isFollowing = this.userService.isFollowing(this.userprofileID);
+      console.log('isFollowing:', this.isFollowing);
+    });
     this.fetchUserProfileData();
   }
 
@@ -47,7 +57,7 @@ export class UserprofileComponent implements OnInit {
         this.recipes = data.Recipes;
         this.recipesCount = data.Recipes.length;
         this.following = data.followingList.length;
-        this.followers = data.followersList?.length || 0;
+        this.followers = data.followerList?.length;
         this.bio = data.bio || '';
         this.profilePictureURL =
           data.profilePictureURL ||
@@ -57,5 +67,70 @@ export class UserprofileComponent implements OnInit {
         console.error('Error fetching user profile:', err);
       },
     });
+  }
+
+  toggleFollow(): void {
+    if (this.isFollowing) {
+      this.unfollowUser();
+    } else {
+      this.followUser();
+    }
+  }
+
+  followUser(): void {
+    if (!this.myuserid) {
+      console.error('User is not logged in!');
+      return;
+    }
+
+    const url = `http://localhost:8080/user/${this.myuserid}/follow/${this.userprofileID}`;
+    this.http.post(url, {}).subscribe(
+      (response) => {
+        console.log('User followed:', response);
+        this.isFollowing = true;
+        this.followers++;
+
+        // Update the followingList in userDetailsSubject
+        const userDetails = this.userService.userDetailsSubject.value;
+        if (userDetails) {
+          userDetails.followingList = [
+            ...(userDetails.followingList || []),
+            { _id: this.userprofileID },
+          ];
+          this.userService.setUserDetails(userDetails);
+        }
+      },
+      (error) => {
+        console.error('Error following user:', error);
+      }
+    );
+  }
+
+  unfollowUser(): void {
+    if (!this.myuserid) {
+      console.error('User is not logged in!');
+      return;
+    }
+
+    const url = `http://localhost:8080/user/${this.myuserid}/unfollow/${this.userprofileID}`;
+    this.http.post(url, {}).subscribe(
+      (response) => {
+        console.log('User unfollowed:', response);
+        this.isFollowing = false;
+        this.followers--;
+
+        // Update the followingList in userDetailsSubject
+        const userDetails = this.userService.userDetailsSubject.value;
+        if (userDetails) {
+          userDetails.followingList = userDetails.followingList.filter(
+            (user: any) => user._id !== this.userprofileID
+          );
+          this.userService.setUserDetails(userDetails);
+        }
+      },
+      (error) => {
+        console.error('Error unfollowing user:', error);
+      }
+    );
   }
 }

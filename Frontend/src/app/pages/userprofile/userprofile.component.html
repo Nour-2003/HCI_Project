@@ -12,7 +12,9 @@
                     <p class="mt-2"> {{bio}}</p>
                 </div>
                 <div *ngIf="user&&user.id!=userprofileID" class="col-2">
-                    <button class="btn rounded-5 px-5 py-2 text-light">Follow</button>
+                    <button class="btn rounded-5 px-5 py-2 text-light" (click)="toggleFollow()"> {{ isFollowing ?
+                        'Unfollow' : 'Follow' }}
+                    </button>
                 </div>
 
 

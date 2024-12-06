@@ -50,7 +50,7 @@ export class ProfileComponent {
         this.username = data.username;
         this.recipesCount = data.Recipes.length;
         this.following = data.followingList.length;
-        this.followers = data.followersList?.length || 0;
+        this.followers = data.followerList?.length;
         this.bio = data.bio || '';
 
         this.profilePictureURL =

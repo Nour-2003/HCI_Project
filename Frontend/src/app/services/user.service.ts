@@ -88,6 +88,16 @@ export class UserService {
     }
     return false;
   }
+
+  isFollowing(userId: string): boolean {
+    const userDetails = this.userDetailsSubject.value;
+    if (userDetails && userDetails.followingList) {
+      return userDetails.followingList.some(
+        (followedUser: any) => followedUser._id === userId
+      );
+    }
+    return false;
+  }
   //make function for logout
   logout() {
     this.setUser(null);
