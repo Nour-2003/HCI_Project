@@ -9,15 +9,24 @@
           <input *ngIf="isEditing" [(ngModel)]="recipeName" class="form-control" />
           <span *ngIf="!isEditing">{{ recipeName }}</span>
         </h2>
-        <div>
+        <div *ngIf="user&&user.id==chefId" class="d-flex justify-content-between">
+          <!-- Save Button -->
+          <div *ngIf="isEditing">
+            <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
+              (click)="saveUpdates()">Save</button>
+          </div>
+          <!-- Delete Button -->
+          <button *ngIf="!isEditing" class="btn btn-danger border border-1 m-3 px-3 py-2 rounded-5 text-light"
+            (click)="deleteRecipe()">Delete</button>
+
           <!-- Edit Button -->
-          <button class="btn btn-info" (click)="toggleEdit()">
+          <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
+            (click)="toggleEdit()">
             {{ isEditing ? 'Cancel' : 'Edit' }}
           </button>
 
-          <div *ngIf="isEditing">
-            <button class="btn btn-primary mt-2" (click)="saveUpdates()">Save</button>
-          </div>
+
+
         </div>
       </div>
 

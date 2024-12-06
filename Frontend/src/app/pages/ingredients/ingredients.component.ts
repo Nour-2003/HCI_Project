@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ingredients',
@@ -53,7 +54,8 @@ export class IngredientsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -173,6 +175,25 @@ export class IngredientsComponent implements OnInit {
           console.error('Error updating recipe', error);
         }
       );
+  }
+
+  // Delete the recipe with confirmation
+  deleteRecipe() {
+    if (confirm('Are you sure you want to delete this recipe?')) {
+      this.http
+        .delete<any>(`http://localhost:8080/recipe/${this.recipeId}`)
+        .subscribe(
+          (response) => {
+            if (response.status === 'SUCCESS') {
+              console.log('Recipe deleted successfully');
+              this.router.navigate([`/profile/recipes/${this.user.id}`]);
+            }
+          },
+          (error) => {
+            console.error('Error deleting recipe', error);
+          }
+        );
+    }
   }
 
   // Start the timer for cooking
