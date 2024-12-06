@@ -25,7 +25,8 @@ export class UserprofileComponent implements OnInit {
   user: any = null;
   myuserid: string = '';
   isFollowing: boolean = false;
-
+  Education: string = '';
+  Award: string = '';
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
@@ -64,6 +65,9 @@ export class UserprofileComponent implements OnInit {
         this.profilePictureURL =
           data.profilePictureURL ||
           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
+        this.Education = data.Education;
+        this.Award = data.Award;
       },
       error: (err) => {
         console.error('Error fetching user profile:', err);
