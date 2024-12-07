@@ -104,8 +104,14 @@ export class RecipesComponent implements OnInit {
   }
 
   filterRecipes(term: string) {
-    this.filteredRecipes = this.recipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(term.toLowerCase())
-    );
+    const lowerCaseTerm = term.toLowerCase();
+
+    this.filteredRecipes = this.recipes.filter((recipe) => {
+      return (
+        recipe.title.toLowerCase().includes(lowerCaseTerm) ||
+        recipe.prepTime.toLowerCase().includes(lowerCaseTerm) ||
+        recipe.difficulty.toLowerCase().includes(lowerCaseTerm)
+      );
+    });
   }
 }
