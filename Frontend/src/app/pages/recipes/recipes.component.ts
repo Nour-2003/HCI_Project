@@ -6,6 +6,7 @@ import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.co
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { SearchService } from '../../services/search.service';
 
 interface Recipe {
   title: string;
@@ -41,13 +42,23 @@ export class RecipesComponent implements OnInit {
     RecipeId: string;
     chefId: string;
   }[] = [];
+  filteredRecipes: {
+    title: string;
+    imageUrl: string;
+    prepTime: string;
+    difficulty: string;
+    likes: string;
+    RecipeId: string;
+    chefId: string;
+  }[] = []; // Stores filtered recipes
   user: any = null;
   userId: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private searchService: SearchService
   ) {}
 
   ngOnInit() {
@@ -55,50 +66,46 @@ export class RecipesComponent implements OnInit {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
     });
-    if (this.userId) {
-      // Fetch user-specific recipes
-      const userRecipesUrl = `http://localhost:8080/user/${this.userId}`;
-      this.http.get<any>(userRecipesUrl).subscribe({
+
+    // Fetch recipes
+    this.fetchRecipes();
+
+    // Subscribe to search term changes
+    this.searchService.searchTerm$.subscribe((term) => {
+      this.filterRecipes(term); // Call filter method on term change
+    });
+  }
+
+  fetchRecipes() {
+    const url = this.userId
+      ? `http://localhost:8080/user/${this.userId}`
+      : 'http://localhost:8080/recipe/';
+
+    this.http
+      .get<{ status: string; Recipes?: Recipe[]; data?: Recipe[] }>(url)
+      .subscribe({
         next: (response) => {
-          if (response.Recipes) {
-            this.recipes = response.Recipes.map((recipe: Recipe) => ({
-              title: recipe.title,
-              imageUrl:
-                recipe.imageURL ||
-                'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
-              prepTime: `${recipe.cooktime} min`,
-              difficulty: recipe.level,
-              likes: recipe.likes,
-              RecipeId: recipe._id,
-              chefId: recipe.chef,
-            }));
-          }
+          const recipesData = response.Recipes || response.data || [];
+          this.recipes = recipesData.map((recipe: Recipe) => ({
+            title: recipe.title,
+            imageUrl:
+              recipe.imageURL ||
+              'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
+            prepTime: `${recipe.cooktime} min`,
+            difficulty: recipe.level,
+            likes: recipe.likes,
+            RecipeId: recipe._id,
+            chefId: recipe.chef || '',
+          }));
+          this.filteredRecipes = this.recipes; // Initialize filtered recipes
         },
-        error: (err) => console.error('Error fetching user recipes:', err),
+        error: (err) => console.error('Error fetching recipes:', err),
       });
-    } else {
-      // Fetch all recipes
-      const allRecipesUrl = 'http://localhost:8080/recipe/';
-      this.http
-        .get<{ status: string; data: Recipe[] }>(allRecipesUrl)
-        .subscribe({
-          next: (response) => {
-            if (response.status === 'SUCCESS') {
-              this.recipes = response.data.map((recipe: Recipe) => ({
-                title: recipe.title,
-                imageUrl:
-                  recipe.imageURL ||
-                  'https://i.dailymail.co.uk/1s/2019/11/05/19/20638190-7652901-image-m-35_1572981254783.jpg',
-                prepTime: `${recipe.cooktime} min`,
-                difficulty: recipe.level,
-                likes: recipe.likes,
-                RecipeId: recipe._id,
-                chefId: '',
-              }));
-            }
-          },
-          error: (err) => console.error('Error fetching all recipes:', err),
-        });
-    }
+  }
+
+  filterRecipes(term: string) {
+    this.filteredRecipes = this.recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(term.toLowerCase())
+    );
   }
 }
