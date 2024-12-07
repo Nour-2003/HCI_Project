@@ -53,6 +53,7 @@ export class RecipesComponent implements OnInit {
   }[] = []; // Stores filtered recipes
   user: any = null;
   userId: string = '';
+  filters = { title: true, prepTime: false, difficulty: false };
 
   constructor(
     private route: ActivatedRoute,
@@ -70,9 +71,10 @@ export class RecipesComponent implements OnInit {
     // Fetch recipes
     this.fetchRecipes();
 
-    // Subscribe to search term changes
-    this.searchService.searchTerm$.subscribe((term) => {
-      this.filterRecipes(term); // Call filter method on term change
+    // Subscribe to search data
+    this.searchService.searchData$.subscribe((data) => {
+      this.filters = data.filters;
+      this.filterRecipes(data.term);
     });
   }
 
@@ -104,14 +106,17 @@ export class RecipesComponent implements OnInit {
   }
 
   filterRecipes(term: string) {
-    const lowerCaseTerm = term.toLowerCase();
-
     this.filteredRecipes = this.recipes.filter((recipe) => {
-      return (
-        recipe.title.toLowerCase().includes(lowerCaseTerm) ||
-        recipe.prepTime.toLowerCase().includes(lowerCaseTerm) ||
-        recipe.difficulty.toLowerCase().includes(lowerCaseTerm)
-      );
+      const matchesTitle =
+        this.filters.title &&
+        recipe.title.toLowerCase().includes(term.toLowerCase());
+      const matchesPrepTime =
+        this.filters.prepTime &&
+        recipe.prepTime.toLowerCase().includes(term.toLowerCase());
+      const matchesDifficulty =
+        this.filters.difficulty &&
+        recipe.difficulty.toLowerCase().includes(term.toLowerCase());
+      return matchesTitle || matchesPrepTime || matchesDifficulty;
     });
   }
 }

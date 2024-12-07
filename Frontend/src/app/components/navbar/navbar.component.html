@@ -25,10 +25,31 @@
         </button>
         <input type="text" class="form-control border-0 bg-light" placeholder="Search" aria-label="Search"
           (input)="onSearch($event)" />
-        <button class="btn btn-outline-none border-0">
-          <i class="fa-solid fa-sliders"></i>
+        <button class="btn btn-outline-none border-0 dropdown-toggle" type="button" id="filterDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Filter
         </button>
+        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+          <div class="d-flex justify-content-center align-items-center">
+            <li>
+              <label class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="filters.title" /> Title
+              </label>
+            </li>
+            <li>
+              <label class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="filters.prepTime" /> Prep Time
+              </label>
+            </li>
+            <li>
+              <label class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="filters.difficulty" /> Difficulty
+              </label>
+            </li>
+          </div>
+        </ul>
       </div>
+
 
       <ul class="navbar-nav p-2">
         <li *ngIf="user" class="nav-item">
