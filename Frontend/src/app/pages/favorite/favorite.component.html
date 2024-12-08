@@ -1,4 +1,5 @@
 <div class="container py-4">
+    <p *ngIf="recipes.length==0" class="text-center fs-3 fw-semibold">No favorite Recipes Yet !</p>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of recipes">
             <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageUrl" [prepTime]="recipe.prepTime"

@@ -49,7 +49,7 @@
 </div>
 
 <div class="container p-2 border-bottom border-black">
-    <ul class="nav d-flex justify-content-between ">
+    <ul class="nav d-flex justify-content-evenly ">
         <li class="nav-item">
             <a class="nav-link text-black" [routerLink]="['recipes',user?.id]"
                 routerLinkActive="active tabunderline fw-semibold">
@@ -61,11 +61,7 @@
                 <i class="fas fa-heart"></i> Favorite
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-black" routerLink="draft" routerLinkActive="active tabunderline fw-semibold">
-                <i class="fas fa-file-alt"></i> Draft
-            </a>
-        </li>
+
         <li class="nav-item">
             <a class="nav-link text-black" routerLink="aboutme" routerLinkActive="active tabunderline fw-semibold">
                 <i class="fas fa-user"></i> About me
