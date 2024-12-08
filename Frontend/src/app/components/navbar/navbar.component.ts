@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit {
   logout() {
     if (this.user) {
       this.userService.logout();
-      this.router.navigate(['/login']);
+      this.router.navigate(['/mainpage']);
     }
   }
 }
