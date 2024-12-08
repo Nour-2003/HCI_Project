@@ -17,7 +17,6 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 
-
 @Component({
   selector: 'app-recipe-form',
   standalone: true,
@@ -41,14 +40,22 @@ export class RecipeFormComponent {
   isSubmitting = false;
   @ViewChild('fileUpload') fileUpload!: FileUpload;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private userService: UserService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private userService: UserService,
+    private router: Router
+  ) {
     this.recipeForm = this.fb.group({
       title: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
-      description: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
+      description: ['', [Validators.required]],
       ingredients: this.fb.array([], Validators.required),
       steps: this.fb.array([], Validators.required),
       servings: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      level: ['', [Validators.required, Validators.pattern(/^(Easy|Medium|Hard)$/)]],
+      level: [
+        '',
+        [Validators.required, Validators.pattern(/^(Easy|Medium|Hard)$/)],
+      ],
       tags: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
       calories: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -57,7 +64,7 @@ export class RecipeFormComponent {
       photo: [null, Validators.required],
     });
 
-    this.userService.getUser().subscribe(data => {
+    this.userService.getUser().subscribe((data) => {
       this.user = data;
     });
     // Add initial ingredient and step fields
@@ -65,13 +72,23 @@ export class RecipeFormComponent {
     this.addStep();
 
     // Subscribe to changes in prepTime and cookTime to calculate totalTime
-    this.recipeForm.get('prepTime')?.valueChanges.subscribe(() => this.updateTotalTime());
-    this.recipeForm.get('cookTime')?.valueChanges.subscribe(() => this.updateTotalTime());
+    this.recipeForm
+      .get('prepTime')
+      ?.valueChanges.subscribe(() => this.updateTotalTime());
+    this.recipeForm
+      .get('cookTime')
+      ?.valueChanges.subscribe(() => this.updateTotalTime());
   }
 
   updateTotalTime() {
-    const prepTime = parseInt(this.recipeForm.get('prepTime')?.value || '0', 10);
-    const cookTime = parseInt(this.recipeForm.get('cookTime')?.value || '0', 10);
+    const prepTime = parseInt(
+      this.recipeForm.get('prepTime')?.value || '0',
+      10
+    );
+    const cookTime = parseInt(
+      this.recipeForm.get('cookTime')?.value || '0',
+      10
+    );
     const totalTime = prepTime + cookTime;
     this.recipeForm.get('totalTime')?.setValue(totalTime.toString());
   }
@@ -152,12 +169,12 @@ export class RecipeFormComponent {
       this.fileUpload.clear();
     }
     this.isSubmitting = false;
-    this.router.navigate([`/profile/recipes/${this.user.id}`]); 
+    this.router.navigate([`/profile/recipes/${this.user.id}`]);
   }
 
   onSubmit() {
     if (this.recipeForm.valid) {
-      this.isSubmitting = true; 
+      this.isSubmitting = true;
 
       const formData = new FormData();
       formData.append('title', this.recipeForm.get('title')?.value);
@@ -170,11 +187,23 @@ export class RecipeFormComponent {
       }));
       formData.append('ingredients', JSON.stringify(ingredients));
 
-      formData.append('steps', JSON.stringify(this.steps.controls.map((control) => control.value)));
-      formData.append('cooktime', Number(this.recipeForm.get('totalTime')?.value).toString());
+      formData.append(
+        'steps',
+        JSON.stringify(this.steps.controls.map((control) => control.value))
+      );
+      formData.append(
+        'cooktime',
+        Number(this.recipeForm.get('totalTime')?.value).toString()
+      );
       formData.append('level', this.recipeForm.get('level')?.value);
-      formData.append('calories', Number(this.recipeForm.get('calories')?.value).toString());
-      formData.append('serves', Number(this.recipeForm.get('servings')?.value).toString());
+      formData.append(
+        'calories',
+        Number(this.recipeForm.get('calories')?.value).toString()
+      );
+      formData.append(
+        'serves',
+        Number(this.recipeForm.get('servings')?.value).toString()
+      );
       formData.append('specialTag', this.recipeForm.get('tags')?.value);
 
       const photoFile = this.recipeForm.get('photo')?.value;
@@ -200,5 +229,4 @@ export class RecipeFormComponent {
       console.error('Form is invalid!');
     }
   }
-  
 }
