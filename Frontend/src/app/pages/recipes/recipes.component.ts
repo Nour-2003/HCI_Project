@@ -42,18 +42,10 @@ export class RecipesComponent implements OnInit {
     RecipeId: string;
     chefId: string;
   }[] = [];
-  filteredRecipes: {
-    title: string;
-    imageUrl: string;
-    prepTime: string;
-    difficulty: string;
-    likes: string;
-    RecipeId: string;
-    chefId: string;
-  }[] = []; // Stores filtered recipes
+  filteredRecipes: typeof this.recipes = [];
   user: any = null;
   userId: string = '';
-  filters = { title: true, prepTime: false, difficulty: false };
+  filters = { title: true, prepTime: '', difficulty: '' };
 
   constructor(
     private route: ActivatedRoute,
@@ -72,9 +64,9 @@ export class RecipesComponent implements OnInit {
     this.fetchRecipes();
 
     // Subscribe to search data
-    this.searchService.searchData$.subscribe((data) => {
-      this.filters = data.filters;
-      this.filterRecipes(data.term);
+    this.searchService.searchData$.subscribe(({ term, filters }) => {
+      this.filters = filters;
+      this.filterRecipes(term);
     });
   }
 
@@ -106,17 +98,30 @@ export class RecipesComponent implements OnInit {
   }
 
   filterRecipes(term: string) {
+    const lowerTerm = term.toLowerCase();
     this.filteredRecipes = this.recipes.filter((recipe) => {
-      const matchesTitle =
-        this.filters.title &&
-        recipe.title.toLowerCase().includes(term.toLowerCase());
-      const matchesPrepTime =
-        this.filters.prepTime &&
-        recipe.prepTime.toLowerCase().includes(term.toLowerCase());
-      const matchesDifficulty =
-        this.filters.difficulty &&
-        recipe.difficulty.toLowerCase().includes(term.toLowerCase());
-      return matchesTitle || matchesPrepTime || matchesDifficulty;
+      const matchesTitle = this.filters.title
+        ? recipe.title.toLowerCase().includes(lowerTerm)
+        : true;
+
+      const matchesPrepTime = this.filters.prepTime
+        ? this.matchPrepTime(recipe.prepTime, this.filters.prepTime)
+        : true;
+
+      const matchesDifficulty = this.filters.difficulty
+        ? recipe.difficulty.toLowerCase() ===
+          this.filters.difficulty.toLowerCase()
+        : true;
+
+      return matchesTitle && matchesPrepTime && matchesDifficulty;
     });
+  }
+
+  matchPrepTime(prepTimeStr: string, filterTime: string): boolean {
+    const prepTime = parseInt(prepTimeStr.replace(' min', ''), 10);
+    if (filterTime === '1-5') return prepTime >= 1 && prepTime <= 5;
+    if (filterTime === '5-10') return prepTime > 5 && prepTime <= 10;
+    if (filterTime === '10+') return prepTime > 10;
+    return true;
   }
 }

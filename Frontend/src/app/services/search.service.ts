@@ -7,11 +7,16 @@ import { BehaviorSubject } from 'rxjs';
 export class SearchService {
   private searchDataSubject = new BehaviorSubject<{
     term: string;
-    filters: any;
+    filters: {
+      title: boolean;
+      prepTime: string;
+      difficulty: string;
+    };
   }>({
     term: '',
-    filters: { title: true, prepTime: false, difficulty: false },
+    filters: { title: true, prepTime: '', difficulty: '' },
   });
+
   searchData$ = this.searchDataSubject.asObservable();
 
   setSearchData(data: { term: string; filters: any }) {

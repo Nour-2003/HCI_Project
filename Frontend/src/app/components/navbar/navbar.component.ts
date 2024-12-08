@@ -21,24 +21,23 @@ export class NavbarComponent implements OnInit {
     private searchService: SearchService
   ) {}
   user: any = null;
-  searchTerm: string = '';
-  filters = {
-    title: true,
-    prepTime: false,
-    difficulty: false,
-  };
+  searchTerm = '';
+  filters = { title: true, prepTime: '', difficulty: '' };
+
   ngOnInit(): void {
     this.userService.getUser().subscribe((user) => {
       this.user = user;
     });
   }
-  onSearch(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.searchTerm = input.value;
-    this.emitSearch();
+
+  onSearchTermChange() {
+    this.searchService.setSearchData({
+      term: this.searchTerm,
+      filters: this.filters,
+    });
   }
 
-  emitSearch() {
+  onFilterChange() {
     this.searchService.setSearchData({
       term: this.searchTerm,
       filters: this.filters,

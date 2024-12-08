@@ -23,32 +23,52 @@
         <button class="btn btn-outline-none border-0">
           <i class="fas fa-search"></i>
         </button>
-        <input type="text" class="form-control border-0 bg-light" placeholder="Search" aria-label="Search"
-          (input)="onSearch($event)" />
-        <button class="btn btn-outline-none border-0 dropdown-toggle" type="button" id="filterDropdown"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Filter
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-          <div class="d-flex justify-content-center align-items-center">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm"
+          (input)="onSearchTermChange()" />
+
+        <!-- Filter Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-none border-0 dropdown-toggle" type="button" id="filtersDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Filters
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="filtersDropdown">
+            <p class="dropdown-header">Filters</p>
+            <div class="dropdown-divider"></div>
             <li>
               <label class="dropdown-item">
-                <input type="checkbox" [(ngModel)]="filters.title" /> Title
+                <input type="checkbox" [(ngModel)]="filters.title" (change)="onFilterChange()" />
+                Title
               </label>
             </li>
             <li>
               <label class="dropdown-item">
-                <input type="checkbox" [(ngModel)]="filters.prepTime" /> Prep Time
+                Prep Time
+                <select [(ngModel)]="filters.prepTime" (change)="onFilterChange()">
+                  <option value="">All</option>
+                  <option value="1-5">1 to 5 min</option>
+                  <option value="5-10">5 to 10 min</option>
+                  <option value="10+">10+ min</option>
+                </select>
               </label>
             </li>
             <li>
               <label class="dropdown-item">
-                <input type="checkbox" [(ngModel)]="filters.difficulty" /> Difficulty
+                Difficulty
+                <select [(ngModel)]="filters.difficulty" (change)="onFilterChange()">
+                  <option value="">All</option>
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
               </label>
             </li>
-          </div>
-        </ul>
+          </ul>
+        </div>
       </div>
+
+
+
 
 
       <ul class="navbar-nav p-2">
