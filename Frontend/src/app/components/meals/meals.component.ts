@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+
 interface Meal {
   type: string;
   name: string;

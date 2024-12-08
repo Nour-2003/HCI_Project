@@ -1,4 +1,5 @@
 <div class="container-fluid p-3">
+    <p *ngIf="!user || meals.length == 0" class="d-flex justify-content-center align-items-center fs-2 fw-bold">No Meals</p>
     <div class="row mb-3" *ngFor="let meal of meals">
         <div class="col">
             <p class="text-muted mb-0">{{ meal.type }}</p>
