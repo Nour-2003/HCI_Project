@@ -442,4 +442,30 @@ export class IngredientsComponent implements OnInit {
         }
       );
   }
+
+  addToMealPlan(mealType: string): void {
+    if (!this.user || !this.recipeId) {
+      alert('User or Recipe data is missing!');
+      return;
+    }
+  
+    const payload = {
+      key: mealType,
+      recipeId: this.recipeId,
+    };
+  
+    this.http
+      .put(`http://localhost:8080/user/${this.user.id}/meals`, payload)
+      .subscribe(
+        (response) => {
+          console.log('Recipe added to meal plan:', response);
+          alert(`${this.recipeName} has been added to ${mealType}!`);
+        },
+        (error) => {
+          console.error('Error adding to meal plan:', error);
+          alert('Failed to add recipe to meal plan. Please try again.');
+        }
+      );
+  }
+  
 }

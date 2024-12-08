@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+
 import {
   animate,
   state,
@@ -25,7 +29,7 @@ interface Meal {
 @Component({
   selector: 'app-grocery',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,HttpClientModule],
   templateUrl: './grocery.component.html',
   styleUrls: ['./grocery.component.css'],
   animations: [
@@ -51,41 +55,26 @@ interface Meal {
   ],
 })
 export class GroceryComponent implements OnInit {
+  constructor(private userService: UserService, private http: HttpClient) {}
+  user: any = null;
+
   weekDays: string[] = [];
   currentMonth: string = '';
   currentYear: number = 0;
   currentDay: number = 0;
   calendarDays: (number | null)[][] = [];
-  meals: Meal[] = [
-    {
-      type: 'Breakfast',
-      name: 'Oatmeal with fruits',
-      imageUrl:
-        'https://images.unsplash.com/photo-1517673400267-0251440c45dc?ixlib=rb-4.0.3',
-      ingredients: [
-        { name: 'Oats', amount: '1', unit: 'cup' },
-        { name: 'Banana', amount: '1', unit: 'piece' },
-        { name: 'Milk', amount: '1', unit: 'cup' },
-      ],
-    },
-    {
-      type: 'Lunch',
-      name: 'Grilled chicken salad',
-      imageUrl:
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3',
-      ingredients: [
-        { name: 'Chicken breast', amount: '200', unit: 'g' },
-        { name: 'Lettuce', amount: '2', unit: 'cups' },
-        { name: 'Olive oil', amount: '2', unit: 'tbsp' },
-      ],
-    },
-  ];
+  meals: Meal[] = [];
+
   expandedMealIndex: number | null = null; // Tracks which meal is expanded
   checkedIngredients: boolean[][] = []; // Tracks the checked status for each meal
 
   ngOnInit() {
+    this.userService.getUser().subscribe((user) => {
+      this.user = user;
+    });
     this.setCurrentDate();
     this.generateCalendar();
+    this.fetchMeals();
 
     // Initialize the checkedIngredients array for all meals
     this.checkedIngredients = this.meals.map((meal) =>
@@ -149,4 +138,35 @@ export class GroceryComponent implements OnInit {
   updateIngredientStatus() {
     console.log('Ingredient status updated');
   }
+
+  fetchMeals() {
+    if (!this.user) {
+      return;
+    }
+    const userId = this.user.id;
+    const url = `http://localhost:8080/user/${userId}/meals`;
+  
+    this.http.get<{ meals: any[] }>(url).subscribe((response) => {
+      const mealOrder = ['Breakfast', 'Lunch', 'Dinner'];
+  
+      this.meals = response.meals
+        .sort((a, b) => mealOrder.indexOf(a.key) - mealOrder.indexOf(b.key)) // Sort based on mealOrder
+        .map((meal) => ({
+          type: meal.key,
+          name: meal.recipe.title,
+          imageUrl: meal.recipe.imageURL,
+          ingredients: meal.recipe.ingredients.map((ingredient: any) => ({
+            name: ingredient.name,
+            amount: ingredient.quantity,
+            unit: ingredient.unit,
+          })),
+        }));
+  
+      // Initialize the checkedIngredients array for fetched meals
+      this.checkedIngredients = this.meals.map((meal) =>
+        new Array(meal.ingredients.length).fill(false)
+      );
+    });
+  }
+  
 }

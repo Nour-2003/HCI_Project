@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-white">
+<nav class="navbar navbar-expand-lg" style="background-color: #F9F9F9;">
   <div class="container-fluid my-2">
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -19,15 +19,15 @@
       </ul>
     </div>
     <div class="collapse navbar-collapse pe-5 me-5 justify-content-end align-items-center" id="navbarSupportedContent">
-      <div class="input-group me-3 w-75 rounded-4 bg-light">
-        <button class="btn btn-outline-none border-0">
+      <div class="input-group me-3 w-50 rounded-4 bg-light">
+        <button class="btn btn-outline-none rounded-start-4 border-0 bg-white">
           <i class="fas fa-search"></i>
         </button>
-        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm"
+        <input type="text" class="form-control border-0" placeholder="Search" [(ngModel)]="searchTerm"
           (input)="onSearchTermChange()" />
 
         <!-- Filter Dropdown -->
-        <button class="btn btn-outline-none border-0 " type="button" id="filtersDropdown" data-bs-toggle="dropdown"
+        <button class="btn btn-outline-none border-0 bg-white rounded-end-4" type="button" id="filtersDropdown" data-bs-toggle="dropdown"
           aria-expanded="false">
           <i class="fa-solid fa-sliders"></i>
         </button>

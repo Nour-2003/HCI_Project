@@ -152,6 +152,53 @@
             </div>
           </div>
         </div>
+
+        <div class="mt-5 ">
+          <p class="fw-bold fs-3 px-3 pt-5 pb-3 d-flex justify-content-start ms-4">
+            Add to Meal Plan
+          </p>
+          <div class="dropdown">
+            <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light dropdown-toggle" style="background-color: #00b96d;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Add to
+            </button>
+            <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="mealType"
+                  id="breakfast"
+                  value="Breakfast"
+                  (change)="addToMealPlan('Breakfast')"
+                />
+                <label class="form-check-label" for="breakfast"> Breakfast </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="mealType"
+                  id="lunch"
+                  value="Lunch"
+                  (change)="addToMealPlan('Lunch')"
+                />
+                <label class="form-check-label" for="lunch"> Lunch </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="mealType"
+                  id="dinner"
+                  value="Dinner"
+                  (change)="addToMealPlan('Dinner')"
+                />
+                <label class="form-check-label" for="dinner"> Dinner </label>
+              </div>
+            </div>
+            
+          </div>
+        </div>
       </div>
     </div>
   </div>
