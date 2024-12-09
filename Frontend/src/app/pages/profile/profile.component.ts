@@ -191,6 +191,11 @@ export class ProfileComponent {
       this.isFollowingMap[userId] = true;
       this.following++;
 
+      // Update the followingList and followerList locally
+      const followedUser = this.displayList.find((user) => user._id === userId);
+      if (followedUser) {
+        this.followingList.push(followedUser); // Add to following list
+      }
       // Update the followingList in userDetailsSubject
       const userDetails = this.userService.userDetailsSubject.value;
       if (userDetails) {
@@ -208,6 +213,10 @@ export class ProfileComponent {
     this.http.post(url, {}).subscribe(() => {
       this.isFollowingMap[userId] = false;
       this.following--;
+      // Remove from following list
+      this.followingList = this.followingList.filter(
+        (user) => user._id !== userId
+      );
 
       // Update the followingList in userDetailsSubject
       const userDetails = this.userService.userDetailsSubject.value;

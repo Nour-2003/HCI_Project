@@ -48,7 +48,8 @@
 
             <!-- Recipes, Following, and Followers -->
             <div class="d-flex gap-4 mt-2">
-                <span>{{ recipesCount }} Recipes</span>
+                <span [routerLink]="['recipes', user?.id]" routerLinkActive="active" style="cursor: pointer;">{{
+                    recipesCount }} Recipes</span>
                 <div class="vr mx-2" style="height: 20px;"></div>
                 <span (click)="toggleFollowingDisplay()" style="cursor: pointer;">{{ following }} Following</span>
                 <div class="vr mx-2" style="height: 20px;"></div>
