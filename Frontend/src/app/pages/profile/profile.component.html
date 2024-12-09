@@ -2,29 +2,37 @@
     <div class="row align-items-center">
         <div class="col-auto p-5">
             <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
-                <div class="container-fluid ">
+                <div class="container-fluid">
+                    <!-- Profile Picture -->
                     <img *ngIf="!selectedFileURL" [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle"
                         style="height: 150px">
 
                     <!-- Display selected image preview if available -->
                     <div *ngIf="selectedFileURL" class="mt-2">
-                        <img [src]="selectedFileURL" alt="Selected Image Preview" class="img-fluid rounded-circle "
+                        <img [src]="selectedFileURL" alt="Selected Image Preview" class="img-fluid rounded-circle"
                             style="max-height: 200px;" />
                     </div>
+
+                    <!-- File Input -->
                     <input *ngIf="startEdit" type="file" (change)="onFileSelected($event)"
                         class="form-control mt-2 ms-2" accept="image/*" />
                 </div>
             </div>
         </div>
         <div class="col">
+            <!-- Edit Mode -->
             <div *ngIf="startEdit">
                 <input type="text" [(ngModel)]="username" class="form-control mb-2" placeholder="Username" />
                 <textarea [(ngModel)]="bio" class="form-control" rows="3" placeholder="Bio"></textarea>
             </div>
+
+            <!-- Display Mode -->
             <div *ngIf="!startEdit">
                 <h2 class="mb-0">{{ username }}</h2>
-                <p class="mt-2"> {{ bio }}</p>
+                <p class="mt-2">{{ bio }}</p>
             </div>
+
+            <!-- Edit and Save Buttons -->
             <div class="d-flex justify-content-between mt-3">
                 <button class="btn rounded-5 px-5 py-2 text-light" (click)="toggleEdit()">
                     {{ startEdit ? 'Cancel' : 'Edit' }}
@@ -37,21 +45,49 @@
                     <span *ngIf="!isLoading">Save</span>
                 </button>
             </div>
+
+            <!-- Recipes, Following, and Followers -->
             <div class="d-flex gap-4 mt-2">
                 <span>{{ recipesCount }} Recipes</span>
                 <div class="vr mx-2" style="height: 20px;"></div>
-                <span>{{ following }} Following</span>
+                <span (click)="toggleFollowingDisplay()" style="cursor: pointer;">{{ following }} Following</span>
                 <div class="vr mx-2" style="height: 20px;"></div>
-                <span>{{ followers }} Followers</span>
+                <span (click)="toggleFollowersDisplay()" style="cursor: pointer;">{{ followers }} Followers</span>
             </div>
         </div>
     </div>
+
+    <!-- Followers/Following List -->
+
+    <div *ngIf="showFollowing || showFollowers">
+        <div class="d-flex justify-content-between gap-4">
+            <h5>{{ showFollowing ? 'Following' : 'Followers' }}</h5>
+            <button class="btn btn-sm ms-auto mb-2 text-white rounded-5" (click)="closefollowinorfollowers()">
+                Close
+            </button>
+        </div>
+        <ul class="list-group rounded-4">
+            <li *ngFor="let user of displayList" class="list-group-item d-flex align-items-center">
+                <img [src]="user.profilePictureURL || defaultProfilePicture" alt="Profile" class="rounded-circle me-3"
+                    style="height: 50px; width: 50px;" [routerLink]=" ['/userprofile',user._id]"
+                    routerLinkActive="active">
+                <div [routerLink]=" ['/userprofile',user._id]" routerLinkActive="active" style="cursor: pointer;">
+                    <h6 class="mb-0">{{ user.username }}</h6>
+                    <small class="text-muted">{{ user.bio }}</small>
+                </div>
+                <button class="btn btn-sm ms-auto text-white rounded-5" (click)="toggleFollowUser(user._id)">
+                    {{ isFollowingMap[user._id] ? 'Unfollow' : 'Follow' }}
+                </button>
+            </li>
+        </ul>
+    </div>
 </div>
 
+<!-- Navigation Links -->
 <div class="container p-2 border-bottom border-black">
-    <ul class="nav d-flex justify-content-evenly ">
+    <ul class="nav d-flex justify-content-evenly">
         <li class="nav-item">
-            <a class="nav-link text-black" [routerLink]="['recipes',user?.id]"
+            <a class="nav-link text-black" [routerLink]="['recipes', user?.id]"
                 routerLinkActive="active tabunderline fw-semibold">
                 <i class="fas fa-book"></i> Recipes
             </a>
@@ -61,7 +97,6 @@
                 <i class="fas fa-heart"></i> Favorite
             </a>
         </li>
-
         <li class="nav-item">
             <a class="nav-link text-black" routerLink="aboutme" routerLinkActive="active tabunderline fw-semibold">
                 <i class="fas fa-user"></i> About me
@@ -70,6 +105,7 @@
     </ul>
 </div>
 
+<!-- Followers/Following List -->
 <div class="container py-3">
     <router-outlet></router-outlet>
 </div>

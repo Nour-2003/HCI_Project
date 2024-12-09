@@ -27,8 +27,8 @@
           (input)="onSearchTermChange()" />
 
         <!-- Filter Dropdown -->
-        <button class="btn btn-outline-none border-0 bg-white rounded-end-4" type="button" id="filtersDropdown" data-bs-toggle="dropdown"
-          aria-expanded="false">
+        <button class="btn btn-outline-none border-0 bg-white rounded-end-4" type="button" id="filtersDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-sliders"></i>
         </button>
         <ul class="dropdown-menu" aria-labelledby="filtersDropdown">
@@ -79,7 +79,7 @@
               [src]="user.profilePictureURL ? user.profilePictureURL : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
               class="rounded-circle" style="width: 40px; height: 40px;" alt="profile.png" id="profileDropdown"
               data-bs-toggle="dropdown" aria-expanded="false" />
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" style="cursor: pointer;">
               <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="fa-solid fa-user"
                     style="color: #309d5f;"></i> Profile</a></li>
               <li><a class="dropdown-item text-danger" (click)="logout()"><i class="fa-solid fa-sign-out"

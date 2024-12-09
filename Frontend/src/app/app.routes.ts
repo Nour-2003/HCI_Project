@@ -23,7 +23,6 @@ export const routes: Routes = [
   { path: 'grocery', component: GroceryComponent },
   { path: 'recipeform', component: RecipeFormComponent },
   { path: 'userprofile/:id', component: UserprofileComponent },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'profile',
     component: ProfileComponent,
@@ -33,4 +32,5 @@ export const routes: Routes = [
       { path: 'favorite', component: FavoriteComponent },
     ],
   },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
