@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
     });
   }
   navigateToProfile() {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profile/recipes', this.user.id]);
   }
 
   logout() {

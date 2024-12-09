@@ -31,7 +31,8 @@
       </div>
 
       <!-- Chef Image and Name -->
-      <div class="d-flex align-items-center mt-3 px-3" [routerLink]=" ['/userprofile',chefId]"
+      <div class="d-flex align-items-center mt-3 px-3" style="cursor: pointer;"
+        [routerLink]="user && user.id === chefId ? ['/profile/recipes',user.id] : ['/userprofile', chefId]"
         routerLinkActive="active">
         <img [src]="chefimg" alt="Profile" class="rounded-circle" width="40" height="40" draggable="false" />
         <p class="ms-3 fs-5 fw-bold mb-0">{{chefName}}</p>
