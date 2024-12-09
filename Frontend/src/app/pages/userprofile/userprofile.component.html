@@ -1,17 +1,17 @@
 <div class="container p-4">
     <div class="row align-items-center">
-        <div class="col-2 p-5">
+        <div class="col-12 col-md-2 p-5">
             <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
                 <img [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle" style="height: 150px">
             </div>
         </div>
-        <div class="col-10">
+        <div class="col-12 col-md-10">
             <div class="row">
-                <div class="col-10">
+                <div class="col-6 col-md-8">
                     <h2 class="mb-0">{{ username }}</h2>
                     <p class="mt-2"> {{bio}}</p>
                 </div>
-                <div *ngIf="myuserid!=userprofileID" class="col-2">
+                <div *ngIf="myuserid!=userprofileID" class="col-2 col-md-4">
                     <button class="btn rounded-5 px-5 py-2 text-light" (click)="toggleFollow()"> {{ isFollowing ?
                         'Unfollow' : 'Follow' }}
                     </button>
