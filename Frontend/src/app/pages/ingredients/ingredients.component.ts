@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ingredients',
@@ -110,7 +111,6 @@ export class IngredientsComponent implements OnInit {
             // Update time display initially
             this.updateTime();
           }
-          console.log('Recipe data:', response);
         },
         (error) => {
           console.error('Error fetching recipe data', error);
@@ -170,13 +170,22 @@ export class IngredientsComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response.status === 'SUCCESS') {
-            console.log('Recipe updated successfully');
+            Swal.fire({
+              icon: 'success',
+              title: 'Recipe updated successfully',
+              showConfirmButton: false,
+              timer: 1500,
+            });
             this.isEditing = false; // Exit edit mode
-            // Optionally, you can refresh the recipe data here
-            console.log('Updated recipe data:', response.data);
           }
         },
         (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error updating recipe',
+            text: 'Please try again',
+          });
+
           console.error('Error updating recipe', error);
         }
       );
@@ -184,21 +193,40 @@ export class IngredientsComponent implements OnInit {
 
   // Delete the recipe with confirmation
   deleteRecipe() {
-    if (confirm('Are you sure you want to delete this recipe?')) {
-      this.http
-        .delete<any>(`http://localhost:8080/recipe/${this.recipeId}`)
-        .subscribe(
-          (response) => {
-            if (response.status === 'SUCCESS') {
-              console.log('Recipe deleted successfully');
-              this.router.navigate([`/profile/recipes/${this.user.id}`]);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http
+          .delete<any>(`http://localhost:8080/recipe/${this.recipeId}`)
+          .subscribe(
+            (response) => {
+              if (response.status === 'SUCCESS') {
+                Swal.fire(
+                  'Deleted!',
+                  'Your recipe has been deleted.',
+                  'success'
+                );
+                this.router.navigate([`/profile/recipes/${this.user.id}`]);
+              }
+            },
+            (error) => {
+              console.error('Error deleting recipe', error);
+              Swal.fire(
+                'Error!',
+                'There was an error deleting your recipe.',
+                'error'
+              );
             }
-          },
-          (error) => {
-            console.error('Error deleting recipe', error);
-          }
-        );
-    }
+          );
+      }
+    });
   }
 
   // Start the timer for cooking
@@ -225,7 +253,12 @@ export class IngredientsComponent implements OnInit {
         this.updateProgress();
       } else if (this.timeInSeconds <= 0) {
         clearInterval(this.timerInterval);
-        console.log('Timer completed!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Time is up!',
+          text: 'Your cooking time has completed.',
+          showConfirmButton: true,
+        });
       }
     }, 1000);
   }
@@ -314,7 +347,12 @@ export class IngredientsComponent implements OnInit {
 
   toggleLike(): void {
     if (!this.user) {
-      return alert('Please login to like the recipe');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login to like the recipe',
+        showConfirmButton: true,
+      });
+      return;
     }
     const currentUser = this.user;
     if (currentUser) {
@@ -331,7 +369,6 @@ export class IngredientsComponent implements OnInit {
       .post(`http://localhost:8080/user/${userId}/likelist`, body)
       .subscribe(
         (response) => {
-          console.log('Recipe liked:', response);
           this.isLiked = true;
 
           // Update the likeList in userDetailsSubject
@@ -356,7 +393,6 @@ export class IngredientsComponent implements OnInit {
       .delete(`http://localhost:8080/user/${userId}/likelist`, { body })
       .subscribe(
         (response) => {
-          console.log('Recipe unliked:', response);
           this.isLiked = false;
 
           // Update the likeList in userDetailsSubject
@@ -376,7 +412,12 @@ export class IngredientsComponent implements OnInit {
 
   toggleFavorite(): void {
     if (!this.user) {
-      return alert('Please login to favorite the recipe');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login to favorite the recipe',
+        showConfirmButton: true,
+      });
+      return;
     }
     const currentUser = this.user;
     if (currentUser) {
@@ -397,7 +438,6 @@ export class IngredientsComponent implements OnInit {
       .post(`http://localhost:8080/user/${userId}/favoriteList`, body)
       .subscribe(
         (response) => {
-          console.log('Recipe favorited:', response);
           this.isFavorited = true;
 
           // Update the favoriteList in userDetailsSubject
@@ -425,7 +465,6 @@ export class IngredientsComponent implements OnInit {
       .delete(`http://localhost:8080/user/${userId}/favoriteList`, { body })
       .subscribe(
         (response) => {
-          console.log('Recipe unfavorited:', response);
           this.isFavorited = false;
 
           // Update the favoriteList in userDetailsSubject
@@ -445,21 +484,29 @@ export class IngredientsComponent implements OnInit {
 
   addToMealPlan(mealType: string): void {
     if (!this.user || !this.recipeId) {
-      alert('User or Recipe data is missing!');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login to add to meal plan',
+        showConfirmButton: true,
+      });
       return;
     }
-  
+
     const payload = {
       key: mealType,
       recipeId: this.recipeId,
     };
-  
+
     this.http
       .put(`http://localhost:8080/user/${this.user.id}/meals`, payload)
       .subscribe(
         (response) => {
-          console.log('Recipe added to meal plan:', response);
-          alert(`${this.recipeName} has been added to ${mealType}!`);
+          Swal.fire({
+            icon: 'success',
+            title: 'Added to Meal Plan',
+            text: `${this.recipeName} has been added to ${mealType}!`,
+            showConfirmButton: true,
+          });
         },
         (error) => {
           console.error('Error adding to meal plan:', error);
@@ -467,5 +514,4 @@ export class IngredientsComponent implements OnInit {
         }
       );
   }
-  
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service'; // Import UserService
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-recipe-card',
@@ -38,7 +39,12 @@ export class RecipeCardComponent implements OnInit {
 
   toggleLike(): void {
     if (!this.user) {
-      return alert("please login to like the recipe");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login',
+        text: 'You need to login to like the recipe.',
+      });
+      return;
     }
     const currentUser = this.user;
     if (currentUser) {
@@ -52,44 +58,50 @@ export class RecipeCardComponent implements OnInit {
 
   likeRecipe(userId: string): void {
     const body = { recipeId: this.RecipeId };
-    this.http.post(`http://localhost:8080/user/${userId}/likelist`, body).subscribe(
-      (response) => {
-        console.log('Recipe liked:', response);
-        this.isLiked = true;
-        this.likes = (parseInt(this.likes) + 1).toString();
-  
-        // Update the likeList in userDetailsSubject
-        const userDetails = this.userService.userDetailsSubject.value;
-        if (userDetails) {
-          userDetails.likeList = [...(userDetails.likeList || []), { _id: this.RecipeId }];
-          this.userService.setUserDetails(userDetails);
+    this.http
+      .post(`http://localhost:8080/user/${userId}/likelist`, body)
+      .subscribe(
+        (response) => {
+          this.isLiked = true;
+          this.likes = (parseInt(this.likes) + 1).toString();
+
+          // Update the likeList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.likeList = [
+              ...(userDetails.likeList || []),
+              { _id: this.RecipeId },
+            ];
+            this.userService.setUserDetails(userDetails);
+          }
+        },
+        (error) => {
+          console.error('Error liking recipe:', error);
         }
-      },
-      (error) => {
-        console.error('Error liking recipe:', error);
-      }
-    );
+      );
   }
-  
+
   unlikeRecipe(userId: string): void {
     const body = { recipeId: this.RecipeId };
-    this.http.delete(`http://localhost:8080/user/${userId}/likelist`, { body }).subscribe(
-      (response) => {
-        console.log('Recipe unliked:', response);
-        this.isLiked = false;
-        this.likes = (parseInt(this.likes) - 1).toString();
-  
-        // Update the likeList in userDetailsSubject
-        const userDetails = this.userService.userDetailsSubject.value;
-        if (userDetails) {
-          userDetails.likeList = userDetails.likeList.filter((recipe: any) => recipe._id !== this.RecipeId);
-          this.userService.setUserDetails(userDetails);
+    this.http
+      .delete(`http://localhost:8080/user/${userId}/likelist`, { body })
+      .subscribe(
+        (response) => {
+          this.isLiked = false;
+          this.likes = (parseInt(this.likes) - 1).toString();
+
+          // Update the likeList in userDetailsSubject
+          const userDetails = this.userService.userDetailsSubject.value;
+          if (userDetails) {
+            userDetails.likeList = userDetails.likeList.filter(
+              (recipe: any) => recipe._id !== this.RecipeId
+            );
+            this.userService.setUserDetails(userDetails);
+          }
+        },
+        (error) => {
+          console.error('Error unliking recipe:', error);
         }
-      },
-      (error) => {
-        console.error('Error unliking recipe:', error);
-      }
-    );
+      );
   }
-  
 }

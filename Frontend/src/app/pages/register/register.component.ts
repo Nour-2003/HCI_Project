@@ -94,11 +94,8 @@ export class RegisterComponent implements OnInit {
         password,
       };
 
-      console.log('Registering user:', payload);
-
       this.http.post('http://localhost:8080/auth/signup', payload).subscribe(
         (response: any) => {
-          console.log(response);
           if (response.status === 'SUCCESS') {
             this.userService.setUser(response.data);
             this.userService.loadUser();
@@ -115,8 +112,6 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
         }
       );
-    } else {
-      console.log('Form is not valid');
     }
   }
 }

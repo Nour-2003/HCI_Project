@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 interface User {
   username: string;
@@ -141,10 +142,20 @@ export class ProfileComponent {
           profilePictureURL: updatedUser.profilePictureURL,
         };
         this.userService.setUser(updatedata);
+        Swal.fire({
+          icon: 'success',
+          title: 'Profile Updated',
+          text: 'Your profile has been successfully updated!',
+        });
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Failed to update user:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to update profile',
+          text: 'Please try again later!',
+        });
         this.isLoading = false;
       },
     });

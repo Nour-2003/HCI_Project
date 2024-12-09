@@ -47,7 +47,6 @@ export class AboutmeComponent implements OnInit {
         // Update component variables with data from the response
         this.Education = data.Education;
         this.Award = data.Award;
-        console.log('User profile data:', data);
       },
       error: (err) => {
         console.error('Error fetching user profile:', err);

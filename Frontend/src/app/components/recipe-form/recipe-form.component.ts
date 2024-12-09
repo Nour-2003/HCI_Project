@@ -16,6 +16,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-recipe-form',
@@ -217,11 +218,24 @@ export class RecipeFormComponent {
         (response: any) => {
           if (response.statusCode === 201) {
             this.router.navigate([`/profile/recipes/${this.user.id}`]);
+
+            Swal.fire({
+              title: 'Recipe submitted!',
+              text: 'Your recipe has been submitted successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            });
           }
           this.isSubmitting = false; // Stop loader
         },
         (error) => {
           console.error('Error submitting recipe:', error);
+          Swal.fire({
+            title: 'Error submitting recipe',
+            text: 'An error occurred while submitting your recipe. Please try again later.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
           this.isSubmitting = false; // Stop loader
         }
       );

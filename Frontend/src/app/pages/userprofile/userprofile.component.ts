@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-userprofile',
@@ -77,7 +78,12 @@ export class UserprofileComponent implements OnInit {
 
   toggleFollow(): void {
     if (!this.myuserid) {
-      return alert('Please log in to follow users!');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please log in',
+        text: 'You need to log in to follow users!',
+      });
+      return;
     }
     if (this.isFollowing) {
       this.unfollowUser();
@@ -90,7 +96,6 @@ export class UserprofileComponent implements OnInit {
     const url = `http://localhost:8080/user/${this.myuserid}/follow/${this.userprofileID}`;
     this.http.post(url, {}).subscribe(
       (response) => {
-        console.log('User followed:', response);
         this.isFollowing = true;
         this.followers++;
 
@@ -114,7 +119,6 @@ export class UserprofileComponent implements OnInit {
     const url = `http://localhost:8080/user/${this.myuserid}/unfollow/${this.userprofileID}`;
     this.http.post(url, {}).subscribe(
       (response) => {
-        console.log('User unfollowed:', response);
         this.isFollowing = false;
         this.followers--;
 

@@ -58,8 +58,6 @@ export class LoginComponent {
       // Make the API call
       this.http.post('http://localhost:8080/auth/login', payload).subscribe(
         (response: any) => {
-          console.log(response);
-
           // Save the user data using UserService
           if (response.status === 'SUCCESS') {
             this.userService.setUser(response.data);
@@ -70,15 +68,12 @@ export class LoginComponent {
           }
         },
         (error) => {
-          console.error('Login Failed:', error);
           this.errorMessage = 'Invalid email or password.';
         },
         () => {
           this.loading = false;
         }
       );
-    } else {
-      console.log('Form is invalid');
     }
   }
 
