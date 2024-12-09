@@ -2,7 +2,7 @@
   <div class="row p-2">
 
     <!-- Left Column -->
-    <div class="col-5">
+    <div class="col-12 col-md-5">
       <div class="d-flex justify-content-between">
         <!-- Recipe Title -->
         <h2 class="fw-bold px-3 pt-2 pb-3">
@@ -73,7 +73,7 @@
     </div>
 
     <!-- Right Column -->
-    <div class="col-7 d-flex justify-content-center position-relative">
+    <div class="col-12 col-md-7 d-flex justify-content-center position-relative">
       <div class="text-center">
 
         <!-- Recipe Image -->
@@ -95,7 +95,7 @@
         <div class="row mt-4">
 
           <!-- Editable Cook Time -->
-          <div class="col-5">
+          <div class="col-6 col-md-5 mb-2">
             <div class="d-flex align-items-center justify-content-center">
               <i class="fa-solid fa-clock fs-4 me-2"></i>
               <p class="mb-0 fw-bold">Cook Time</p>
@@ -105,7 +105,7 @@
           </div>
 
           <!-- Editable Difficulty Level -->
-          <div class="col-3">
+          <div class="col-4 col-md-3 mb-2">
             <div class="d-flex align-items-center justify-content-center">
               <img src="assets/imgs/819.png" class="icon-style me-2" alt="Cooking Bot Icon" />
               <p class="mb-0 fw-bold">Level</p>
@@ -116,7 +116,7 @@
           </div>
 
           <!-- Editable Calories -->
-          <div class="col-4">
+          <div class="col-5 col-md-4 mb-2">
             <div class="d-flex align-items-center justify-content-center">
               <i class="fa fa-fire fs-4 me-2"></i>
               <p class="mb-0 fw-bold">Calories</p>
@@ -126,31 +126,33 @@
           </div>
 
           <!-- Editable Serve and Special Tags -->
-          <div class="row mt-4">
-            <div class="col-5">
-              <div class="d-flex align-items-center justify-content-center">
-                <i class="fa-solid fa-user fs-4 me-2"></i>
-                <p class="mb-0 fw-bold">Serve</p>
-              </div>
-              <input *ngIf="isEditing" [(ngModel)]="mealServings" class="form-control" placeholder="Enter servings" />
-              <p *ngIf="!isEditing" class="mb-0">{{ mealServings }} Serving</p>
-            </div>
 
-            <div class="col-5">
-              <div class="d-flex align-items-center justify-content-start">
-                <i class="fa-solid fa-hashtag fs-4 me-2"></i>
-                <p class="mb-0 fw-bold">Special Tags</p>
-              </div>
-              <div *ngIf="isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
-                <input *ngFor="let tag of mealSpecialTags; let i = index" [(ngModel)]="mealSpecialTags[i]"
-                  class="form-control m-1" placeholder="Enter tag" />
-              </div>
-              <div *ngIf="!isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
-                <span class="badge text-light m-1" style="background-color: #00b96d;"
-                  *ngFor="let tag of mealSpecialTags">{{ tag }}</span>
-              </div>
+          <div class="col-6 col-md-5 mb-2">
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-user fs-4 me-2"></i>
+              <p class="mb-0 fw-bold">Serve</p>
+            </div>
+            <input *ngIf="isEditing" [(ngModel)]="mealServings" class="form-control" placeholder="Enter servings" />
+            <p *ngIf="!isEditing" class="mb-0">{{ mealServings }} Serving</p>
+          </div>
+
+          <div class="col-6 col-md-5 mb-2">
+            <div
+              class="d-flex align-items-center justify-content-center justify-content-lg-start justify-content-md-start">
+              <i class="fa-solid fa-hashtag fs-4 me-2"></i>
+              <p class="mb-0 fw-bold">Special Tags</p>
+            </div>
+            <div *ngIf="isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
+              <input *ngFor="let tag of mealSpecialTags; let i = index" [(ngModel)]="mealSpecialTags[i]"
+                class="form-control m-1" placeholder="Enter tag" />
+            </div>
+            <div *ngIf="!isEditing"
+              class="d-flex align-items-center justify-content-center justify-content-lg-start justify-content-md-start flex-wrap">
+              <span class="badge text-light m-1" style="background-color: #00b96d;"
+                *ngFor="let tag of mealSpecialTags">{{ tag }}</span>
             </div>
           </div>
+
         </div>
 
         <div class="mt-5 ">
@@ -158,45 +160,29 @@
             Add to Meal Plan
           </p>
           <div class="dropdown">
-            <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light dropdown-toggle" style="background-color: #00b96d;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light dropdown-toggle"
+              style="background-color: #00b96d;" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+              aria-expanded="false">
               Add to
             </button>
             <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuButton">
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="mealType"
-                  id="breakfast"
-                  value="Breakfast"
-                  (change)="addToMealPlan('Breakfast')"
-                />
+                <input class="form-check-input" type="radio" name="mealType" id="breakfast" value="Breakfast"
+                  (change)="addToMealPlan('Breakfast')" />
                 <label class="form-check-label" for="breakfast"> Breakfast </label>
               </div>
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="mealType"
-                  id="lunch"
-                  value="Lunch"
-                  (change)="addToMealPlan('Lunch')"
-                />
+                <input class="form-check-input" type="radio" name="mealType" id="lunch" value="Lunch"
+                  (change)="addToMealPlan('Lunch')" />
                 <label class="form-check-label" for="lunch"> Lunch </label>
               </div>
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="mealType"
-                  id="dinner"
-                  value="Dinner"
-                  (change)="addToMealPlan('Dinner')"
-                />
+                <input class="form-check-input" type="radio" name="mealType" id="dinner" value="Dinner"
+                  (change)="addToMealPlan('Dinner')" />
                 <label class="form-check-label" for="dinner"> Dinner </label>
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -210,7 +196,7 @@
     </h3>
 
     <!-- Image Section for Directions -->
-    <div class="col-4">
+    <div class="col-12 col-md-4">
       <img [src]="recipeImage" draggable="false" style="height: 300px;" class="w-75 rounded-5"
         alt="Blueberry Pancake" />
 
@@ -269,7 +255,7 @@
     </div>
 
     <!-- Step Instructions -->
-    <div class="col-4">
+    <div class="col-12 col-md-4">
       <h4>Step {{ currentStep + 1 }}</h4>
 
       <!-- Editable Step Instruction -->
@@ -286,7 +272,7 @@
 
 
     <!-- Timer Section -->
-    <div class="col-3 d-flex justify-content-end me-2" id="timer-section">
+    <div class="col-12 col-md-3 d-flex justify-content-end me-2" id="timer-section">
       <div class="timer-container text-center">
         <!-- Circular Timer -->
         <svg class="progress-circle" width="120" height="120">

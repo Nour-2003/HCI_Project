@@ -57,7 +57,7 @@
                     <div class="row">
                         <p class="section-title fw-bold text-start">Recent Work</p>
                         <div class="row">
-                            <div class="col-6 mb-4" *ngFor="let recipe of recipes.slice(0, 2)">
+                            <div class="col-12 col-md-6 mb-4" *ngFor="let recipe of recipes.slice(0, 2)">
                                 <app-recipe-card [title]="recipe.title"
                                     [imageUrl]="recipe.imageURL || 'default-image.jpg'" [prepTime]="recipe.cooktime"
                                     [difficulty]="recipe.level" [likes]="recipe.likes || 0" [RecipeId]="recipe._id">
