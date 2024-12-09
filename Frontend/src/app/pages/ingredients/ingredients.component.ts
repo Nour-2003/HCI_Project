@@ -259,6 +259,11 @@ export class IngredientsComponent implements OnInit {
           text: 'Your cooking time has completed.',
           showConfirmButton: true,
         });
+        // Reset the timer
+        this.isPaused = true;
+        this.timeInSeconds = parseInt(this.cookTime) * 60;
+        this.updateTime();
+        this.updateProgress();
       }
     }, 1000);
   }
