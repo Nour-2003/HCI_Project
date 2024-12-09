@@ -208,11 +208,13 @@ export class IngredientsComponent implements OnInit {
           .subscribe(
             (response) => {
               if (response.status === 'SUCCESS') {
-                Swal.fire(
-                  'Deleted!',
-                  'Your recipe has been deleted.',
-                  'success'
-                );
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Deleted!',
+                  text: 'Your recipe has been deleted.',
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
                 this.router.navigate([`/profile/recipes/${this.user.id}`]);
               }
             },

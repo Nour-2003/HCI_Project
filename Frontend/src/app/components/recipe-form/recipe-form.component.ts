@@ -217,14 +217,14 @@ export class RecipeFormComponent {
       this.http.post(endpoint, formData).subscribe(
         (response: any) => {
           if (response.statusCode === 201) {
-            this.router.navigate([`/profile/recipes/${this.user.id}`]);
-
             Swal.fire({
               title: 'Recipe submitted!',
               text: 'Your recipe has been submitted successfully.',
               icon: 'success',
-              confirmButtonText: 'OK',
+              showConfirmButton: false,
+              timer: 1500,
             });
+            this.router.navigate([`/profile/recipes/${this.user.id}`]);
           }
           this.isSubmitting = false; // Stop loader
         },

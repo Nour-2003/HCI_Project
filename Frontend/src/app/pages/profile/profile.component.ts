@@ -144,8 +144,9 @@ export class ProfileComponent {
         this.userService.setUser(updatedata);
         Swal.fire({
           icon: 'success',
-          title: 'Profile Updated',
           text: 'Your profile has been successfully updated!',
+          showConfirmButton: false,
+          timer: 1500,
         });
         this.isLoading = false;
       },
