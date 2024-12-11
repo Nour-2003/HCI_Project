@@ -76,7 +76,7 @@
                     <h6 class="mb-0">{{ user.username }}</h6>
                     <small class="text-muted">{{ user.bio }}</small>
                 </div>
-                <button class="btn btn-sm ms-auto text-white rounded-5" (click)="toggleFollowUser(user._id)">
+                <button class="btn-sm ms-auto text-white rounded-5 border-0 py-2 px-3" [ngClass]="{ btnDark: isFollowingMap[user._id] , btn: !isFollowingMap[user._id] }" (click)="toggleFollowUser(user._id)">
                     {{ isFollowingMap[user._id] ? 'Unfollow' : 'Follow' }}
                 </button>
             </li>
