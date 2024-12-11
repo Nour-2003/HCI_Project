@@ -16,3 +16,13 @@
   .profile-section {
     margin-bottom: 2rem;
   }
+
+  .rotateiconx{
+    --fa-rotate-angle: 135deg;
+    transition: transform 0.3s ease;
+  }
+
+  .rotateiconp{
+    --fa-rotate-angle: 0deg;
+    transition: transform 0.3s ease;
+  }
