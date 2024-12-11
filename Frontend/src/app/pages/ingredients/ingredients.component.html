@@ -9,21 +9,28 @@
           <input *ngIf="isEditing" [(ngModel)]="recipeName" class="form-control" />
           <span *ngIf="!isEditing">{{ recipeName }}</span>
         </h2>
-        <div *ngIf="user&&user.id==chefId" class="d-flex justify-content-between">
+
+        <div *ngIf="user&&user.id==chefId" class="d-flex justify-content-between gap-3">
           <!-- Save Button -->
           <div *ngIf="isEditing">
-            <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
+            <button class="btn border border-0 rounded-5 text-light" style="background-color: #00b96d;"
               (click)="saveUpdates()">Save</button>
           </div>
+
+
           <!-- Delete Button -->
-          <button *ngIf="!isEditing" class="btn btn-danger border border-1 m-3 px-3 py-2 rounded-5 text-light"
-            (click)="deleteRecipe()">Delete</button>
+          <div *ngIf="!isEditing">
+            <button class="btn btn-danger border border-0 rounded-5 text-light" (click)="deleteRecipe()">Delete</button>
+          </div>
+
 
           <!-- Edit Button -->
-          <button class="btn border border-1 m-3 px-3 py-2 rounded-5 text-light" style="background-color: #00b96d;"
-            (click)="toggleEdit()">
-            {{ isEditing ? 'Cancel' : 'Edit' }}
-          </button>
+          <div>
+            <button class="btn border border-0 rounded-5 text-light" style="background-color: #00b96d;"
+              (click)="toggleEdit()">
+              {{ isEditing ? 'Cancel' : 'Edit' }}
+            </button>
+          </div>
 
 
 
@@ -190,33 +197,28 @@
         <!-- add rating here     -->
         <div>
           <p class="fw-bold fs-3 px-3 pt-5 pb-3 d-flex justify-content-start ms-4">
-            Average Rating
+            Average Rating :
           </p>
-        
+
           <div class="d-flex justify-content-center">
-            <i
-              *ngFor="let star of stars; let i = index"
-              class="fa fa-star fs-2 mx-3"
-              [ngClass]="{'text-warning': i < avgRate, 'text-muted': i >= avgRate}"
-            ></i>
+            <i *ngFor="let star of stars; let i = index" class="fa fa-star fs-2 mx-3"
+              [ngClass]="{'text-warning': i < avgRate, 'text-muted': i >= avgRate}"></i>
           </div>
-        </div>        
+          <p class="fs-5 mt-3 fw-semibold">{{ ratinglen }} People rating this recipe</p>
+        </div>
 
         <div>
           <p class="fw-bold fs-3 px-3 pt-5 pb-3 d-flex justify-content-start ms-4">
             Rate this recipe
           </p>
-          
+
           <div class="d-flex justify-content-center">
-            <i
-              *ngFor="let star of stars; let i = index"
-              class="fa fa-star fs-2 mx-3"
+            <i *ngFor="let star of stars; let i = index" class="fa fa-star fs-2 mx-3"
               [ngClass]="{'text-warning': i < userRating, 'text-muted': i >= userRating}"
-              (click)="rateRecipe(i + 1)"
-            ></i>
+              (click)="rateRecipe(i + 1)"></i>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>

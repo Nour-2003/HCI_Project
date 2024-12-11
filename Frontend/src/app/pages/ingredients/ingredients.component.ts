@@ -54,6 +54,7 @@ export class IngredientsComponent implements OnInit {
   avgRate: number = 0;
   stars: number[] = [0, 1, 2, 3, 4];
   userRating: number = 0;
+  ratinglen:number=0;
   user: any = null;
   constructor(
     private userService: UserService,
@@ -113,6 +114,7 @@ export class IngredientsComponent implements OnInit {
             // Convert cookTime to seconds
             this.timeInSeconds = parseInt(this.cookTime) * 60;
             this.avgRate = data.averageRating;
+            this.ratinglen=data.rating.length;
             const userRatingObject = data.rating.find(
               
               (rating: any) => {
