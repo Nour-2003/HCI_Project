@@ -1,88 +1,115 @@
 <div class="container p-4">
-    <div class="row align-items-center">
-        <div class="col-12 col-md-2 p-5">
-            <div class="profile-avatar d-flex align-items-center justify-content-center p-3">
-                <img [src]="profilePictureURL" alt="Profile Picture" class="rounded-circle" style="height: 150px">
-            </div>
-        </div>
-        <div class="col-12 col-md-10">
-            <div class="row">
-                <div class="col-6 col-md-8">
-                    <h2 class="mb-0">{{ username }}</h2>
-                    <p class="mt-2"> {{bio}}</p>
-                </div>
-                <div *ngIf="myuserid!=userprofileID" class="col-2 col-md-4">
-                    <button class="btn rounded-5 px-5 py-2 text-light" (click)="toggleFollow()"> {{ isFollowing ?
-                        'Unfollow' : 'Follow' }}
-                    </button>
-                </div>
-
-
-            </div>
-
-        </div>
-        <div class="d-flex justify-content-center align-items-center gap-4  pb-4">
-            <span>{{ recipesCount }} Recipes</span>
-            <div class="vr mx-2" style="height: 20px;"></div>
-            <span>{{ following }} Following</span>
-            <div class="vr mx-2" style="height: 20px;"></div>
-            <span>{{ followers }} Followers</span>
-        </div>
-        <hr>
-        <div class="container py-3">
-            <div class="row ">
-                <div class="col-6">
-                    <div class="profile-section">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="section-title fw-bold">Education</p>
-
-                        </div>
-                        <div>
-                            <h6 class="mb-0">{{Education}}</h6>
-                        </div>
-                    </div>
-                    <div class="profile-section">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="section-title fw-bold">My Awards</p>
-
-                        </div>
-                        <div>
-                            <h6 class="mb-0">{{Award}}</h6>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col-6">
-                    <div class="row">
-                        <p class="section-title fw-bold text-start">Recent Work</p>
-                        <div class="row">
-                            <div class="col-12 col-md-6 mb-4" *ngFor="let recipe of recipes.slice(0, 2)">
-                                <app-recipe-card [title]="recipe.title"
-                                    [imageUrl]="recipe.imageURL || 'default-image.jpg'" [prepTime]="recipe.cooktime"
-                                    [difficulty]="recipe.level" [likes]="recipe.likes || 0" [RecipeId]="recipe._id">
-                                </app-recipe-card>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="container py-3">
-            <div class="row">
-                <p class="section-title fw-bold text-center">My Recipes</p>
-
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of recipes">
-                        <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageURL || 'default-image.jpg'"
-                            [prepTime]="recipe.cooktime" [difficulty]="recipe.level" [likes]="recipe.likes || 0"
-                            [RecipeId]="recipe._id">
-                        </app-recipe-card>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row align-items-center">
+    <div class="col-12 col-md-2 p-5">
+      <div
+        class="profile-avatar d-flex align-items-center justify-content-center p-3"
+      >
+        <img
+          [src]="profilePictureURL"
+          alt="Profile Picture"
+          class="rounded-circle"
+          style="height: 150px"
+        />
+      </div>
     </div>
+    <div class="col-12 col-md-10">
+      <div class="row">
+        <div class="col-6 col-md-8">
+          <h2 class="mb-0">{{ username }}</h2>
+          <p class="mt-2">{{ bio }}</p>
+        </div>
+        <div *ngIf="myuserid != userprofileID" class="col-2 col-md-4">
+          <button
+            class="rounded-5 px-5 py-2 text-light border-0"
+            [ngClass]="{ btnDark: isFollowing, btn: !isFollowing }"
+            (click)="toggleFollow()"
+          >
+            <span
+              [ngClass]="{
+                'fa-x fa-sm': isFollowing,
+                'fa-plus fa-lg': !isFollowing
+              }"
+            >
+            </span>
+        {{ isFollowing ? "Unfollow" : "Follow" }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center gap-4 pb-4">
+      <span>{{ recipesCount }} Recipes</span>
+      <div class="vr mx-2" style="height: 20px"></div>
+      <span>{{ following }} Following</span>
+      <div class="vr mx-2" style="height: 20px"></div>
+      <span>{{ followers }} Followers</span>
+    </div>
+    <hr />
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="profile-section">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="section-title fw-bold">Education</p>
+            </div>
+            <div>
+              <h6 class="mb-0">{{ Education }}</h6>
+            </div>
+          </div>
+          <div class="profile-section">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="section-title fw-bold">My Awards</p>
+            </div>
+            <div>
+              <h6 class="mb-0">{{ Award }}</h6>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="row">
+            <p class="section-title fw-bold text-start">Recent Work</p>
+            <div class="row">
+              <div
+                class="col-12 col-md-6 mb-4"
+                *ngFor="let recipe of recipes.slice(0, 2)"
+              >
+                <app-recipe-card
+                  [title]="recipe.title"
+                  [imageUrl]="recipe.imageURL || 'default-image.jpg'"
+                  [prepTime]="recipe.cooktime"
+                  [difficulty]="recipe.level"
+                  [likes]="recipe.likes || 0"
+                  [RecipeId]="recipe._id"
+                >
+                </app-recipe-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-3">
+      <div class="row">
+        <p class="section-title fw-bold text-center">My Recipes</p>
+
+        <div class="row">
+          <div
+            class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+            *ngFor="let recipe of recipes"
+          >
+            <app-recipe-card
+              [title]="recipe.title"
+              [imageUrl]="recipe.imageURL || 'default-image.jpg'"
+              [prepTime]="recipe.cooktime"
+              [difficulty]="recipe.level"
+              [likes]="recipe.likes || 0"
+              [RecipeId]="recipe._id"
+            >
+            </app-recipe-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -186,6 +186,37 @@
 
           </div>
         </div>
+
+        <!-- add rating here     -->
+        <div>
+          <p class="fw-bold fs-3 px-3 pt-5 pb-3 d-flex justify-content-start ms-4">
+            Average Rating
+          </p>
+        
+          <div class="d-flex justify-content-center">
+            <i
+              *ngFor="let star of stars; let i = index"
+              class="fa fa-star fs-2 mx-3"
+              [ngClass]="{'text-warning': i < avgRate, 'text-muted': i >= avgRate}"
+            ></i>
+          </div>
+        </div>        
+
+        <div>
+          <p class="fw-bold fs-3 px-3 pt-5 pb-3 d-flex justify-content-start ms-4">
+            Rate this recipe
+          </p>
+          
+          <div class="d-flex justify-content-center">
+            <i
+              *ngFor="let star of stars; let i = index"
+              class="fa fa-star fs-2 mx-3"
+              [ngClass]="{'text-warning': i < userRating, 'text-muted': i >= userRating}"
+              (click)="rateRecipe(i + 1)"
+            ></i>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>

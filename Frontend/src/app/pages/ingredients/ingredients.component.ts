@@ -51,6 +51,9 @@ export class IngredientsComponent implements OnInit {
   circumference: number = 2 * Math.PI * 54;
   dashOffset: number = this.circumference;
   maxTimeInSeconds: number = 100;
+  avgRate: number = 0;
+  stars: number[] = [0, 1, 2, 3, 4];
+  userRating: number = 0;
   user: any = null;
   constructor(
     private userService: UserService,
@@ -77,6 +80,8 @@ export class IngredientsComponent implements OnInit {
       .get<any>(`http://localhost:8080/recipe/${this.recipeId}`)
       .subscribe(
         (response) => {
+          
+
           if (response.status === 'SUCCESS') {
             const data = response.data;
 
@@ -107,7 +112,18 @@ export class IngredientsComponent implements OnInit {
             this.comments = data.comments;
             // Convert cookTime to seconds
             this.timeInSeconds = parseInt(this.cookTime) * 60;
-
+            this.avgRate = data.averageRating;
+            const userRatingObject = data.rating.find(
+              
+              (rating: any) => {
+                if (this.user) {
+                  return rating.user === this.user.id;
+                }
+                return false;
+              }
+            );
+            this.userRating = userRatingObject ? userRatingObject.rating : 0;
+            
             // Update time display initially
             this.updateTime();
           }
@@ -116,6 +132,32 @@ export class IngredientsComponent implements OnInit {
           console.error('Error fetching recipe data', error);
         }
       );
+  }
+
+  rateRecipe(rating: number): void {
+    if (!this.user || !this.recipeId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login to rate the recipe',
+        showConfirmButton: true,
+      });
+      return;
+    }
+    this.userRating = rating; // Set the rating value
+
+    const ratingData = { rating: this.userRating };
+
+    // Send the rating to the API endpoint using a PUT request
+    this.http.put(`http://localhost:8080/user/${this.user.id}/${this.recipeId}/rate`, ratingData)
+      .subscribe({
+        next: (response: any) => {
+          console.log('Rating submitted successfully:', response);
+          this.avgRate = response.data.averageRating;
+        },
+        error: (error) => {
+          console.error('Error submitting rating:', error);
+        }
+      });
   }
 
   // Toggle edit mode
