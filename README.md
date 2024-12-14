@@ -1,4 +1,4 @@
-# Reciplyy
+# Recipyy
 
 ![](.imgs/logo.png)
 
