@@ -1,27 +1,72 @@
-# Frontend
+# Reciplyy
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+![](.imgs/logo.png)
 
-## Development server
+Website for planning and creating recipes, made for the HCI course. Built with Angular and NodeJS.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+This repo contains the frontend for the site.
 
-## Code scaffolding
+## **The Backend can be found [here](https://github.com/MazenSamehR/Recipyy-backend.git)**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Steps to run
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* To run the project use
 
-## Running unit tests
+```bash
+npm run start
+```
+* To run in development mode use
+```bash
+ng serve --open
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## Libraries and dependencies
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Dependencies
 
-## Further help
+| Package                         | Version    |
+|---------------------------------|------------|
+| @angular/animations             | ^17.3.12   |
+| @angular/common                 | ^17.3.12   |
+| @angular/compiler               | ^17.3.0    |
+| @angular/core                   | ^17.3.0    |
+| @angular/forms                  | ^17.3.12   |
+| @angular/platform-browser       | ^17.3.0    |
+| @angular/platform-browser-dynamic | ^17.3.0 |
+| @angular/platform-server        | ^17.3.0    |
+| @angular/router                 | ^17.3.0    |
+| @angular/ssr                    | ^17.3.8    |
+| @fortawesome/fontawesome-free   | ^6.7.1     |
+| @popperjs/core                  | ^2.11.8    |
+| bootstrap                       | ^5.3.3     |
+| bootstrap-icons                 | ^1.11.3    |
+| express                         | ^4.18.2    |
+| gsap                            | ^3.12.5    |
+| primeicons                      | ^7.0.0     |
+| primeng                         | ^17.18.12  |
+| rxjs                            | ~7.8.0     |
+| sweetalert2                     | ^11.14.5   |
+| tslib                           | ^2.3.0     |
+| zone.js                         | ~0.14.3    |
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Dev Dependencies
+
+| Package                           | Version    |
+|-----------------------------------|------------|
+| @angular-devkit/build-angular     | ^17.3.8    |
+| @angular/cli                      | ^17.3.11   |
+| @angular/compiler-cli             | ^17.3.0    |
+| @types/express                    | ^4.17.17   |
+| @types/jasmine                    | ~5.1.0     |
+| @types/node                       | ^18.18.0   |
+| jasmine-core                      | ~5.1.0     |
+| karma                             | ~6.4.0     |
+| karma-chrome-launcher             | ~3.2.0     |
+| karma-coverage                    | ~2.2.0     |
+| karma-jasmine                     | ~5.1.0     |
+| karma-jasmine-html-reporter       | ~2.1.0     |
+| typescript                        | ~5.4.2     |
