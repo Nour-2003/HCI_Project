@@ -126,7 +126,6 @@ export class IngredientsComponent implements OnInit {
 
             // Update time display initially
             this.updateTime();
-            console.log('Recipe data:', data);
           }
         },
         (error) => {
@@ -156,8 +155,10 @@ export class IngredientsComponent implements OnInit {
       )
       .subscribe({
         next: (response: any) => {
-          console.log('Rating submitted successfully:', response);
-          this.avgRate = response.data.averageRating;
+          this.avgRate =
+            response.data.averageRating % 1 === 0
+              ? `${response.data.averageRating}.0`
+              : response.data.averageRating.toFixed(1);
         },
         error: (error) => {
           console.error('Error submitting rating:', error);
