@@ -48,7 +48,7 @@ export class RecipeFormComponent {
     private router: Router
   ) {
     this.recipeForm = this.fb.group({
-      title: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
+      title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       ingredients: this.fb.array([], Validators.required),
       steps: this.fb.array([], Validators.required),
@@ -57,7 +57,7 @@ export class RecipeFormComponent {
         '',
         [Validators.required, Validators.pattern(/^(Easy|Medium|Hard)$/)],
       ],
-      tags: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
+      tags: ['', [Validators.required]],
       calories: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       prepTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       cookTime: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -142,15 +142,28 @@ export class RecipeFormComponent {
 
   getErrorMessage(controlName: string): string | null {
     const control = this.recipeForm.get(controlName);
-
+  
     if (control && control.invalid && control.touched) {
       const errors = control.errors;
-
+  
       if (errors?.['required']) {
         return 'This field is required.';
       }
       if (errors?.['pattern']) {
-        return 'Invalid format';
+        switch (controlName) {
+          case 'title':
+          case 'tags':
+            return 'Only letters and spaces are allowed.';
+          case 'servings':
+          case 'calories':
+          case 'prepTime':
+          case 'cookTime':
+            return 'Only numbers are allowed.';
+          case 'level':
+            return 'Valid values are: Easy, Medium, or Hard.';
+          default:
+            return 'Invalid format.';
+        }
       }
       if (errors?.['minlength']) {
         return `Minimum length is ${errors['minlength'].requiredLength}.`;
@@ -159,9 +172,10 @@ export class RecipeFormComponent {
         return `Maximum length is ${errors['maxlength'].requiredLength}.`;
       }
     }
-
+  
     return null;
   }
+  
 
   cancelForm() {
     this.recipeForm.reset();

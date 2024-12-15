@@ -1,4 +1,6 @@
-<div class="container d-flex justify-content-center align-items-center">
+<div class="container-fluid bg-form" style="z-index: -1">
+
+<div class="container d-flex justify-content-center align-items-center ">
   <div class="form-container container p-5">
     <h2 class="recipe-title form-title">Add a Recipe</h2>
     <p class="form-subtitle mt-2">
@@ -216,7 +218,7 @@
                 pInputText
                 id="calories"
                 formControlName="calories"
-                placeholder="0 Cal"
+                placeholder="0"
                 class="form-control w-50"
               />
               <small *ngIf="getErrorMessage('calories')" class="text-danger">
@@ -243,7 +245,7 @@
               pInputText
               id="prepTime"
               formControlName="prepTime"
-              placeholder="e.g. 15 min"
+              placeholder="e.g. 15"
               class="form-control w-25"
             />
             <small *ngIf="getErrorMessage('prepTime')" class="text-danger">
@@ -263,7 +265,7 @@
               pInputText
               id="cookTime"
               formControlName="cookTime"
-              placeholder="e.g. 30 min"
+              placeholder="e.g. 30"
               class="form-control w-25"
             />
             <small *ngIf="getErrorMessage('cookTime')" class="text-danger">
@@ -283,7 +285,7 @@
               pInputText
               id="totalTime"
               formControlName="totalTime"
-              placeholder="Total time will be calculated"
+              placeholder="Total time"
               class="form-control w-25"
               readonly
             />
@@ -315,4 +317,5 @@
       
     </form>
   </div>
+</div>
 </div>

@@ -59,6 +59,13 @@ export class HomePageComponent implements OnInit {
     this.fetchRecipes();
   }
 
+  scrollToSection(sectionId: string): void {
+    const targetElement = document.getElementById(sectionId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   fetchRecipes() {
     const url = 'http://localhost:8080/recipe/';
 

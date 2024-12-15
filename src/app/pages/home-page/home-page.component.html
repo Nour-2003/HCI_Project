@@ -1,6 +1,6 @@
 <div class="container p-4">
-  <div class="row ">
-    <div class="col-md-6 py-5">
+  <div class="row">
+    <div class="col-md-6 py-5" id="header">
       <app-header></app-header>
     </div>
     <div class="col-md-6 p-4 border border-2 rounded-5 shadow bg-white">
@@ -13,47 +13,61 @@
   </div>
   <div class="row pt-5">
     <h3 class="fw-bold hometitles">Trending meals</h3>
-    <div class="container  mt-4">
+    <div class="container mt-4">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of recipes.slice(0, 4)">
-          <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageUrl" [prepTime]="recipe.prepTime"
-            [difficulty]="recipe.difficulty" [likes]="recipe.likes" [RecipeId]="recipe.RecipeId"
-            [chefId]="recipe.chefId">
+        <div
+          class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+          *ngFor="let recipe of recipes.slice(0, 4)"
+        >
+          <app-recipe-card
+            [title]="recipe.title"
+            [imageUrl]="recipe.imageUrl"
+            [prepTime]="recipe.prepTime"
+            [difficulty]="recipe.difficulty"
+            [likes]="recipe.likes"
+            [RecipeId]="recipe.RecipeId"
+            [chefId]="recipe.chefId"
+          >
           </app-recipe-card>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="container-fluid bg-home1">
   <div class="container p-5">
-    <div class="row ">
+    <div class="row">
       <div class="col-md-6 bg-white p-4 pb-5 mt-5">
         <p class="fw-bold fs-1 mt-2">Dessert</p>
         <p class="fw-semibold fs-2 mt-2">Christmas Cookies</p>
-        <p class="fw-semibold fs-4 mt-2 mb-5">Starts your oven. It’s cookie baking time . Find Recipes for ginderbread,
-          sugar cookie ,
-          ans other seasonal favorites</p>
+        <p class="fw-semibold fs-4 mt-2 mb-5">
+          Starts your oven. It’s cookie baking time . Find Recipes for
+          ginderbread, sugar cookie , ans other seasonal favorites
+        </p>
       </div>
     </div>
-
   </div>
 </div>
 
-
-
 <div class="container p-4">
-
   <div class="row pt-5">
-    <h3 class="fw-bold hometitles">Quick & Easy</h3>
-    <div class="container  mt-4">
+    <h3 id="quick-easy" class="fw-bold hometitles">Quick & Easy</h3>
+    <div class="container mt-4">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of EasyRecipes.slice(0, 4)">
-          <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageUrl" [prepTime]="recipe.prepTime"
-            [difficulty]="recipe.difficulty" [likes]="recipe.likes" [RecipeId]="recipe.RecipeId"
-            [chefId]="recipe.chefId">
+        <div
+          class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+          *ngFor="let recipe of EasyRecipes.slice(0, 4)"
+        >
+          <app-recipe-card
+            [title]="recipe.title"
+            [imageUrl]="recipe.imageUrl"
+            [prepTime]="recipe.prepTime"
+            [difficulty]="recipe.difficulty"
+            [likes]="recipe.likes"
+            [RecipeId]="recipe.RecipeId"
+            [chefId]="recipe.chefId"
+          >
           </app-recipe-card>
         </div>
       </div>
@@ -62,12 +76,21 @@
 
   <div class="row pt-5">
     <h3 class="fw-bold hometitles">Low calories</h3>
-    <div class="container  mt-4">
+    <div class="container mt-4">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of recipes.slice(5, 9)">
-          <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageUrl" [prepTime]="recipe.prepTime"
-            [difficulty]="recipe.difficulty" [likes]="recipe.likes" [RecipeId]="recipe.RecipeId"
-            [chefId]="recipe.chefId">
+        <div
+          class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+          *ngFor="let recipe of recipes.slice(5, 9)"
+        >
+          <app-recipe-card
+            [title]="recipe.title"
+            [imageUrl]="recipe.imageUrl"
+            [prepTime]="recipe.prepTime"
+            [difficulty]="recipe.difficulty"
+            [likes]="recipe.likes"
+            [RecipeId]="recipe.RecipeId"
+            [chefId]="recipe.chefId"
+          >
           </app-recipe-card>
         </div>
       </div>
@@ -75,67 +98,82 @@
   </div>
 </div>
 
-
 <div class="container-fluid bg-home2 mbg">
   <div class="container p-5">
-    <div class="row ">
+    <div class="row">
       <div class="d-flex justify-content-center align-items-center">
-        <div class="bg-black bg-opacity-75 p-5 pb-5 mt-5 text-white  " style="width: 35rem;">
+        <div
+          class="bg-black bg-opacity-75 p-5 pb-5 mt-5 text-white"
+          style="width: 35rem"
+        >
           <p class="fw-semibold fs-3 mt-2">Salad</p>
           <p class="fw-semibold fs-2 mt-2">Fresh Salads</p>
-          <p class="fw-medium fs-4 mt-2 mb-5">Salad season is here! Toss up some freshness with recipes for Caesar,
-            Greek, and other crisp, colorful favorites.</p>
+          <p class="fw-medium fs-4 mt-2 mb-5">
+            Salad season is here! Toss up some freshness with recipes for
+            Caesar, Greek, and other crisp, colorful favorites.
+          </p>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-
-<div class="container-fluid  d-none d-md-block " style="background-color: #F9F9F9;">
-  <div class="container ">
+<div
+  class="container-fluid d-none d-md-block"
+  style="background-color: #f9f9f9"
+>
+  <div class="container">
     <div class="row p-5">
-      <div class="col-12 col-md-6 col-lg-4 d-flex flex-column align-items-center">
-        <div class="text-center px-5">
-          <img src="../../../assets/icons/logo.svg" alt="logo" width="200px" height="200px">
-          <p class="fs-5 fw-semibold">Recipyy</p>
+      <div
+        class="col-12 col-md-6 col-lg-4 d-flex flex-column align-items-center"
+      >
+        <div class="text-center px-5" (click)="scrollToSection('header')" style="cursor: pointer;">
+          <img
+            src="../../../assets/icons/logo.svg"
+            alt="logo"
+            width="200px"
+            height="200px"
+            />
+            <p class="fs-5 fw-semibold">Recipyy</p>
         </div>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4 m-auto">
-        <p class="fs-5 fw-medium text-center"> Follow us </p>
+        <p class="fs-5 fw-medium text-center">Follow us</p>
         <div class="d-flex justify-content-center align-items-center gap-5">
-
-          <img src="../../../assets/icons/youtube-outline-svgrepo-com.svg" alt="Youtube" width="40px" height="40px">
-          <img src="../../../assets/icons/eva--twitter-outline.svg" alt="Twitter" width="40px" height="40px">
-
+          <img
+            src="../../../assets/icons/youtube-outline-svgrepo-com.svg"
+            alt="Youtube"
+            width="40px"
+            height="40px"
+          />
+          <img
+            src="../../../assets/icons/eva--twitter-outline.svg"
+            alt="Twitter"
+            width="40px"
+            height="40px"
+          />
 
           <i class="fab fa-instagram fa-2x"></i>
-
-
         </div>
       </div>
 
       <div class="col-12 col-lg-4">
         <div class="row py-4">
           <div class="col-12 col-md-6 col-lg-6 px-4">
-            <p class="fs-4 fw-semibold">
-              Dinner <br>
-              Breakfast <br>
-              Lunch <br>
-              Meals <br>
-
+            <p class="fs-4 fw-semibold" >
+              <span style="cursor: pointer;" routerLinkActive="active navunderline" routerLink="/grocery">Dinner</span> <br />
+              <span style="cursor: pointer;" routerLinkActive="active navunderline" routerLink="/grocery">Breakfast</span> <br />
+              <span style="cursor: pointer;" routerLinkActive="active navunderline" routerLink="/grocery">Lunch</span> <br />
+              <span style="cursor: pointer;" routerLinkActive="active navunderline" routerLink="/recipes">Meals</span> <br />
             </p>
           </div>
 
           <div class="col-12 col-md-6 col-lg-6 px-4">
             <p class="fs-4 fw-semibold">
-              Fast & Easy <br>
-              Kitchen tips <br>
+              <span style="cursor: pointer;" (click)="scrollToSection('quick-easy')">Fast & Easy</span> <br />
+              Kitchen tips <br />
               Ingredients
-
-
             </p>
           </div>
         </div>

@@ -10,7 +10,7 @@
           </button>
         </div>
         <div>
-          <h6 class="mb-0" *ngIf="!isEditMode">{{ Education }}</h6>
+            <h6 class="mb-0" *ngIf="!isEditMode">{{ Education ? Education : 'No Education Information Available' }}</h6>
           <input *ngIf="isEditMode" [(ngModel)]="Education" class="form-control" />
         </div>
       </div>
@@ -24,7 +24,7 @@
           </button>
         </div>
         <div>
-          <h6 class="mb-0" *ngIf="!isEditMode">{{ Award }}</h6>
+          <h6 class="mb-0" *ngIf="!isEditMode">{{ Award ? Award : "No Award Information Available" }}</h6>
           <input *ngIf="isEditMode" [(ngModel)]="Award" class="form-control" />
         </div>
       </div>

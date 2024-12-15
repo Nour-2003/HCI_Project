@@ -113,7 +113,7 @@ export class IngredientsComponent implements OnInit {
             this.comments = data.comments;
             // Convert cookTime to seconds
             this.timeInSeconds = parseInt(this.cookTime) * 60;
-            this.avgRate = data.averageRating;
+            this.avgRate = data.averageRating % 1 === 0 ? `${data.averageRating}.0` : data.averageRating.toFixed(1);
             this.ratinglen=data.rating.length;
             const userRatingObject = data.rating.find(
               
