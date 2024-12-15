@@ -43,6 +43,7 @@ export class RecipeCardComponent implements OnInit {
         icon: 'warning',
         title: 'Please login',
         text: 'You need to login to like the recipe.',
+        confirmButtonColor: '#00b96d',
       });
       return;
     }

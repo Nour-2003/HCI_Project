@@ -339,7 +339,13 @@
       <!-- Display Comments -->
       <div class="comments mt-4">
         <h5 class="fw-bold">Comments</h5>
-        <div *ngFor="let comment of comments" class="mb-3 p-3 rounded">
+        <div *ngFor="let comment of comments" class="mb-3 p-3 rounded position-relative">
+          <!-- Delete Icon in Top-Right -->
+          <button *ngIf="user && user.id==comment.author._id "
+            class="btn btn-link text-danger position-absolute top-0 end-0 mt-2 me-2" style="text-decoration: none"
+            (click)="deleteComment(comment._id)">
+            <i class="fa fa-trash"></i>
+          </button>
           <!-- Comment Header -->
           <div class="d-flex align-items-center">
             <div class="me-3">

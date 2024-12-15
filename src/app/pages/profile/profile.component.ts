@@ -156,6 +156,7 @@ export class ProfileComponent {
           icon: 'error',
           title: 'Failed to update profile',
           text: 'Please try again later!',
+          confirmButtonColor: '#00b96d',
         });
         this.isLoading = false;
       },

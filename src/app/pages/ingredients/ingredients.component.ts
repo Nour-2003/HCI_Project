@@ -140,6 +140,7 @@ export class IngredientsComponent implements OnInit {
         icon: 'warning',
         title: 'Please login to rate the recipe',
         showConfirmButton: true,
+        confirmButtonColor: '#00b96d',
       });
       return;
     }
@@ -232,6 +233,7 @@ export class IngredientsComponent implements OnInit {
             icon: 'error',
             title: 'Error updating recipe',
             text: 'Please try again',
+            confirmButtonColor: '#00b96d',
           });
 
           console.error('Error updating recipe', error);
@@ -246,8 +248,8 @@ export class IngredientsComponent implements OnInit {
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#00b96d',
+      cancelButtonColor: '#134631',
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
@@ -308,6 +310,7 @@ export class IngredientsComponent implements OnInit {
           title: 'Time is up!',
           text: 'Your cooking time has completed.',
           showConfirmButton: true,
+          confirmButtonColor: '#00b96d',
         });
         // Reset the timer
         this.isPaused = true;
@@ -347,10 +350,19 @@ export class IngredientsComponent implements OnInit {
 
   // Add comment functionality
   addComment(): void {
+    if (!this.user) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Please login to add a comment',
+        showConfirmButton: true,
+        confirmButtonColor: '#00b96d',
+      });
+      return;
+    }
     if (this.newComment.trim() && this.user) {
       const commentData = {
         content: this.newComment,
-        author: this.user.id, // Send the user ID to the backend
+        author: this.user.id,
       };
 
       this.http
@@ -368,10 +380,12 @@ export class IngredientsComponent implements OnInit {
                 author: {
                   username: newComment.author.username,
                   profilePictureURL: newComment.author.profilePictureURL || '', // Fallback if not provided
+                  _id: newComment.author._id,
                 },
                 content: newComment.content,
                 time: 'Just now', // You can update this with a proper time from the backend if available
                 likes: 0, // Initial likes count
+                _id: newComment._id,
               });
 
               this.newComment = ''; // Clear the input field
@@ -384,6 +398,50 @@ export class IngredientsComponent implements OnInit {
     } else {
       console.warn('Comment content or user data is missing.');
     }
+  }
+
+  deleteComment(commentId: string): void {
+    if (!commentId) {
+      console.warn('Comment ID is missing.');
+      return;
+    }
+
+    // Display SweetAlert2 confirmation dialog
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00b96d',
+      cancelButtonColor: '#134631',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Proceed with deletion if confirmed
+        this.http
+          .delete<any>(`http://localhost:8080/comment/${commentId}`)
+          .subscribe(
+            (response) => {
+              if (response.message === 'Comment deleted successfully.') {
+                // Remove the deleted comment from the local comments list
+                this.comments = this.comments.filter(
+                  (comment) => comment._id !== commentId
+                );
+              }
+            },
+            (error) => {
+              console.error('Error deleting comment:', error);
+
+              // Display error notification
+              Swal.fire(
+                'Error!',
+                'Failed to delete the comment. Please try again.',
+                'error'
+              );
+            }
+          );
+      }
+    });
   }
 
   // Handling the cooking steps
@@ -406,6 +464,7 @@ export class IngredientsComponent implements OnInit {
         icon: 'warning',
         title: 'Please login to like the recipe',
         showConfirmButton: true,
+        confirmButtonColor: '#00b96d',
       });
       return;
     }
@@ -471,6 +530,7 @@ export class IngredientsComponent implements OnInit {
         icon: 'warning',
         title: 'Please login to favorite the recipe',
         showConfirmButton: true,
+        confirmButtonColor: '#00b96d',
       });
       return;
     }
@@ -543,6 +603,7 @@ export class IngredientsComponent implements OnInit {
         icon: 'warning',
         title: 'Please login to add to meal plan',
         showConfirmButton: true,
+        confirmButtonColor: '#00b96d',
       });
       return;
     }
@@ -560,7 +621,8 @@ export class IngredientsComponent implements OnInit {
             icon: 'success',
             title: 'Added to Meal Plan',
             text: `${this.recipeName} has been added to ${mealType}!`,
-            showConfirmButton: true,
+            showConfirmButton: false,
+            timer: 1500,
           });
         },
         (error) => {

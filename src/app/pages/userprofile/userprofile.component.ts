@@ -82,6 +82,7 @@ export class UserprofileComponent implements OnInit {
         icon: 'warning',
         title: 'Please log in',
         text: 'You need to log in to follow users!',
+        confirmButtonColor: '#00b96d',
       });
       return;
     }

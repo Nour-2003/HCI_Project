@@ -249,6 +249,8 @@ export class RecipeFormComponent {
             text: 'An error occurred while submitting your recipe. Please try again later.',
             icon: 'error',
             confirmButtonText: 'OK',
+            confirmButtonColor: '#00b96d',
+
           });
           this.isSubmitting = false; // Stop loader
         }
