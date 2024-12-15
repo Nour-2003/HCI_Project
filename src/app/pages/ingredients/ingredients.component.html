@@ -167,13 +167,11 @@
               <p class="mb-0 fw-bold">Special Tags</p>
             </div>
             <div *ngIf="isEditing" class="d-flex align-items-center justify-content-start flex-wrap">
-              <input *ngFor="let tag of mealSpecialTags; let i = index" [(ngModel)]="mealSpecialTags[i]"
-                class="form-control m-1" placeholder="Enter tag" />
+              <input [(ngModel)]="mealSpecialTags" class="form-control m-1" placeholder="Enter tag" />
             </div>
             <div *ngIf="!isEditing"
               class="d-flex align-items-center justify-content-center justify-content-lg-start justify-content-md-start flex-wrap">
-              <span class="badge text-light m-1" style="background-color: #00b96d"
-                *ngFor="let tag of mealSpecialTags">{{ tag }}</span>
+              <span class="badge text-light m-1" style="background-color: #00b96d">{{ mealSpecialTags }}</span>
             </div>
           </div>
         </div>

@@ -27,7 +27,7 @@ export class IngredientsComponent implements OnInit {
   mealLevel: string = '';
   mealCalories: string = '';
   mealServings: string = '';
-  mealSpecialTags: string[] = [];
+  mealSpecialTags: string = '';
   recipeName: string = '';
   chefName: string = '';
   chefimg: string = '';
@@ -54,7 +54,7 @@ export class IngredientsComponent implements OnInit {
   avgRate: number = 0;
   stars: number[] = [0, 1, 2, 3, 4];
   userRating: number = 0;
-  ratinglen:number=0;
+  ratinglen: number = 0;
   user: any = null;
   constructor(
     private userService: UserService,
@@ -81,8 +81,6 @@ export class IngredientsComponent implements OnInit {
       .get<any>(`http://localhost:8080/recipe/${this.recipeId}`)
       .subscribe(
         (response) => {
-          
-
           if (response.status === 'SUCCESS') {
             const data = response.data;
 
@@ -96,7 +94,7 @@ export class IngredientsComponent implements OnInit {
             this.mealLevel = data.level;
             this.mealCalories = data.calories;
             this.mealServings = data.serves;
-            this.mealSpecialTags = data.specialTag.split(',');
+            this.mealSpecialTags = data.specialTag;
             this.chefName = data.chef.username;
             this.chefimg =
               data.chef.profilePictureURL ||
@@ -113,21 +111,22 @@ export class IngredientsComponent implements OnInit {
             this.comments = data.comments;
             // Convert cookTime to seconds
             this.timeInSeconds = parseInt(this.cookTime) * 60;
-            this.avgRate = data.averageRating % 1 === 0 ? `${data.averageRating}.0` : data.averageRating.toFixed(1);
-            this.ratinglen=data.rating.length;
-            const userRatingObject = data.rating.find(
-              
-              (rating: any) => {
-                if (this.user) {
-                  return rating.user === this.user.id;
-                }
-                return false;
+            this.avgRate =
+              data.averageRating % 1 === 0
+                ? `${data.averageRating}.0`
+                : data.averageRating.toFixed(1);
+            this.ratinglen = data.rating.length;
+            const userRatingObject = data.rating.find((rating: any) => {
+              if (this.user) {
+                return rating.user === this.user.id;
               }
-            );
+              return false;
+            });
             this.userRating = userRatingObject ? userRatingObject.rating : 0;
-            
+
             // Update time display initially
             this.updateTime();
+            console.log('Recipe data:', data);
           }
         },
         (error) => {
@@ -150,7 +149,11 @@ export class IngredientsComponent implements OnInit {
     const ratingData = { rating: this.userRating };
 
     // Send the rating to the API endpoint using a PUT request
-    this.http.put(`http://localhost:8080/user/${this.user.id}/${this.recipeId}/rate`, ratingData)
+    this.http
+      .put(
+        `http://localhost:8080/user/${this.user.id}/${this.recipeId}/rate`,
+        ratingData
+      )
       .subscribe({
         next: (response: any) => {
           console.log('Rating submitted successfully:', response);
@@ -158,7 +161,7 @@ export class IngredientsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error submitting rating:', error);
-        }
+        },
       });
   }
 
@@ -179,7 +182,7 @@ export class IngredientsComponent implements OnInit {
     this.mealLevel = this.originalRecipeData.level;
     this.mealCalories = this.originalRecipeData.calories;
     this.mealServings = this.originalRecipeData.serves;
-    this.mealSpecialTags = this.originalRecipeData.specialTag.split(',');
+    this.mealSpecialTags = this.originalRecipeData.specialTag;
     this.recipedoc =
       this.originalRecipeData.description || 'Recipe document here...';
     this.recipeIngredients = this.originalRecipeData.ingredients.map(
@@ -206,7 +209,7 @@ export class IngredientsComponent implements OnInit {
       level: this.mealLevel,
       calories: this.mealCalories,
       serve: this.mealServings,
-      specialTags: this.mealSpecialTags,
+      specialTag: this.mealSpecialTags,
     };
 
     this.http
