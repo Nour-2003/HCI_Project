@@ -1,5 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-expand-md" style="background-color: #F9F9F9;">
   <div class="container-fluid my-2">
+
+    <!-- Logo nav in small screen -->
+
+    <img src="../../../assets/icons/logo.svg" alt="logo" class="rounded-circle ms-2 d-md-none"
+      style="width: 50px; height: 50px;" />
+    <span style="font-weight: bolder; font-family: 'Shantell Sans', sans-serif;color: #00b96d;"
+      class="fw-semibold fs-4 mt-4  d-md-none">
+      Recipyy</span>
+
+    <!---------   ---------->
+
+
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation">
@@ -79,7 +91,7 @@
               [src]="user.profilePictureURL ? user.profilePictureURL : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
               class="rounded-circle" style="width: 40px; height: 40px;" alt="profile.png" id="profileDropdown"
               data-bs-toggle="dropdown" aria-expanded="false" />
-              <span class="fs-5 ps-3 fw-semibold " style="color: #134631;">{{user?.username}}</span>
+            <span class="fs-5 ps-3 fw-semibold " style="color: #134631;">{{user?.username}}</span>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" style="cursor: pointer;">
               <li><a class="dropdown-item" (click)="navigateToProfile()"><i class="fa-solid fa-user"
                     style="color: #309d5f;"></i> Profile</a></li>
