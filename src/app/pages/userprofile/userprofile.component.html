@@ -60,7 +60,7 @@
             <div class="row">
               <div class="col-12 col-md-6 mb-4" *ngFor="let recipe of recipes.slice(0, 2)">
                 <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageURL || 'default-image.jpg'"
-                  [prepTime]="recipe.cooktime" [difficulty]="recipe.level" [likes]="recipe.likes || 0"
+                  [prepTime]="recipe.cooktime + ' min'" [difficulty]="recipe.level" [likes]="recipe.likes || 0"
                   [RecipeId]="recipe._id">
                 </app-recipe-card>
               </div>
@@ -75,9 +75,9 @@
         <p class="section-title fw-bold text-center">My Recipes</p>
 
         <div class="row">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let recipe of recipes">
+          <div class="col-12 col-md-6 col-lg-3 mb-4" *ngFor="let recipe of recipes">
             <app-recipe-card [title]="recipe.title" [imageUrl]="recipe.imageURL || 'default-image.jpg'"
-              [prepTime]="recipe.cooktime" [difficulty]="recipe.level" [likes]="recipe.likes || 0"
+              [prepTime]="recipe.cooktime + ' min'" [difficulty]="recipe.level" [likes]="recipe.likes || 0"
               [RecipeId]="recipe._id">
             </app-recipe-card>
           </div>
