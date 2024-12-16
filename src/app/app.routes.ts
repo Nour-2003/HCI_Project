@@ -11,21 +11,24 @@ import { RecipeFormComponent } from './components/recipe-form/recipe-form.compon
 import { AboutmeComponent } from './pages/aboutme/aboutme.component';
 import { UserprofileComponent } from './pages/userprofile/userprofile.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
+import { authGuard } from './guards/auth.guard';
+import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent },
   { path: 'ingredients/:id', component: IngredientsComponent },
   { path: 'recipes', component: RecipesComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'mainpage', component: MainpageComponent },
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard] }, // Only guests (not logged in)
+  { path: 'register', component: RegisterComponent, canActivate: [guestGuard] }, // Only guests (not logged in)
+  { path: 'mainpage', component: MainpageComponent, canActivate: [guestGuard] }, // Only guests (not logged in)
   { path: 'grocery', component: GroceryComponent },
   { path: 'recipeform', component: RecipeFormComponent },
   { path: 'userprofile/:id', component: UserprofileComponent },
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [authGuard], // Protecting profile route (only logged-in users)
     children: [
       { path: 'recipes/:userId', component: RecipesComponent },
       { path: 'aboutme', component: AboutmeComponent },

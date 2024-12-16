@@ -5,58 +5,38 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-5">
         <!-- Email Field -->
         <div class="position-relative mb-3">
-          <span
-            class="position-absolute top-50 start-0 translate-middle-y ps-3"
-          >
+          <span class="position-absolute top-50 start-0 translate-middle-y ps-3">
             <i class="fas fa-envelope"></i>
           </span>
-          <input
-            type="email"
-            class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-            placeholder="Email"
-            formControlName="email"
-            required
-          />
+          <input type="email" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
+            placeholder="Email" formControlName="email" required />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               loginForm.get('email')?.touched && loginForm.get('email')?.invalid
-            "
-            class="text-danger"
-          >
+            " class="text-danger">
             <small>{{ getErrorMessage("email") }}</small>
           </div>
         </div>
 
         <!-- Password Field -->
         <div class="position-relative mb-3">
-          <span
-            class="position-absolute top-50 start-0 translate-middle-y ps-3"
-          >
+          <span class="position-absolute top-50 start-0 translate-middle-y ps-3">
             <i class="fas fa-lock"></i>
           </span>
-          <input
-            type="password"
-            class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
-            placeholder="Password"
-            formControlName="password"
-            required
-          />
+          <input type="password" class="form-control ps-5 p-3 bg-transparent text-light border-4 rounded-3"
+            placeholder="Password" formControlName="password" required />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               loginForm.get('password')?.touched &&
               loginForm.get('password')?.invalid
-            "
-            class="text-danger"
-          >
+            " class="text-danger">
             <small>{{ getErrorMessage("password") }}</small>
           </div>
         </div>
 
         <!-- Submit Button -->
         <div class="d-flex justify-content-center align-items-center">
-          <button type="submit" class="btn rounded-5 px-5 py-2 text-light">
+          <button [disabled]="loginForm.invalid" type="submit" class="btn rounded-5 px-5 py-2 text-light">
             Login
           </button>
         </div>
@@ -67,8 +47,7 @@
 
         <!-- Register Prompt -->
         <div class="register-prompt mt-3 fw-semibold">
-          <a routerLink="/register" class="text-light text-decoration-none"
-            >Don't have an account?
+          <a routerLink="/register" class="text-light text-decoration-none">Don't have an account?
           </a>
         </div>
       </form>

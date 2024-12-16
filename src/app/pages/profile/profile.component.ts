@@ -67,7 +67,7 @@ export class ProfileComponent {
         this.router.navigate([`/profile/recipes/${user.id}`]);
         this.fetchUserProfileData();
       } else {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/mainpage']);
       }
     });
   }
