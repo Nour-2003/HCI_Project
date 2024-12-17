@@ -12,6 +12,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { log } from 'node:console';
 
 interface Ingredient {
   name: string;
@@ -102,6 +103,7 @@ export class GroceryComponent implements OnInit {
     let week: (number | null)[] = [];
 
     for (let i = 0; i < firstDayOfMonth; i++) {
+      console.log("in loop");
       week.push(null);
     }
 
