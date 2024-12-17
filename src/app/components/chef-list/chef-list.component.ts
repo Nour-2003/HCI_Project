@@ -12,7 +12,7 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./chef-list.component.css'],
 })
 export class ChefListComponent implements OnInit {
-  chefs: { imageUrl: string; altText: string; chefId: number }[] = [];
+  chefs: { imageUrl: string; altText: string; chefId: string }[] = [];
   defaultImage =
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
