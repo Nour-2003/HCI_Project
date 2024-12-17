@@ -92,4 +92,8 @@ export class HomePageComponent implements OnInit {
         error: (err) => console.error('Error fetching recipes:', err),
       });
   }
+
+  trackByFn(index: number, recipe: any): string {
+    return recipe.RecipeId;
+  }
 }

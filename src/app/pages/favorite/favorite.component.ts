@@ -61,7 +61,7 @@ export class FavoriteComponent implements OnInit {
     });
   }
 
-  trackByFn(index: number, recipes: any): string {
-    return recipes.RecipeId;
+  trackByFn(index: number, recipe: any): string {
+    return recipe.RecipeId;
   }
 }

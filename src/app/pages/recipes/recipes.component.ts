@@ -125,7 +125,7 @@ export class RecipesComponent implements OnInit {
     return true;
   }
 
-  trackByFn(index: number, filteredRecipes: any): string {
-    return filteredRecipes.RecipeId;
+  trackByFn(index: number, recipe: any): string {
+    return recipe.RecipeId;
   }
 }
