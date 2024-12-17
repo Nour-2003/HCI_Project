@@ -1,9 +1,10 @@
 <div class="container py-4">
   <div class="row">
-    <div class="col-12 col-lg-7" >
-      <div  *ngIf="!user || meals.length == 0" class="d-flex justify-content-center align-items-center fs-2 fw-bold container-fluid vh-100"> 
-        <p class="me-5">No Meals Found in Grocery, Please 
-      add some meals to your meal plan. </p>
+    <div class="col-12 col-lg-7">
+      <div *ngIf="!user || meals.length == 0"
+        class="d-flex justify-content-center align-items-center fs-2 fw-bold container-fluid vh-100">
+        <p class="me-5">No Meals Found in Grocery, Please
+          add some meals to your meal plan. </p>
       </div>
       <div *ngFor="let meal of meals; let i = index" class="mb-4">
         <div class="text-start mb-4">
@@ -72,8 +73,9 @@
       <div class="card rounded-5 p-4">
         <div class="card-body">
           <h6 class="card-title mb-4">
-            {{ currentMonth }} {{ currentYear }}
+            {{ today | dateFormat }}
           </h6>
+
           <table class="table table-borderless">
             <thead>
               <tr class="text-center">
@@ -92,6 +94,9 @@
             </tbody>
           </table>
         </div>
+
+
+
       </div>
     </div>
   </div>

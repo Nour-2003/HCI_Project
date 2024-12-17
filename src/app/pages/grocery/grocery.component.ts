@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
+import { DateFormatPipe } from '../../pipes/date-format.pipe';
 
 import {
   animate,
@@ -29,7 +29,7 @@ interface Meal {
 @Component({
   selector: 'app-grocery',
   standalone: true,
-  imports: [CommonModule, FormsModule,HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, DateFormatPipe],
   templateUrl: './grocery.component.html',
   styleUrls: ['./grocery.component.css'],
   animations: [
@@ -59,10 +59,11 @@ export class GroceryComponent implements OnInit {
   user: any = null;
 
   weekDays: string[] = [];
-  currentMonth: string = '';
-  currentYear: number = 0;
   currentDay: number = 0;
   calendarDays: (number | null)[][] = [];
+  
+  today: Date = new Date();
+
   meals: Meal[] = [];
 
   expandedMealIndex: number | null = null; // Tracks which meal is expanded
@@ -84,8 +85,6 @@ export class GroceryComponent implements OnInit {
 
   setCurrentDate() {
     const today = new Date();
-    this.currentYear = today.getFullYear();
-    this.currentMonth = today.toLocaleString('default', { month: 'long' });
     this.currentDay = today.getDate();
 
     this.weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -145,10 +144,10 @@ export class GroceryComponent implements OnInit {
     }
     const userId = this.user.id;
     const url = `http://localhost:8080/user/${userId}/meals`;
-  
+
     this.http.get<{ meals: any[] }>(url).subscribe((response) => {
       const mealOrder = ['Breakfast', 'Lunch', 'Dinner'];
-  
+
       this.meals = response.meals
         .sort((a, b) => mealOrder.indexOf(a.key) - mealOrder.indexOf(b.key)) // Sort based on mealOrder
         .map((meal) => ({
@@ -161,12 +160,11 @@ export class GroceryComponent implements OnInit {
             unit: ingredient.unit,
           })),
         }));
-  
+
       // Initialize the checkedIngredients array for fetched meals
       this.checkedIngredients = this.meals.map((meal) =>
         new Array(meal.ingredients.length).fill(false)
       );
     });
   }
-  
 }
