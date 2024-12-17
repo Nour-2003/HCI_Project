@@ -124,4 +124,8 @@ export class RecipesComponent implements OnInit {
     if (filterTime === '10+') return prepTime > 10;
     return true;
   }
+
+  trackByFn(index: number, filteredRecipes: any): string {
+    return filteredRecipes.RecipeId;
+  }
 }

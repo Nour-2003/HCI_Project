@@ -51,4 +51,8 @@ export class ChefListComponent implements OnInit {
       },
     });
   }
+
+  trackByFn(index: number, chefs: any): string {
+    return chefs.chefId;
+  }
 }
